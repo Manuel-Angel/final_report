@@ -1,5 +1,34 @@
 \section{Problematica.}
+Uno de los principales objetivos del proyecto “CEMIE-Eólico: Desarrollo de tecnología basada en inteligencia artificial y mecatrónica, para integrar un parque de generación de energía eólica a una red inteligente  ” es el análisis, diseño e implementación de un sistema capaz de integrar los componentes que conforman un parque eólico a un red de energía. Dicho sistema es sometido a prueba mediante la competencia de Power TAC (Power Trading Agent Competition).
+\\
+
+Power TAC modela la alta complejidad de los mercados energéticos contemporáneos y futuros, permitiendo la experimentación a gran escala. teniendo como principales entidades a los cliente que puede representar consumidores,  productores o ambos y un agente que actúa como intermediario buscando obtener beneficios ,mediante la oferta de tarifas y el comercio de energía manteniendo el equilibrio entre de la oferta y de la demanda.
+\\
+ 
+En la competencia de Power TAC 2016 el INAOE obtuvo el segundo lugar, utilizando como estrategia balancear el portafolio del broker utilizando solo dos de los tres mercados el mercado al por mayor o mercado del día siguiente y el mercado de tarifas. En el mercado de tarifas el broker publica tarifas especificar provocados dos efectos la suscripción o el retiro de los clientes de ellas con el objetivo de tener un balance entre la producción y el consumo de los clientes. En el mercado al por mayor se utiliza una predicación de las próximas 24 horas a partir de los datos del pasado, para comprar energía cuando el precio sea menor y vender energía cuando el precio sea mayor.
+\\
+ 
+El objetivo del broker es maximizar las ganancias de a partir de de las ganancias obtenidas en mercado al por mayor y en el mercado de tarifas y de la menor cantidad de penalización por estar desbalanceado, el ganador de un juego  individual es el broker con el saldo  bancario más alto al finalizar la simulación.
+
 \section{Objetivos.}
 \subsection{General.}
+Desarrollar una nueva versión del agente inteligente de compra venta de energía
 \subsection{Especificos.}
+\begin{itemize}
+    \item Estudiar la arquitectura del simulador. 
+    \begin{itemize}
+        \item Investigar las especificaciones y elementos del simulador Power TAC.
+    \end{itemize} 
+    \item Investigar la arquitectura y técnicas implementadas en el Agente COLDPower.
+    \begin{itemize}
+        \item Investigar Markov Decision Process.
+    \end{itemize}
+    \item Implementar mejorar a al agente COLDPower.
+\end{itemize}
+
 \section{Justificación.}
+Uno de los temas de interés común más importante en la actualidad es la crisis energética y el cómo solucionarse, en Mexico se esta llevando a cabo cambios políticos que abren las puertas a un nuevo tipo de mercado, el energético, esto quiere decir que ahora cualquiera pueda comprar o vender energía y para ello se necesitan redes eléctricas más inteligentes que permitan tener con control entre la oferta y la demanda de la red.
+\\
+
+Los mercados de energía comienzan a funcionar  en México a través de subastas: lo que se busca es que la gente que produce energía, que no necesariamente es la ex paraestatal CFE, pueda venderla. Por otro lado estarán compradores  que necesitan energía hablando por ejemplo de un consorcio que consume mucha energía (e.g Grupo WalMart o America Movil) y que puedan buscar a quien comprar al mejor precio, y todo ello en el marco de las regularizaciones
+
