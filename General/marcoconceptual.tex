@@ -1,3 +1,9 @@
+\section{Antecedentes.}
+Power Trading Agent Competition inicio oficialmente en el año del 2012. Hubo tres torneos, la primera comenzó a finales de mayo de 2012 con un ronda de calificación  como parte de la  Decimotercera Competición Anual de Agente de Comercio. Durante la conferencia AAMAS-12 celebrada en Valencia los días 4 y 5 de junio se llevó a cabo una ronda de demostración. Los participantes diseñaron agentes comerciantes autónomos que actúan como intermediarios minoristas, obteniendo beneficios mediante la venta de contratos de tarifas a los clientes y el comercio en un mercado mayorista. Una segunda ronda de Power TAC se celebró del 24 al 27 de septiembre y la tercera ronda se celebró del 30 de noviembre al 7 de diciembre.
+Las tarifas son contratos entre un productor y un broker o un consumidor y un broker, es decir, el broker es un agente intermediario el cual llega a un acuerdo con los productores para vender la energía producida a los consumidores, y este organiza ambas partes para negociar una cierta cantidad de energía bajo ciertas condiciones \cite{MPAlonsoAYRGonzalezDesarrolloDeTec}.\\
+
+Para probar el desempeño del agente COLDPower en un entorno de simulación fue inscrito en el torne de Power Trading Agent Competition 2016 (Power TAC 2016), la competencia se llevó a cabo en la ciudad de Nueva York en el marco de la 25ª Conferencia Internacional Conjunta de Inteligencia Artificial. Se realizaron 4 rondas: una fase de clasificación, dos rondas de eliminatoria y una ronda final. En la ronda final del torneo PowerTAC 2016, 7 instituciones internacionales de investigación participaron con sus agentes autónomos. En los resultados de la ronda final el agente COLDPower obtuvo el segundo lugar superado por el agente Maxon16 desarrollado por la Institución de Westfaelische Hochschule.
+
 \section{Problematica.}
 Uno de los principales objetivos del proyecto “CEMIE-Eólico: Desarrollo de tecnología basada en inteligencia artificial y mecatrónica, para integrar un parque de generación de energía eólica a una red inteligente” es el análisis, diseño e implementación de un sistema capaz de integrar los componentes que conforman un parque eólico a un red de energía. Dicho sistema es sometido a prueba mediante la competencia de Power TAC (Power Trading Agent Competition).
 \\
@@ -5,30 +11,52 @@ Uno de los principales objetivos del proyecto “CEMIE-Eólico: Desarrollo de te
 Power TAC modela la alta complejidad de los mercados energéticos contemporáneos y futuros, permitiendo la experimentación a gran escala, teniendo como principales entidades a los cliente que puede representar consumidores,  productores o ambos y un agente que actúa como intermediario buscando obtener beneficios, mediante la oferta de tarifas, el comercio de energía y manteniendo el equilibrio entre de la oferta y de la demanda.
 \\
  
-En la competencia de Power TAC 2016 el INAOE obtuvo el segundo lugar, utilizando como estrategia balancear el portafolio del broker utilizando solo dos de los tres mercados, el Mercado al por Mayor o Mercado del Día Siguiente y el Mercado al por Menor o de Tarifas. En el mercado de tarifas el broker publica tarifas especificar provocados dos efectos la suscripción o el retiro de los clientes, con el objetivo de tener un balance entre la producción y el consumo de los clientes. En el mercado al por mayor se utiliza una predicación de las próximas 24 horas a partir de los datos del pasado, permitiendo predecir el precio por Kwh para comprar energía cuando el precio sea menor y vender energía cuando el precio sea mayor.
+En la competencia de Power TAC 2016 el INAOE obtuvo el segundo lugar, utilizando como estrategia balancear el portafolio del broker utilizando solo dos de los tres mercados, el Mercado al por Mayor o Mercado del Día Siguiente y el Mercado al por Menor o de Tarifas. 
+En el mercado de tarifas el broker publica tarifas especificas provocando dos posibles efectos, la suscripción o el retiro de los clientes, con el objetivo de tener un balance entre la producción y el consumo de energía entre los clientes. 
+En el mercado al por mayor pueden enviar ordenes de compra o venta para cada una de las 24 horas siguientes, y para saber que ordenes enviar, se utiliza una predicción de las próximas 24 horas a partir de los datos del pasado, permitiendo predecir el precio por kWh para comprar energía cuando el precio sea menor y vender energía cuando el precio sea mayor.
 \\
  
-El objetivo del broker es maximizar sus ganancias del mercado al por mayor,  el mercado de tarifas y de la menor cantidad de penalización por estar desbalanceado, el ganador de un juego es el broker con el saldo bancario más alto al finalizar la simulación. El desbalance es una de las principales penalizaciones del sistema hacia los broker, por ese motivo el sistema crea bonos o incentivos  para los broker por mantener el balance entre el consumo y la producción de sus clientes.
+El objetivo del broker es maximizar sus ganancias en el  Mercado al por Mayor, en el Mercado de Tarifas y obtener la menor cantidad de penalización por estar desbalanceado utilizando el Mercado de Balance, el ganador de un juego es el broker con el saldo bancario más alto al finalizar la simulación. 
+El desbalance es una de las principales penalizaciones del sistema hacia los broker, por ese motivo el sistema crea bonos o incentivos para los broker por mantener el balance entre el consumo y la producción de sus clientes utilizando las herramientas disponibles del entorno.
 
 \section{Objetivos.}
 \subsection{General.}
-Desarrollar una nueva versión del agente inteligente de compra venta de energía
+Desarrollar un modulo de predicción para la nueva versión del agente inteligente de compra venta de energía COLDPower.
 \subsection{Especificos.}
-\begin{itemize}
-    \item Estudiar la arquitectura del simulador. 
-    \begin{itemize}
+\renewcommand{\labelenumi}{$\bullet$ }
+\renewcommand{\labelenumii}{\alph{enumii})}
+\begin{enumerate}
+    \item Estudiar la arquitectura del simulador PowerTAC. 
+    \begin{enumerate}
         \item Investigar las especificaciones y elementos del simulador Power TAC.
-    \end{itemize} 
-    \item Investigar la arquitectura y técnicas implementadas en el Agente COLDPower.
-    \begin{itemize}
-        \item Investigar Markov Decision Process.
-    \end{itemize}
+    \end{enumerate} 
+    \item Investigar sobre técnicas de predicción.
+    \begin{enumerate}
+        \item Investigar métodos de regresión, redes bayesianas y series de tiempo
+		\item Hacer pruebas con datos del clima y el mercado energético.
+		\item Seleccionar técnicas de predicción.
+    \end{enumerate}
     \item Implementar mejorar a al agente COLDPower.
-\end{itemize}
+        \begin{enumerate}
+        \item Diseñar un módulo de pronostico.
+		\item Implementar de una API.
+		\item Implementar de una interfaz gráfica.
+		\item Integrar la API con el agente COLDPower
+    \end{enumerate}
+\end{enumerate}
 
 \section{Justificación.}
-Uno de los temas de interés común más importante en la actualidad es la crisis energética y el cómo solucionarse, en Mexico se esta llevando a cabo cambios políticos que abren las puertas a un nuevo tipo de mercado, el energético, esto quiere decir que ahora cualquiera pueda comprar o vender energía y para ello se necesitan redes eléctricas más inteligentes que permitan tener con control entre la oferta y la demanda de la red.
+Uno de los temas de interés común más importante en la actualidad es la crisis energética y el cómo solucionarse, en México se esta llevando a cabo cambios políticos que abren las puertas a un nuevo tipo de mercado, el energético, esto quiere decir que ahora cualquiera pueda comprar o vender energía y para ello se necesitan redes eléctricas más inteligentes que permitan tener con control entre la oferta y la demanda de la red.
 \\
 
-Los mercados de energía comienzan a funcionar  en México a través de subastas: lo que se busca es que la gente que produce energía, que no necesariamente es la ex paraestatal CFE, pueda venderla. Por otro lado estarán compradores  que necesitan energía hablando por ejemplo de un consorcio que consume mucha energía (e.g Grupo WalMart o America Movil) y que puedan buscar a quien comprar al mejor precio, y todo ello en el marco de las regularizaciones
+Los mercados de energía comienzan a funcionar en México a través de subastas: lo que se busca es que la gente que produce energía, que no necesariamente es la ex paraestatal CFE, pueda venderla. Por otro lado estarán compradores  que necesitan energía hablando por ejemplo de un consorcio que consume mucha energía (e.g Grupo WalMart o America Movil) y que puedan buscar a quien comprar al mejor precio, y todo ello en el marco de las regularizaciones \cite{GRiveraProyectoDeIADelInaoe}.\\
 
+Junto con la adopción de redes energéticas más inteligentes, surge la idea de regular la oferta y demanda de energía en un mercado libre, donde los productores puedan vender energía a consumidores usando un broker como intermediario \cite{Fixed-priceTariffG2015}. 
+Uno de los mercados energéticos dominantes es el de tarifas en donde pequeños consumidores pueden comprar energía de los agentes ''broker`` a través de tarifas.
+La infraestructura necesaria (redes energéticas inteligentes) no ha llegado aun a México para que esto sea posible, pero la comunidad científica europea esta consciente de que esto sera una necesidad cada vez mas demandante, así que crearon el servidor de simulación Power TAC para poder probar estrategias de mercado en una simulación de una red energética inteligente, organizando también un concurso internacional del mismo nombre en el que el INAOE participa con su agente COLDPower.
+
+\section{Delimitación}
+
+El proyecto ``CEMIE - Eólico P12: Desarrollo de tecnología basada en inteligencia artificial y mecatrónica, para integrar un parque de generación de energía eólica a una red inteligente'' tiene una duración aproximada de 4 años, este proyecto de residencias ``Agente inteligente de compra venta de energía'' solo se enfocará en el desarrollo de nuevos módulos para mejorar el desempeño del broker que ya dispone el equipo de desarrollo del INAOE, culminando en una nueva versión de este.\\
+
+En años anteriores el INAOE ha participado en la competencia internacional Power Tac por lo que ya disponen de un broker y una plataforma de simulación configurada, a la cual durante el periodo de las residencias se le agregara un módulo de pronostico que sera usado por el experto de Mercado al por mayor para tomar mejores decisiones y mejorar el desempeño del broker en la competencia internacional PowerTac 2017. 
