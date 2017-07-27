@@ -1,6 +1,6 @@
 \chapter{Marco Teórico}
-\newpage
-\section{Panorama Internacional de las fuentes de energia renovables}
+
+\section{Panorama Internacional de las fuentes de energía renovables}
 La importancia del impulso a las energías renovables y la eficiencia energética no sólo estriba en reducir la dependencia en la utilización de los combustibles fósiles; también se han creado nuevas oportunidades económicas y se ha desarrollado un mercado energético totalmente diversificado y más amigable con el medio ambiente.\\
 
 Durante la década pasada, y particularmente en años recientes, han sido posibles avances en tecnologías de energía renovable, incrementos en la capacidad de generación a nivel mundial, así como rápidas reducciones de costos gracias al apoyo brindado por las políticas económicas, mismas que han atraído una cantidad significativa de inversiones e impulsado la baja de costos, por medio de economías de escala.\\
@@ -67,9 +67,14 @@ Desde la publicación del Primer Contrato de Interconexión para Fuente de Energ
 
 \section{Power TAC(Trading Agent Competition).}
 
-Power TAC es una competencia de simulación de futuros mercados minoristas de energía eléctrica, en los que los competidores broker o agentes minoristas que compran y venden energía tanto en los mercados mayoristas como minoristas. El mercado al por mayor es una abstracción de los típicos mercados diurnos en Norteamérica y Europa, y el mercado al por menor es un mercado de tarifas, en el que los clientes pueden elegir entre ofertas de contratos de tarifas ofrecidos por los agentes. Los clientes son modelos de usuarios domésticos, empresariales e institucionales de energía eléctrica, así como pequeños productores de energía que poseen paneles solares o turbinas eólicas.\\
+Power TAC es una competencia de simulación de futuros mercados minoristas de energía eléctrica, en los que los competidores broker o agentes minoristas (en la simulación son agentes inteligentes) que compran y venden energía tanto en los mercados mayoristas como minoristas. 
+El mercado al por mayor es una abstracción de los típicos mercados diurnos en Norteamérica y Europa, y el mercado al por menor es un mercado de tarifas, en el que los clientes pueden elegir entre ofertas de contratos de tarifas ofrecidos por los agentes. Los clientes son modelos de usuarios domésticos, empresariales e institucionales de energía eléctrica, así como pequeños productores de energía que poseen paneles solares o turbinas eólicas.\\
 
-La primera competencia de Power TAC se celebro en año 2012 como parte de ka decimotercera competencia anual de agentes de comercio, durante al conferencia de AAMAS-12\footnote{The International Conference on Autonomous Agents and Multi-Agent Systems es la conferencia científica líder para la investigación en las áreas de inteligencia artificial, agentes autónomos y sistemas multiagentes.}. Los participantes diseñaron agentes  que actuaban como minoristas, obteniendo ganancia mediante la creación contratos y el comercio en le mercado al por mayor. La primera competencia de Power TAC se celebro en año 2012 como parte de ka decimotercera competencia anual de agentes de comercio, durante al conferencia de AAMAS-12. Los participantes diseñaron agentes  que actuaban como minoristas, obteniendo ganancia mediante la creación contratos y el comercio en le mercado al por mayor. El entorno  de simulación proporcionaba una gama de problemas para los agentes, incluyendo un mercado de energía al por mayor para el día a día, pronósticos de tiempo realistas que afectan la producción de energía eólica y solar, así como el consumo una variedad de preferencias sobre términos de tarifas y una distribuidor de utilidades que cobra por el transporte de energía y por desequilibrios entre la oferta y la demanda.\\
+Los brokers ofrecen servicios de energía a los clientes a través de contratos tarifarios, y luego deben servir a esos clientes negociando esa energía en el mercado al por mayor. En la competencia los brokers son desafiados a maximizar sus ganancias comprando y vendiendo energía en los mercados mayorista y minorista, sujetos a costos fijos y restricciones, el ganador de un juego o simulación individual es el broker con el saldo bancario más alto al final de la simulación \cite{WKetterJCollinsyMdWeerdtThe2017PowerTAC}.
+
+La primera competencia de Power TAC se celebro en año 2012 como parte de la decimotercera competencia anual de agentes de comercio, durante al conferencia de AAMAS-12\footnote{The International Conference on Autonomous Agents and Multi-Agent Systems es la conferencia científica líder para la investigación en las áreas de inteligencia artificial, agentes autónomos y sistemas multiagentes.}. 
+Los participantes diseñaron agentes  que actuaban como minoristas, obteniendo ganancias mediante la creación contratos y el comercio en el mercado al por mayor. 
+El entorno  de simulación proporcionaba una gama de problemas para los agentes, incluyendo un mercado de energía al por mayor para el día a día, pronósticos de tiempo realistas que afectan la producción de energía eólica y solar, así como el consumo una variedad de preferencias sobre términos de tarifas y un distribuidor de utilidades que cobra por el transporte de energía y por desequilibrios entre la oferta y la demanda.\\
 
 Una segunda ronda de Power TAC 2012 se celebró del 24 al 27 de septiembre de 2012, y la tercera ronda se celebró del 30 de noviembre al 7 de diciembre. Posteriormente las competencias se fueron realizando cada año con diferentes participantes (véase la tabla \ref{tab:competition}).
 
@@ -182,7 +187,11 @@ Una segunda ronda de Power TAC 2012 se celebró del 24 al 27 de septiembre de 20
 	\label{tab:competition}
 \end{table}
 
-El entorno de simulación de Power TAC modela un mercado  minorista y mayorista, una entidad de distribución y regularización y una población de clientes de producción y de consumo, situado en una ubicación real en la Tierra durante un periodo especifico con datos meteorológico reales. El mercado al por mayor es un mercado de llamadas relativamente simple, similar a muchos de los mercados ya existentes de energía eléctrica. Los modelos clientes incluyen hogares, vehículos electrónicos y entidades comerciales e industriales, ademas algunos de los clientes tienen capacidades de producción a partir de paneles solares y de turbinas eólicas. El distribuidor de utilidades modela un monopolio de regularización que posee  una red de distribución local y es responsable del mantenimiento de la infraestructura. El balance entre la oferta y la demandad en tiempo real es gestionado por u mecanismo basado en un mecanismo de incentivos económicos para alentar a los broker a mantener un equilibrio dentro de su portafolio de clientes de producción y de consumo. En la figura \ref{entorno} muestra los principales componentes principales que integra el entorno de simulación de PowerTAC.
+El entorno de simulación de Power TAC modela un mercado  minorista y mayorista, una entidad de distribución y regularización y una población de clientes de producción y de consumo, situado en una ubicación real en la Tierra durante un periodo especifico con datos meteorológico reales. 
+El mercado al por mayor es un mercado de llamadas relativamente simple, similar a muchos de los mercados ya existentes de energía eléctrica. 
+Los modelos clientes incluyen hogares, vehículos electrónicos y entidades comerciales e industriales, ademas algunos de los clientes tienen capacidades de producción a partir de paneles solares y de turbinas eólicas. 
+El distribuidor de utilidades modela un monopolio de regularización que posee  una red de distribución local y es responsable del mantenimiento de la infraestructura. 
+El balance entre la oferta y la demandad en tiempo real es gestionado por un mecanismo basado en un mecanismo de incentivos económicos para alentar a los broker a mantener un equilibrio dentro de su portafolio de clientes de producción y de consumo. En la figura \ref{entorno} muestra los principales componentes principales que integra el entorno de simulación de PowerTAC.
 
 \begin{figure}[!h]
 	\centering
@@ -195,7 +204,8 @@ A continuación se describen cada uno de los elementos:\\
 
 \textbf{Customer Market.}\\
 
-También conocido como el  Mercado de Tarifas, por este medio los agente adquiere energía eléctrica a través de los productores locales y posteriormente la vende a sus clientes de consumo. El agente adquiere cliente ofreciendo contratos o tarifas en el Mercado de Tarifas especificando el precio de la energía y otros términos, mientras que los clientes tomas la decisión de aceptarlos o ignorar. Los paramentos de una tarifa permite especificar los siguiente términos: periodo de pagos, tiempo de uso, bonos o pagos por suscripción, mínima duración de contrato, pagos de penalización de retiro antes de cumplir con la mínima duración, precio por consumo y producción, etc. Para más información  de la estructura de un tarifa véase la sección \ref{tariff}.
+También conocido como el  Mercado de Tarifas, por este medio los agente adquiere energía eléctrica a través de los productores locales y posteriormente la vende a sus clientes de consumo. El agente adquiere clientes ofreciendo contratos o tarifas en el Mercado de Tarifas especificando el precio de la energía y otros términos, mientras que los clientes toman la decisión de aceptarlos o ignorarlos. 
+Los paramentos que una tarifa permite especificar son los siguiente términos: periodo de pagos, tiempo de uso, bonos o pagos por suscripción, mínima duración de contrato, pagos de penalización de retiro antes de cumplir con la mínima duración, precio por consumo y producción, etc. Para más información  de la estructura de un tarifa véase la sección \ref{tariff}.
 
 \textbf{Wholesale Market.}\\
 
@@ -206,7 +216,7 @@ Mercado al por Mayor permite a los broker comprar y vender energía entre 1 y 24
 El Distribuidor de Utilidades (DU) modela el monopolio regulador y mantiene la infraestructura de distribución de energía. Dentro del contexto de Power TAC participa en los siguientes escenarios:
 
 \begin{enumerate}
-	\item Encargado de distribuir la energía de la red a los clientes. Implicado pagos por el uso de la distribución de la energía hacia los clientes.
+	\item Encargado de distribuir la energía de la red a los clientes, implicando pagos por el uso de la distribución de la energía hacia los clientes.
 	\item Permite importar y exportar energía desde el Mercado al por Mayor.
 	\item Actúa como broker de última instancia, ofreciendo sencillas tarifas clientes de consumo y de producción de energía.
 	\item Participa en el proceso de balance de la red.
@@ -214,11 +224,12 @@ El Distribuidor de Utilidades (DU) modela el monopolio regulador y mantiene la i
 
 \textbf{Balancing Market.}\\
 
-El mercado de balance es el encargo de mantener el equilibrio entre la oferta y la demanda en la distribución en la red. El Mercado de Balance mantiene un sistema de incentivo para los broker por mantener el equilibrio entre la oferta y la demanda de su portafolio de clientes en cada intervalo de tiempo.\\
+El mercado de balance es el encargado de mantener el equilibrio entre la oferta y la demanda en la distribución en la red. 
+El Mercado de Balance mantiene un sistema de incentivos para los broker por mantener el equilibrio entre la oferta y la demanda de su portafolio de clientes en cada intervalo de tiempo.\\
 
 \textbf{Accounting.}\\
 
-Para garantizar la coherencia y la imparcialidad, el simulador de Power TAC mantiene un registro de las cuentas de los agentes, las suscripciones de los clientes y las posiciones en el Mercado al por Mayor. Ademas mantiene un registro las siguientes transacciones:
+Para garantizar la coherencia y la imparcialidad, el simulador de Power TAC mantiene un registro de las cuentas de los agentes, las suscripciones de los clientes y las posiciones en el Mercado al por Mayor. Ademas mantiene un registro de las siguientes transacciones:
 
 \begin{itemize}
 	\item Suscripción y retiro de clientes por tarifa.
@@ -233,11 +244,12 @@ Cada agente tiene una cuenta en efectivo en el banco central, e inicia el juego 
 
 \textbf{Weather reports.}\\
 
-El pronostico meteorológico y las condiciones meteorológicas actual se envían a los broker en cada intervalo de tiempo. Algunos modelos de clientes utilizarán esta información para influir en el consumo de energía y en la producción. Los informes meteorológicos y las predicciones se extraerán de los datos meteorológicos y de pronósticos del mundo real para. La ubicación específica y el intervalo de fechas para el conjunto de datos meteorológicos son información privilegiada, no revelada a los agentes, sin embargo se dan la latitud y época del año.\\
+El pronostico meteorológico y las condiciones meteorológicas actuales se envían a los brokers en cada intervalo de tiempo. Algunos modelos de clientes utilizarán esta información para influir en el consumo de energía y en la producción. Los informes meteorológicos y las predicciones se extraerán de los datos meteorológicos y de pronósticos del mundo real para hacerlo lo mas realista posible. La ubicación específica y el intervalo de fechas para el conjunto de datos meteorológicos son información privilegiada, no revelada a los agentes, sin embargo se dan la latitud y época del año.\\
 
 \textbf{Tiempo de simulación.}\\
 
-El tiempo de simulación en Power TAC se divide por timeslot cada uno con una duración de una hora en tiempo de simulación, cada timesslot tienen un a duración de 5 segundos en tiempo real, las rondas de simulación consisten en 60 días de simulación equivalente a 1440 timeslot o aproximadamente a 2 horas en tiempo real.\\
+El tiempo de simulación en Power TAC se divide en unidades de tiempo llamadas \textit{timeslot}, cada uno con una duración de una hora en tiempo de simulación y 5 segundos aproximadamente en tiempo real, es decir, que cada 5 segundos el servidor PowerTAC habra simulado una hora de eventos en un mercado energético.
+Las rondas de simulación consisten en 60 días de simulación equivalente a 1440 timeslot o aproximadamente a 2 horas en tiempo real.\\
 
 \section{Broker.}
 
@@ -280,10 +292,11 @@ Cada uno de los clientes representa una población de clientes con característi
 \end{itemize}
 
 \subsection{Storage model.}
-Representa un dispositivo de almacenamiento de energía con capacidad para controlar remotamente la carga y/o descarga. Este modelo permite representar el dispositivo de almacenamiento como las baterías, pero también permite representar otros dispositivos de almacenamiento por ejemplo dispositivos de almacenamiento termino. Aunque la diferencia básica entre una batería y un dispositivo de almacenamiento térmico es que el dispositivo de almacenamiento térmico no puede descargarse para obtener energía eléctrica, pero su calor se utiliza para algún propósito (como calefacción, por ejemplo).
+Representa un dispositivo de almacenamiento de energía con capacidad para controlar remotamente la carga y/o descarga. Este modelo permite representar el dispositivo de almacenamiento como las baterías, pero también permite representar otros dispositivos de almacenamiento por ejemplo dispositivos de almacenamiento térmico. Aunque la diferencia básica entre una batería y un dispositivo de almacenamiento térmico es que el dispositivo de almacenamiento térmico no puede descargarse para obtener energía eléctrica, pero su calor se utiliza para algún propósito (como calefacción, por ejemplo).
 
 \subsection{Capacidades Controlables.}
-Capacidades controlables o gestión de la demanda se puede presentar en dispositivos para clientes de producción y de consumo. Los clientes pueden proporcionar a los corredores diferentes formas de capacidades de gestión de la demanda que se pueden utilizar para controlar los costos o para equilibrar, según lo determinado por el PowerType. Estos difieren en la disponibilidad y la cantidad de energía disponible en un intervalo de tiempo. Algunos proporcionan regulación positiva (reducción de la demanda o aumento de la oferta), y algunos proporcionan regulación a la baja. Los dispositivos controlable en general son de dos tipos: 
+Capacidades controlables o gestión de la demanda se puede presentar en dispositivos para clientes de producción y de consumo. 
+Los clientes pueden proporcionar a los brokers diferentes formas de capacidades de gestión de la demanda que se pueden utilizar para controlar los costos o para equilibrar, según lo determinado por el PowerType. Estos difieren en la disponibilidad y la cantidad de energía disponible en un intervalo de tiempo. Algunos proporcionan regulación positiva (reducción de la demanda o aumento de la oferta), y algunos proporcionan regulación a la baja. Los dispositivos controlable en general son de dos tipos: 
 \begin{enumerate}
 	\item Dispositivos que permiten la interrupción del consumo o producción durante un rango asignado.
 	\item Dispositivos con características de almacenamiento.
@@ -301,10 +314,10 @@ Los broker pueden estar motivados a crear tarifas para clientes con capacidades 
 
 \begin{enumerate}
 	\item Para reducir los costos en el Mercado al por Mayor. Un agente puede ejercer directamente controles para un intervalo de tiempo específico. Estos controles se denominan controles económicos.
-	\item Para reducir los cargos por penalización durante el proceso de balance, el broker puede autorizar el DU a ejercer controles sólo en caso de hacerlo sería beneficioso para el corredor. Tales controles se denominan controles de balance.
+	\item Para reducir los cargos por penalización durante el proceso de balance, el broker puede autorizar el DU a ejercer controles sólo en caso de hacerlo sería beneficioso para el broker. Tales controles se denominan controles de balance.
 \end{enumerate}
 
-\textbf{Distribuido de Utilidades.}\\
+\textbf{Distribuidor de Utilidades.}\\
 
 El DU es el responsable de ejercer efectivamente los dispositivos con capacidades controlables, ya que controla la infraestructura física. Los controles de balance se ejercen después de la ejecución de los modelos de cliente, lo que significa que el DU debe comunicar un mensaje de control a los broker afectados, así como a los clientes. También debe emitir transacciones de tarifas adicionales para cada suscripción de la tarifa afectada.
 
@@ -319,9 +332,9 @@ Las tarifas son la relación existente entre un broker y sus clientes, es decir 
 	\label{tariff}
 \end{figure}
 
-Muchos de los elementos de una tarifa son representados por la estructura TariffSpecification donde podemos indicar las condiciones del pago y el PowerType, pero el precio de la energia es definido mediante la estructura Rate. La cantidad de dinero y de energía especificado en TariffSpecification es visto desde el punto de vista de un cliente, es decir  un valor es negativo representa una pago del cliente y el broker, mientras un valor positivo representa un pago desde el broker al cliente. Similar mente una cantidad de energía representado en kWh con un valor positivo representa energía entregada al cliente y un valor negativo es la energía entregada al broker.\\
+Muchos de los elementos de una tarifa son representados por la estructura TariffSpecification donde podemos indicar las condiciones del pago y el PowerType, pero el precio de la energía es definido mediante la estructura Rate. La cantidad de dinero y de energía especificado en TariffSpecification es visto desde el punto de vista de un cliente, es decir  un valor es negativo representa una pago del cliente al broker, mientras un valor positivo representa un pago desde el broker al cliente. Similarmente una cantidad de energía representado en kWh con un valor positivo representa energía entregada al cliente y un valor negativo es la energía entregada al broker.\\
 
-Cuando el broker publica una tarifa esta debe de pasar por una serie de estados en la figura \ref{state} muestra los estados de un tarifa. El broker envia una tarifa al mercado de tariff y esta entra en estado de “pending”. La nueva tarifas es publica periódicamente a los clientes y a los broker, entrando al estado “Offered”, los clientes se suscribe y la tarifa entra en un estado “active”. Inmediatamente el broker es notificado de varios eventos entre ellos, suscripción de clientes, cancelación de contrato, entre otras acciones. Los tarifas pueden tener una fecha de vencimiento y no se permiten nuevas suscripciones en este caso entra en un estado de “expired” hasta que esta es revocada o modificado por un broker.
+Cuando el broker publica una tarifa esta debe de pasar por una serie de estados, en la figura \ref{state} se muestran los estados de una tarifa. El broker envía una tarifa al mercado de tarifas y esta entra en estado de “pending”. Las nuevas tarifas son publicadas periódicamente a los clientes y a los broker, entrando al estado “Offered”, los clientes se suscriben y la tarifa entra en un estado “active”. Inmediatamente el broker es notificado de varios eventos entre ellos, suscripción de clientes, cancelación de contrato, entre otras acciones. Las tarifas pueden tener una fecha de vencimiento y no se permiten nuevas suscripciones en este caso entra en un estado de “expired” hasta que esta es revocada o modificado por un broker.
 
 \begin{figure}[h!]
 	\centering
@@ -332,142 +345,158 @@ Cuando el broker publica una tarifa esta debe de pasar por una serie de estados 
 
 \subsection{Tarifas para clientes con capacidades controlables.}
 
-Los clientes con capacidades controlables pueden elegir tarifas especificas diseñadas para proporcionar control en los dispositivos o pueden optar por tarifas mas generales que no proporciones un control sobre ellos. La cuestión es como el cliente obtiene beneficios por permitir un control externo. Con los dispositivos de consumo controlable estándar los clientes obtienen un descuento en la tasa de consumo a cambio de permitir la reducción del consumo. Pero este esquema no parece adecuado para clientes con dispositivos de almacenamiento, una solución es pagar o cobrar al clientes por las acciones de carga y descarga de sus dispositivos. En la construcción de una tarifa para clientes con capacidades controlables se puede incluir términos de interrupción y de regularización a partir de una estructura externa a TariffSpecification, empleando la estructura Rate y RegulationRates definimos los términos antes mencionados. Los clientes interrumpibles permiten que una porción de consumo o producción del cliente se reduzca durante una porción del intervalo de tiempo para reducir los costos generales de energía y para reducir costos del desbalance. La estructura de de RegulationRates permite incluir un valor para especificar un tasa de interrupción durante un timeslot, agregando un valor distinto de cero en la propiedad de maxCurtaiment dentro de la estructura del Rate. Para los cliente con capacidades de almacenamiento, dentro de la estructura RegulationRates se puede incluir términos para los pagos por el uso del dispositivo durante un desbalance negativo (up-regulation) o un desbalance positivo (down-regulation).
+Los clientes con capacidades controlables pueden elegir tarifas especificas diseñadas para proporcionar control en los dispositivos o pueden optar por tarifas mas generales que no proporcionen un control sobre ellos. 
+La cuestión es como el cliente obtiene beneficios por permitir un control externo. 
+Con los dispositivos de consumo controlable estándar los clientes obtienen un descuento en la tasa de consumo a cambio de permitir la reducción del consumo. 
+Pero este esquema no parece adecuado para clientes con dispositivos de almacenamiento, una solución es pagar o cobrar al clientes por las acciones de carga y descarga de sus dispositivos. 
+En la construcción de una tarifa para clientes con capacidades controlables se puede incluir términos de interrupción y de regularización a partir de una estructura externa a TariffSpecification, empleando la estructura Rate y RegulationRates definimos los términos antes mencionados. 
+Los clientes interrumpibles permiten que una porción de consumo o producción del cliente se reduzca durante una porción del intervalo de tiempo para reducir los costos generales de energía y para reducir costos del desbalance. 
+La estructura de RegulationRates permite incluir un valor para especificar un tasa de interrupción durante un timeslot, agregando un valor distinto de cero en la propiedad de maxCurtaiment dentro de la estructura del Rate. 
+Para los cliente con capacidades de almacenamiento, dentro de la estructura RegulationRates se puede incluir términos para los pagos por el uso del dispositivo durante un desbalance negativo (up-regulation) o un desbalance positivo (down-regulation).
 
 \section{Información disponible para los broker.}
 
-El servidor de Power TAC durante un juego proporciona información del entorno de simulación a los broker, esta informacion es enviado a partir de mensaje  asincronos y puede ser pública o privada.\\
+El servidor de Power TAC durante un juego proporciona información del entorno de simulación a los broker, esta información es enviada a partir de mensaje  asíncronos y puede ser pública o privada.\\
 
 Al inicio de la simulación el broker recibe la siguiente información:
 \begin{description}
-	\item [Game parameters: ]parámetros usados para la configuración o instancia de un específico juego.    
-	\item [Broker Identities: ]username de los broker participantes en el juego.
-	\item [Customer Records: ]nombres y características de los modelos de clientes ejecutando durante la simulación.
-	\item [Default tariff: ]al iniciar el juego, el mercado de tarifas solo oferta tarifas publicadas por el default broker.
-	\item [Bootstrap Customer Data: ]consumo y producción de cada uno de los clientes durante un periodo de 14 días antes de iniciar la simulación.
-	\item [Bootstrap Market Data: ]precios y cantidades de energía comprada por el Default Broker en el Mercado al por Mayor durante los 14 días anteriores al inicio de la simulación.
-	\item [Bootstrap Weather data: ]reportes del clima durante los 14 días antes del inicio de la simulación.
-	\item [Weather report, Weather forecast: ]predicciones del clima en las siguientes 24 horas.  
+	\item [Game parameters: ]Parámetros usados para la configuración o instancia de un juego específico.    
+	\item [Broker Identities: ]\textit{Username} de los broker participantes en el juego.
+	\item [Customer Records: ]Nombres y características de los modelos de clientes ejecutados durante la simulación.
+	\item [Default tariff: ]Al iniciar el juego, el mercado de tarifas solo oferta tarifas publicadas por el default broker.
+	\item [Bootstrap Customer Data: ]Consumo y producción de cada uno de los clientes durante un periodo de 14 días antes de iniciar la simulación.
+	\item [Bootstrap Market Data: ]Precios y cantidades de energía comprada por el Default Broker en el Mercado al por Mayor durante los 14 días anteriores al inicio de la simulación.
+	\item [Bootstrap Weather data: ]Reportes del clima durante los 14 días antes del inicio de la simulación.
+	\item [Weather report, Weather forecast: ]Predicciones del clima en las siguientes 24 horas.  
 \end{description}
-La siguiente información se envía a los corredores una vez cada 6 horas de simulación, cuando se publican las tarifas:
+La siguiente información se envía a los brokers una vez cada 6 horas de simulación, cuando se publican las tarifas:
 \begin{description}
-	\item [Tariff updates: ]las siguiente acciones creación de nueva tarifa, revocar una tarifa y sustituir una tarifa, se les notificará a cada uno de lo broker.
-	\item [Tariff transactions:] Cuando se publica una tarifa de un broker, se  cobra un bono por publicación, cuando los clientes  cambian la suscripción, los broker reciben transacciones que describen los cambios junto con una bonificación y la cantidad de penalizaciones de salida anticipada. Esta informacion es privada y solo para el propietario de la tarifa.
+	\item [Tariff updates: ]Las siguiente acciones, creación de nuevas tarifas, revocación de tarifas y sustitución de tarifas, se les notificará a cada uno de los brokers.
+	\item [Tariff transactions:] Cuando se publica una tarifa de un broker, se  cobra un bono por publicación, cuando los clientes  cambian la suscripción, los broker reciben transacciones que describen los cambios junto con una bonificación o una cantidad de penalizaciones de salida anticipada. Esta información es privada y solo para el propietario de la tarifa.
 \end{description}
-La siguiente información es publica y se enviá a cada uno de los broker en cada time slot.
+La siguiente información es publica y se envía a cada uno de los broker en cada time slot.
 \begin{description}
-	\item [Wholesale market clearing data: ]los precios de compensación del mercado y las cantidades totales negociadas para cada una de las 24 oportunidades de negociación en el Mercado al por Mayor. Estos mensajes pueden omitirse si no se hicieron operaciones en un intervalo de tiempo dado.
-	\item [Wholesale market orderbooks: ]contiene precios y cantidades de todas las ofertas y solicitudes no satisfechas.
-	\item [Total aggregate energy consumption: ]producción y consumo total de energía para el intervalo de tiempo actual.
-	\item [Wheather report and weather forecast:] condiciones meteorológicas para el intervalo de tiempo actual y pronóstico para las próximas 24 horas.
+	\item [Wholesale market clearing data: ]Los precios de compensación del mercado y las cantidades totales negociadas para cada una de las 24 oportunidades de negociación en el Mercado al por Mayor. Estos mensajes pueden omitirse si no se hicieron operaciones en un intervalo de tiempo dado.
+	\item [Wholesale market orderbooks: ]Contiene precios y cantidades de todas las ofertas y solicitudes no satisfechas.
+	\item [Total aggregate energy consumption: ]Producción y consumo total de energía para el intervalo de tiempo actual.
+	\item [Wheather report and weather forecast:] Condiciones meteorológicas para el intervalo de tiempo actual y pronóstico para las próximas 24 horas.
 \end{description}
 Cada vez que se ejecuta la evaluación de demanda máxima una vez por semana, cada broker recibirá un conjunto de mensajes de Capacity transactions, una para cada pico de demanda evaluado. Estas transacciones especifican el umbral de demanda, la contribución del broker al pico de energía y la cuota asociada. La siguiente información es privada y enviado individualmente a cada broker en cada time slot.
 \begin{description}
 	\item [Tariff transactions:] Lecturas de créditos y débitos asociados a los clientes.
 	\item [Balancing and distribution transactions:] Cargos por el DU para cada broker individual para compensar el Mercado de Balance y la distribución de energía.
 	\item [Portafolio supply and demand:] Transacciones de producción y consumo de los clientes actuales del broker.
-	\item [Wholesale market transations:] ofertas y presentadas por el broker.
-	\item [Market Positions:] los compromisos netos actualizados de importación / exportación del Broker, para cada una de las 24 oportunidades de negocio en el Mercado al por Mayor.
-	\item [Cash Position: ]actualización de la cuenta bancaria del Broker después de que todas las transacciones contables vigentes se han aplicado.
+	\item [Wholesale market transations:] Ofertas y peticiones presentadas por el broker.
+	\item [Market Positions:] Los compromisos netos actualizados de importación / exportación del Broker, para cada una de las 24 oportunidades de negocio en el Mercado al por Mayor.
+	\item [Cash Position: ]Actualización de la cuenta bancaria del Broker después de que todas las transacciones contables vigentes se han aplicado.
 \end{description}
 
 \section{Wholesale Market.}
+
+En el mercado al por mayor los brokers interactúan entre si directamente así como con grandes compañías productoras y otros participantes del mercado al por mayor vendiendo y comprando grandes cantidades de energía, la cual usan para venderla en el mercado al por menor (mercado de tarifas). 
+
+En el mercado al por mayor los agentes pueden negociar energía través de órdenes de compra o venta para una hora determinada (hora objetivo) en cualquiera de las 24 horas anteriores. Estas órdenes pueden o no ser ejecutadas, en dependencia del precio de cruce del mercado, el cual es calculado a partir de los precios de compra y ventas de todas las órdenes recibidas por el mercado \cite{WKetterJCollinsyMdWeerdtThe2016PowerTAC}.
+
+En este mercado la energía es más cara que en el mercado de tarifas ya que tiene una mayor estabilidad, por lo que se debe de evitar lo más posible. Los clientes son modelos de usuarios empresariales e institucionales de energía eléctrica, así como grandes productores de energía.
 
 \section{Balance Market.}
 
 El Mercado de Balance debe satisfacer tres objetivos:
 \begin{enumerate}
 	\item El consumo total de energía neta debe sumar a cero una vez que el mercado se ha liquidado.     
-	\item Cada broker que tiene un tiene un balance positivo debe tener recursos de producción controlables reducidos, o debe ser pagado por su exceso de energía por una tasa determinada por el proceso de balance del mercado.      
-	\item Cada broker que tiene un balance negativo debe tener recursos controlables de consumo reducido, o debe pagar por la energía adicional necesaria.	
+	\item Cada broker que tiene un balance positivo debe tener clientes de producción controlables cuya producción poder reducir o clientes de consumo controlables (como baterías) cuyo consumo poder aumentar para poder disminuir el balance positivo, o debe pagar por su exceso de energía por una tasa determinada por el proceso de balance del mercado.
+	\item Cada broker que tiene un balance negativo debe tener clientes de consumo controlables cuyo consumo poder disminuir, o clientes de producción cuya producción poder aumentar (las baterías y los autos eléctricos también pueden regresar energía a la red) o debe pagar por la energía adicional necesaria.
 \end{enumerate}
 
 \section{Distribuidor de Utilidades.}
-El DU opera la red de distribución que conecta la red de transmisión al por mayor de los agentes y clientes. También actúa como el “agente por defecto", ofreciendo tarifas básicas y poco atractivas para todos los tipos de clientes. Los  costos del DU deben ser cubiertos por los honorarios pagados por los agentes a través de las comisiones de distribución y de regularización. Con capacidad controlable, los broker pueden presentar órdenes de balance que le permiten al DU ejercer control de capacidad para lograr el equilibrio. Los broker deben presentar sus órdenes de balance antes de que se ejecuten los modelos de cliente y el DU ejecuta su proceso de balance después de que se conozca el consumo del cliente para el intervalo de tiempo actual. El DU puede determinar las cantidades reales disponibles para cada orden de balance.
+El DU opera la red de distribución que conecta la red de transmisión al por mayor de los agentes y clientes. También actúa como el “agente por defecto", ofreciendo tarifas básicas y poco atractivas para todos los tipos de clientes. 
+Los  costos del DU deben ser cubiertos por los honorarios pagados por los agentes a través de las comisiones de distribución y de regularización. 
+Con capacidad controlable, los broker pueden presentar órdenes de balance que le permiten al DU ejercer control de capacidad para lograr el equilibrio. 
+Los brokers deben presentar sus órdenes de balance antes de que se ejecuten los modelos de cliente y el DU ejecuta su proceso de balance después de que se conozca el consumo del cliente para el intervalo de tiempo actual. 
+El DU puede determinar las cantidades reales disponibles para cada orden de balance.
+\\
+\section{Métodos de regresión}
+En estadística, el análisis de la regresión es un proceso estadístico para estimar las relaciones entre variables. Incluye muchas técnicas para el modelado y análisis de diversas variables, cuando la atención se centra en la relación entre una variable
+dependiente y una o más variables independientes (o productoras, o regresoras).
+Más específicamente, el análisis de regresión ayuda a entender cómo el valor de la variable dependiente varía al cambiar el valor de una de las variables independientes, manteniendo el valor de las otras variables independientes fijas \cite{BoundlessRegressionAnalysis}.
 
-\section{Procesos de Decisión de Markov.}
-Las técnicas Markovianas modelan un problema de decisión secuencial, definido por un conjunto de estados, un conjunto de acciones posibles, un modelo del entorno y una función de recompensas, que sirve como medio de interacción entre el entorno y el agente. Sus dominios se modelan como sistemas estocásticos, sus metas se definen por sus funciones utilidad/coste (recompensa/descuento), donde el problema de planificación se transforma en un problema de optimización. De ahí que su solución sea la política óptima, asignando la mejor acción en cada estado del espacio de estados del problema.\\
+El análisis de regresión es ampliamente usado para predicción, donde tiene una superposición con el área de machine learning. 
+El análisis de regresión también es usado para entender cuáles de las variables independientes está relacionada a la variable dependiente, y explora las formas de estas relaciones. 
+En algunas circunstancias, el análisis de regresión puede ser usado para inferir relaciones causales entre las variables dependiente e independiente \cite{BoundlessRegressionAnalysis}, sin embargo, esto puede llevar a falacias de relación, por ejemplo ``\textit{Cum hoc ergo propter hoc}'' (en latín, ``con esto, por tanto a causa de esto'', o también conocida como ``correlación no implica causalidad'') \cite{JSArmstrongIllusions}.
 
-Al problema de encontrar una estrategia reactiva de control (o política de acción) en problemas de decisión secuencial, que maximice la recompensa esperada en el tiempo, se le conoce como proceso de decisión de Markov o MDP (por sus siglas en inglés Markov Decision Process). El trabajo de Markov supone que el agente siempre conoce el estado en que se encuentra al momento de iniciar la ejecución de sus acciones y que la probabilidad de transición depende solamente de este estado y no de su historia, es decir cumple con la propiedad de Markov\footnote{La Propiedad de Markov se refiere a la propiedad de ciertos ambientes estocásticos, donde la distribución de la probabilidad del valor futuro de una variable aleatoria depende únicamente de su valor presente, siendo independiente de la historia de dicha variable.}, afectada por un factor de descuento que impacta negativamente a la utilidad
+\subsection{Regresión lineal}
 
-\subsection{Definición Matemática.}
-Los MDPs proveen un marco matemático intuitivo para modelar problemas de decisión secuencial en ambientes dinámicos inciertos . Formalmente un MDP es una 4-tupla:
-$$M=< S,A,T,R >$$
-Donde:\\
-$S$ = conjunto de estados $\{s_{1},...,s_{n}\}$.\\
-$A$ = conjunto de acciones $\{a_{1},...,a_{n}\}$.\\
-$T$ = función de transición de un estado $s$ a $s'$.\\
-$R$ = función de recompensa de un estado $s$ a $s'$ mediante una acción.\\
+La regresión lineal es el tipo más básico de regresión y es comúnmente usado en el análisis predictivo.
+Es un enfoque para modelar la relación entre una variable dependiente escalar, y una o más variables independientes (también llamadas predictoras) denotadas por $X$. 
+En el caso de que el modelo de regresión solo tenga una variable independiente es llamado \textit{regresión lineal simple}, para más de una variable predictora, el proceso es llamado regresión lineal múltiple \cite{DAFreedmanStatisticalModels}, este término es distinto de regresión lineal multivariable donde múltiples variables dependientes correlacionadas son predichas, en lugar de una sola variable escalar \cite{ACRencherWFChristensenMethods}.
 
-\section{Métodos de Resolución.}
-Recordemos que la tarea del agente es encontrar una política que maximice alguna medida de refuerzo. Su optimización conduce a la obtención de un sistema de ecuaciones no lineales debido a que contienen una maximización. Existen varios métodos de resolución de MDPs, basándose en el conocimiento completo del MDP se clasifican de la siguiente forma:
+Mas formalmente, dado un conjunto de datos $\{y_i,x_{i1},...,x_{ip}\}_{i=1}^n$ de $n$ unidades estadísticas, un modelo de regresión lineal asume que la relación entre la variable dependiente $y_i$ y el p-vector de variables $x_i$ es lineal. Esta relación es modelada
+con un término de perturbación o variable de error $\varepsilon_i$, una variable aleatoria no observada que agrega ruido a la relación lineal entre la variable dependiente y las variables regresoras, la figura \ref{ec:regresionLineal} contiene la ecuación que representa el modelo de regresión lineal.
 
-\begin{itemize}
-	\item Programación dinámica.
-	\item Programación lineal.
-	\item Aprendizaje por refuerzo.
-\end{itemize}
+\begin{figure}
+\[ y_i= \beta_0 + \beta_1x_{i1} +...+ \beta_px_{ip} + \varepsilon_i \]
+\caption{Ecuación de un modelo lineal}
+\label{ec:regresionLineal}
+\end{figure}
 
-La primeras dos técnicas se distingue por conocen el MDPs, es decir tienen conocimiento del conjunto de estado, conjunto de acciones, de la función de transición y la función de recomienza. En cambio la tercera no tiene acceso a esta información, por lo que requiere explorar para aprender estados probables, resultando por ello más compleja que las dos primeras y con la posibilidad de que no se cumpla con la propiedad de Markov.
+\begin{enumerate}
+	\item $y_i$ es llamada la variable dependiente, variable criterio, variable de respuesta o variable medida. La decisión de cual variable del conjunto de datos es modelada como la variable dependiente puede basarse en una suposición de que el valor de una variable es causado o directamente influenciado por las otras variables.
+	
+	\item $x_{i1} + x_{i2}+...+x_{ip}$ son llamados variables independientes, regresoras, productoras o predictoras.
+	\begin{enumerate}
+		\item Usualmente una constante es incluida como una de las variables regresoras, por ejemplo, podemos decir que $x_{i1} = 1$ para  $i =1...n$.
+		\item A veces uno de los regresores pueden ser funciones no lineales de otro regresor, como en la regresión polinomial (método el cual se usó para implementar regresión polinomial) y regresión segmentada, el modelo permanece lineal, siempre y cuando sea lineal en el vector de parámetros $\beta_p$.
+	\end{enumerate}
+	\item $\beta_p$ es un vector de parámetros, cuyos elementos, los coeficientes de regresión, son los valores buscados por la regresión.
+	\item $\varepsilon_i$ es llamado el término de error o ruido. Esta variable representa todos los otros factores que influencian la variable dependiente, además de los regresores $x_{ip}$.
+\end{enumerate}
+\subsection{Regresión polinomial}
 
-\subsection{Programación Dinámica.}
-La programación dinámica se basa en el principio de optimalidad de Bellman\footnote{Principio de Optimalidad de Bellman: "dada una secuencia óptima de decisiones, toda subsecuencia de ella es, a su vez, óptima"}, lo que tratan de conseguir los algoritmos de programación dinámica es el mantenimiento de las funciones de valor $V (s)$ o $Q(s, a)$ de forma que una vez obtenidos los valores óptimos de estas funciones se pueda derivar de ellas la política óptimas.\\
+En estadística, la regresión polinomial es una forma de regresión lineal en la cual la relación entre la o las variables independientes esta modelada por un polinomio de las variables independientes de grado n.
 
-Los distintos enfoques de programación dinámica explícitamente almacenan funciones de valor del espacio de estados e iterativamente actualizan los valores para cada estado, hasta que el cambio de la función de valor es menor o igual al umbral previamente establecido. Entonces se dice que la función de valor converge a su valor óptimo, con su correspondiente acción o política óptima. Por lo que la programación dinámica ofrece un enfoque unificado para resolver problemas de control estocástico como lo son los MDPs. Los métodos más populares de programación dinámica son el algoritmo de iteración de valor y el algoritmo de iteración de política.
+En general podemos modelar el valor de la variable dependiente y como un polinomio de grado $n$ de las variables independientes, la ecuación de la figura \ref{ec:regresionPolinomial} es un ejemplo de un modelo con una sola variable independiente $x$:
+ 
+\begin{figure}
+\[ y_i=b_0 + b_1x + b_2x^{2}+...+b_nx^{n} \]
+\caption{Ecuación de un modelo polinomial}
+\label{ec:regresionPolinomial}
+\end{figure}
 
-\subsubsection{Iteración por Valor.}
-El algoritmo de iteración de valor aplica actualizaciones sucesivas de la función de valor para cada estado $s \in S$, al ejecutar el Principio de Optimalidad de Bellman, siendo la recompensa inmediata del estado en evaluación su valor inicial. De esta manera se actualiza la utilidad de cada estado a partir de las utilidades de sus estados vecinos inmediatos. Entonces se repite el proceso hasta que alcanza la convergencia. Cabe destacar que si esta actualización se aplica indefinidamente, entonces queda garantizado que se alcanzará un estado de equilibrio. El proceso se detiene cuando la diferencia entre las dos últimas iteraciones es menor que el máximo error permitido. Entonces, la iteración de valor converge finalmente a un único conjunto de soluciones. A continuación se muestra el algoritmo de Iteración por Valor.
+La regresión polinomial encaja en los modelos no lineales ya que la relación entre las variables independientes y la dependiente es no lineal, al tratarse de un polinomio el que la describe.
 
-\subsubsection{Iteración por Política.}
+Aunque la regresión polinomial se considera un modelo de datos no lineal, como un problema de estimación estadística es lineal, en el sentido de que los parámetros buscados por la función de regresión ($\beta_n$) son una combinación lineal de los términos del polinomio que representa el modelo. Por esta razón es considerado un caso especial de regresión lineal múltiple.
 
-Una política $\pi$ define el comportamiento de un agente aprendiz en un momento dado. En otras palabras, una política es un mapeo de un conjunto de estados $S$ percibidos del ambiente a un conjunto de acciones $A$ que deben ejecutarse en dichos estados. En algunos casos la política puede ser una función simple o una tabla de entradas, y en otros casos puede ser un proceso complejo de búsqueda. En general, las políticas pueden ser estocásticas.
+Para resolver un modelo de regresión polinomial, por ejemplo de una variable como en la ecuación de la figura \ref{ec:regresionPolinomial}, hay que expandir el modelo agregando variables independientes que son cada uno de los términos de grado $i$, para $i=1,2... n$, donde n es el grado del polinomio.
+Las variables predictoras resultantes de la expansión polinomial del modelo base, son conocidas como características de interacción \cite{YWChangCJHsiehKWChangTrainingAndTesting}.
 
-$$\pi : S \rightarrow A$$\\
+\subsection{Redes bayesianas}
+Una red bayesiana es un modelo probabilístico representado en un grafo acíclico dirigido. Representa un conjunto de variables aleatorias y sus dependencias condicionales. Dado este modelo, se puede hacer inferencia bayesiana; es decir, estimar la probabilidad posterior de las variables no conocidas, en base a las variables conocidas \cite{LESucarChapter1RedesBayesianas}.
 
-Otro algoritmo de programación dinámica es la iteración de política, en este método, la política es repetidamente mejorada al encontrar una acción en cada estado que tenga un valor más alto que el valor de la acción escogida anteriormente para ese estado. La política inicial es aleatoria y el proceso termina cuando ya no es posible realizar más mejoras. Cabe señalar que este proceso garantiza la convergencia a la política óptima.
-La dinámica de este algoritmo es la siguiente: toma al MDP, a un valor de descuento, a un parámetro de convergencia y produce políticas óptimas de horizonte finito sucesivas, terminando cuando el máximo cambio entre la función del valor actual y la del valor previo es menor que el margen de error dado. De esta manera logra la convergencia y se detiene. A continuación se muestra el algoritmo de Iteración por Políticas:
+Los nodos representan variables aleatorias en el sentido de Bayes. Cada nodo tiene asociado una función de probabilidad que toma como entrada un conjunto particular de valores de las variables padres del nodo y devuelve la probabilidad de la variable representada por el nodo. Las aristas representan dependencias condicionales.
 
-\subsection{Programación Lineal.}
+Si por padres son m variables booleanas entonces la función de probabilidad puede ser representada por una tabla de $2^m$ entradas, una entrada para cada una de las $2^m$ posibles combinaciones de los padres siendo verdadero o falso.
 
-Esta técnica resuelve un problema indeterminado formulado a través de ecuaciones lineales, para ello cuenta con el método Simplex. Este método fue desarrollado por G. B. Dantzig en 1947 y consiste en la optimización de la función objetivo al considerar las restricciones habidas. Estas restricciones son desigualdades que acotan a la región que contiene a todos los valores factibles para dichas expresiones matemáticas. Con este método, la iteración toma el valor de un vértice e investiga si es su máximo valor, de no ser así repite el proceso en forma iterativa hasta encontrarlo.
+En la \ref{fig:redBayesianaEjemplo} podemos ver un ejemplo de red bayesiana simple, el cual modela la probabilidad de tres eventos, las probabilidades de que llueva, que un rociador este activado, y que la hierba de un campo este húmeda. Hay dos eventos los cuales pueden causar que la hierba esté húmeda: que el rociador esté activado o que esté lloviendo, esta relación se representa mediante las aristas.
 
-\section{Aprendizaje por Refuerzo.}
-El aprendizaje por refuerzo consiste en aprender qué acciones realizar, dado el estado actual del ambiente, con el objetivo de maximizar una se\~{n}al de recompensa numérica, lo cual requiere de un mapeo de situaciones a acciones. El sistema que aprende debe descubrir por sí solo cuales son las acciones que le dan a ganar más. En los casos más interesantes y difíciles, las acciones pueden afectar no sólo la recompensa inmediata sino también la siguiente situación,y de esta forma afectar las siguientes recompensas. Estas dos características, prueba y error, y recompensas retrasadas, son las dos características más sobre salientes del aprendizaje por refuerzo.\\
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=10cm]{img/redBayesianaEjemplo.png}
+	\caption{Ejemplo de red bayesiana simple.}
+	\label{fig:redBayesianaEjemplo}
+\end{figure}
 
-En caso de que no se cuente con la función de transición de estados ni con la función recompensa del problema, el planificador deberá explorar su entorno para aprender qué hacer y cómo relacionar situaciones (estados) con acciones, de manera que la recompensa sea maximizada. El aprendizaje por refuerzo está basado en la interacción constante de un agente con su entorno incierto, por lo que existe un fuerte compromiso exploración-explotación: la información de entrada es la retroalimentación que obtiene del mundo exterior como respuesta a sus acciones. De ahí este aprendizaje sea cercano a la teoría óptima de control y la aproximación estadística.\\
+\subsection{Series de tiempo}
+Una serie de tiempo es una secuencia de datos, que representan observaciones o mediciones de algún fenómeno, indexados por tiempo, mas comúnmente, una secuencia de observaciones tomadas en puntos sucesivos en el tiempo igualmente espaciados. Por lo tanto es una secuencia de datos de tiempo discretos. 
+Ejemplos de una serie de tiempo son la altura de las mareas cada hora, la tasa mensual de desempleo de los últimos 5 años, el valor de cierre diario de cierta empresa.
 
-Mediante la función de aprendizaje por refuerzo, el agente determina cuáles estados son más provechosos a corto plazo. A diferencia de la técnica anterior, la función evaluación es hecha a largo plazo, considerando a los estados a los que puede conducir una acción. De esta manera, sus programas de cómputo buscan ir aprendiendo por sí solos conforme van adquiriendo experiencia, tal y como sucede con el ser humano. En consecuencia, los métodos de solución que utilizan aprendizaje por refuerzo son inductivos. La idea central es hacer uso de la estructura inherente de los MDPs, cuyos estados y acciones pueden ser abstraídos en subpolíticas. Una vez que explora y obtiene información de su entorno, este método se torna informado, pudiendo ser resuelto mediante los métodos de programación dinámica o programación lineal antes descritos.\\
+Las series de tiempo son muy frecuentemente ilustradas con graficas de líneas. 
+Son usadas en la estadística, procesado de señales, reconocimiento de patrones, matemática financiera, pronóstico climático, y en general en cualquier dominio de ciencia aplicada e ingeniería, que involucren mediciones temporales.
 
-A continuación se muestran los algoritmos que se emplean para aprender la dinámica del entorno:
-\begin{itemize}
-	\item Algoritmos de Equivalencia de Certeza.
-	\item Dyna-Q.
-	\item Queue-Dyna.
-	\item Métodos de Monte Carlo.
-	\item Métodos de diferencia temporal.
-\end{itemize}
+El análisis de series de tiempo comprende métodos para analizar datos de series de tiempo con el objetivo de extraer valores estadísticos útiles y otras características de los datos. 
+El pronóstico de series de tiempo es, el uso de un modelo para predecir futuros valores basados en datos previamente observados. 
+Mientras que el análisis de regresión es a menudo empleado de manera tal que pruebe teorías de que los valores actuales de una o más series de tiempo independientes afectan el valor actual de otra serie de tiempo, este tipo de análisis de series de tiempo no se llama
+``análisis de serie de tiempo'', el cual se enfoca en comparar valores de una sola serie de tiempo o en múltiples series de tiempo dependientes en diferentes momentos del tiempo \cite{MImdadullahTimeSeriesAnalysis}.
 
-Desde el punto de vista del uso que se haga de la política que se está aprendiendo los métodos de este enfoque se pueden clasificar adicionalmente en:
-\begin{itemize}
-	\item Métodos on-policy.
-	\item Métodos off-policy.
-\end{itemize}
-%\begin{table}[h!]
-% \begin{center}
-% \begin{tabular}{|l|l|l|l|l|} \hline
-% Minimun\\
-% Duration
-% &
-% PowerType
-% &
-% Signup Paymen
-% &
-% Early Withdraw Payment
-% &
-% Periodic Payment\\
-% \hline
-% \end{tabular}
-% \caption {Clasificación de acuerdo al numero de atributos.}
-% \label{clasA}
-% \end{center}
-% \end{table}
+Típicamente los autores reconocen 4 componentes básicos en una serie de tiempo, los cuales en conjunto (unidos de manera aditiva o multiplicativa) contribuyen a los cambios observados en un período de tiempo y dan a la serie su aspecto errático.
+Los cuatro componentes básicos son: Tendencia secular, variación estacional, variación cíclica y variación irregular.
+
