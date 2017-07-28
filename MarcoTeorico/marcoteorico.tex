@@ -205,7 +205,7 @@ A continuación se describen cada uno de los elementos:\\
 \textbf{Customer Market.}\\
 
 También conocido como el  Mercado de Tarifas, por este medio los agente adquiere energía eléctrica a través de los productores locales y posteriormente la vende a sus clientes de consumo. El agente adquiere clientes ofreciendo contratos o tarifas en el Mercado de Tarifas especificando el precio de la energía y otros términos, mientras que los clientes toman la decisión de aceptarlos o ignorarlos. 
-Los paramentos que una tarifa permite especificar son los siguiente términos: periodo de pagos, tiempo de uso, bonos o pagos por suscripción, mínima duración de contrato, pagos de penalización de retiro antes de cumplir con la mínima duración, precio por consumo y producción, etc. Para más información  de la estructura de un tarifa véase la sección \ref{tariff}.
+Los paramentos que una tarifa permite especificar son los siguiente términos: periodo de pagos, tiempo de uso, bonos o pagos por suscripción, mínima duración de contrato, pagos de penalización de retiro antes de cumplir con la mínima duración, precio por consumo y producción, etc. Para más información  de la estructura de un tarifa véase la sección \ref{sec:tariff}.
 
 \textbf{Wholesale Market.}\\
 
@@ -321,15 +321,14 @@ Los broker pueden estar motivados a crear tarifas para clientes con capacidades 
 
 El DU es el responsable de ejercer efectivamente los dispositivos con capacidades controlables, ya que controla la infraestructura física. Los controles de balance se ejercen después de la ejecución de los modelos de cliente, lo que significa que el DU debe comunicar un mensaje de control a los broker afectados, así como a los clientes. También debe emitir transacciones de tarifas adicionales para cada suscripción de la tarifa afectada.
 
-\section{Tarifas.}
-\label{tariff}
-Las tarifas son la relación existente entre un broker y sus clientes, es decir es un contrato que especifica una serie de condiciones asociadas al precio, minima duración de contrato, bonos y pagos por suscripción, etc. Los broker son los encargados de crear tarifas específicas a partir de un estructura definida  en la figura \ref{tariff}. La estructura de una tarifa puede variar dependiendo al PowerType que esté sujeta a ella.
+\section{Tarifas.} \label{sec:tariff}
+Las tarifas son la relación existente entre un broker y sus clientes, es decir es un contrato que especifica una serie de condiciones asociadas al precio, mínima duración de contrato, bonos y pagos por suscripción, etc. Los broker son los encargados de crear tarifas específicas a partir de un estructura definida  en la figura \ref{fig:tariff}. La estructura de una tarifa puede variar dependiendo al PowerType que esté sujeta a ella.
 
 \begin{figure}[!h]
 	\centering
 	\includegraphics[width=13cm]{img/tariffstructe.png}
 	\caption{Clases asociadas a la estructura de una tarifa.}
-	\label{tariff}
+	\label{fig:tariff}
 \end{figure}
 
 Muchos de los elementos de una tarifa son representados por la estructura TariffSpecification donde podemos indicar las condiciones del pago y el PowerType, pero el precio de la energía es definido mediante la estructura Rate. La cantidad de dinero y de energía especificado en TariffSpecification es visto desde el punto de vista de un cliente, es decir  un valor es negativo representa una pago del cliente al broker, mientras un valor positivo representa un pago desde el broker al cliente. Similarmente una cantidad de energía representado en kWh con un valor positivo representa energía entregada al cliente y un valor negativo es la energía entregada al broker.\\
@@ -499,4 +498,7 @@ Mientras que el análisis de regresión es a menudo empleado de manera tal que p
 
 Típicamente los autores reconocen 4 componentes básicos en una serie de tiempo, los cuales en conjunto (unidos de manera aditiva o multiplicativa) contribuyen a los cambios observados en un período de tiempo y dan a la serie su aspecto errático.
 Los cuatro componentes básicos son: Tendencia secular, variación estacional, variación cíclica y variación irregular.
+
+\section{Clasificación}
+
 
