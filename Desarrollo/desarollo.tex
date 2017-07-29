@@ -96,8 +96,6 @@ Los parámetros de configuración del broker pueden ponerse en los argumentos a 
 
 En el archivo broker.properties se encuentran varias propiedades, de ellas son de especial importancia las siguientes:\\
 
-
-
 \lstset{language=Xml, label=lst:parametrosBroker, caption={[Archivo \texttt{broker.properties}] Archivo \texttt{broker.properties}},
 tabsize=3 ,numbers=left,  stepnumber=1, firstnumber=100}
 
@@ -159,7 +157,7 @@ El análisis de regresión lineal nos puede ayudar a conocer 3 cosas:
 El estudio de esta técnica fue útil para entender los métodos de regresión en general, ya que es la forma más simple y algunas otras técnicas son parecidas a esta o incluso se basan en ella, como la regresión polinomial, y esta fue el primer tipo de análisis de regresión en estudiarse rigurosamente y en ser usado extensamente en aplicaciones prácticas \cite{XYanLinearRegressionAnalysis}.
 Esto es porque los modelos que dependen linealmente de sus variables son más fáciles de ajustar que modelos que son no lineales en cuanto a la relación de sus parámetros y porque las propiedades estadísticas de los estimadores resultantes son más fáciles de determinar.
 
-\subsection{Regresión polinomial}
+\subsection{Regresión polinomial}\label{subsec:regresionPolinomial}
 Como extensión al algoritmo de regresión lineal, se estudió también el análisis de regresión polinomial y su relación con la regresión lineal, que aunque sirve para describir un modelo donde las variables son no lineales (un polinomio), los parámetros a encontrar son lineales.
 
 Por ejemplo, considere una situación en donde una pequeña pelota se lanza al aire y se miden las alturas $h_i$ mientras haciende, durante varios momentos $t_j$. 
@@ -202,7 +200,7 @@ La regresión lineal puede ser usada para estimar los valores de $\beta_1$ y $\b
 
 Al aplicar regresión lineal a los datos de la tabla de la figura \ref{tab:transformacionModelo} se obtiene una regresión
 polinomial de modelo original representado en la tabla de la figura \ref{tab:valoresMedidos}. 
-Este método de transformar el modelo para aplicar una regresión polinomial, se usó en la actividad de Implementación de regresión polinomial en la página \pageref{}, a su ves, mas adelante se usa un método parecido a este para hacer análisis de series de tiempo, el cual esta encapsulado en la clase \texttt{WekaForecaster}, parecido en el sentido de que se toma un modelo y se le agregan variables transformándolo en otro modelo que se puede aprender por otro algoritmo de regresión o clasificación cualquiera de la librería weka.
+Este método de transformar el modelo para aplicar una regresión polinomial, se usó en la actividad de Implementación de regresión polinomial en la página \pageref{subsec:implementacionRegresionPolinomial}, a su ves, mas adelante se usa un método parecido a este para hacer análisis de series de tiempo, el cual esta encapsulado en la clase \texttt{WekaForecaster}, parecido en el sentido de que se toma un modelo y se le agregan variables transformándolo en otro modelo que se puede aprender por otro algoritmo de regresión o clasificación cualquiera de la librería weka.
 
 \subsection{Estudio de redes bayesianas}
 l estudio de redes bayesianas es necesario ya que se usara este modelo probabilístico como técnica de predicción, más específicamente las redes bayesianas dinámicas, las cuales surgen a partir de las redes bayesianas. Una red bayesiana dinámica o temporal es un modelo estadístico y estocástico que amplía el concepto de red bayesiana.
@@ -231,8 +229,166 @@ El nombre proviene de un ave no voladora de naturaleza inquisitiva que vive sola
 
 Weka es un software de código abierto, bajo la licencia GNU General Public License.
 
-En este periodo se hicieron varias pruebas con la librería weka, empezando por pruebas desde consola, como la de la figura \ref{}, con los datos de ejemplo que trae la librería weka, y después se desarrolló un proyecto en java que hace uso de la API de esta librería.
+En este periodo se hicieron varias pruebas con la librería weka, empezando por pruebas desde consola, como la de la figura \ref{fig:ejecucionAlgoritmoClasificacion}, con los datos de ejemplo que trae la librería weka, y después se desarrolló un proyecto en java que hace uso de la API de esta librería.
 
+En la figura \ref{fig:ejecucionAlgoritmoClasificacion} se muestra como se ejecutó la clase \texttt{J48} de la librería weka, la cual es una implementación de un algoritmo de clasificación (árbol de decisión). 
+El programa recibe el conjunto de datos a clasificar en el archivo \texttt{data/weather.arff}, y recibe como parámetro \texttt{-p} que significa que despliegue los resultados de la clasificación, con los atributos de principio a fin, por eso la especificación ``first-last''.
 
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=13cm]{img/ejecucionAlgoritmoClasificacion.png}
+	\caption{Ejecución de un algoritmo de clasificación de la librería weka.}
+	\label{fig:ejecucionAlgoritmoClasificacion}
+\end{figure}
 
+\subsection{Implementación de regresión lineal}
+Después de leer la documentación de la librería weka, se encontraron dos clases que sirven para implementar regresión lineal, la clase \texttt{SimpleLinearRegression}, y la clase \texttt{LinearRegression}; 
+ambas hacen regresión lineal, la diferencia es que la clase \texttt{LinearRegression} es una generalización para $n$ variables independientes, y la clase \texttt{SimpleLinearRegression} solo lo hace con una variable independiente con el método de mínimos cuadrados.
 
+Se programó una clase llamada \texttt{LinearRegression} para usar estas clases de dos diferentes maneras, leyendo los datos de un archivo, y generando los datos en tiempo de ejecución. 
+En el código \ref{lst:exampleFromFile} se muestra una parte del código usado para correr el algoritmo con los datos que están en el archivo \texttt{lineal.arff} (línea 105).
+En la línea 106 se construye el modelo, después inmediatamente se imprime el modelo, vemos en la figura \ref{} que imprime varias cosas sobre el modelo, y al final imprime la ecuación que describe la recta de mejor ajuste, esta es:
+$$class = 1.9988 * a + 0.0158$$
+Ya que en el archivo \texttt{lineal.arff} se especificó que la variable dependiente se llama $class$, y la variable independiente se llama $a$, este archivo se construyó con el modelo $class = 2*a + random()*0.5$, por lo cual el modelo generador por el algoritmo es muy parecido.
+
+\lstset{language=Xml, label=lst:exampleFromFile, caption={[Método \texttt{exampleFromFile}] Método \texttt{exampleFromFile}},
+tabsize=3 ,numbers=left,  stepnumber=1, firstnumber=100}
+
+\begin{lstlisting}[frame=single]  
+public static void exampleFromFile() throws Exception{
+	weka.classifiers.functions.LinearRegression classifier= 
+		new weka.classifiers.functions.LinearRegression();
+	String info=classifier.globalInfo();
+	System.out.println(info);
+	Instances data=Util.instancesFromFile("lineal.arff");	
+	classifier.buildClassifier(data);
+	System.out.println(classifier.toString());
+	Instance inst= Util.instance(50,100, data);		
+	double r=classifier.classifyInstance(inst);
+	System.out.println(inst.toString()+": "+ r);		
+	Instances curve = data;
+	PlotData2D plotdata = new PlotData2D(curve);
+	plotdata.setPlotName(curve.relationName());
+	plotdata.addInstanceNumberAttribute();
+	ThresholdVisualizePanel tvp = new ThresholdVisualizePanel();
+	tvp.setROCString("(Area under ROC = " +
+		Utils.doubleToString(ThresholdCurve.getROCArea(curve),
+		4)+")");
+	tvp.setName(curve.relationName());
+	tvp.addPlot(plotdata);	
+	JFrame jf = new JFrame("Plot for: " + tvp.getName());
+	jf.setSize(500,400);
+	jf.getContentPane().setLayout(new BorderLayout());
+	jf.getContentPane().add(tvp, BorderLayout.CENTER);
+	jf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+	jf.setVisible(true);
+}
+\end{lstlisting}
+Las líneas 108 y 109 evalúan un nuevo caso usando el modelo generado, esta instancia tiene los valores de los parámetros $a=50$, $class=100$, y al usar el método \texttt{classifyInstance} en la línea 109, se calcula el valor de la variable $class$ que predice el modelo, en este caso es 99.9581, lo cual se puede ver en la figura \ref{fig:salidaMetodoLinearRegression}, en la línea que dice: 50, 100: 99.958149... la cual corresponde a la impresión de la línea 110 del método \texttt{exampleFromFile()}.
+Las líneas siguientes a la 111 son para graficar en una ventana el conjunto de datos usados para crear el modelo, la ventana que creada se puede ver en la figura \ref{fig:representacionGraficaDatosLinearR}.
+
+\subsection{Implementación de regresión polinomial} \label{subsec:implementacionRegresionPolinomial}
+Debido a que la librería weka no tiene una implementación directa del algoritmo de regresión polinomial, se hizo uso del método de regresión lineal para poder hacer predicciones de un sistema de naturaleza polinomial. 
+Se programó la clase \texttt{PolynomialRegression} que implementa de la interfaz \texttt{weka.classifiers.Classifier}, la cual es la interfaz base para cualquier algoritmo de regresión o clasificación.
+Dentro de la clase \texttt{PolynomialRegression} se implementaron los métodos de la interfaz \texttt{Classifier}, los más importantes son los métodos \texttt{buildClassifier} y \texttt{classifyInstance}, que son para construir el modelo a partir de un conjunto de datos y para hacer una predicción dada una instancia respectivamente, 
+el método \texttt{buildClassifier} se muestra en el código \ref{lst:PolynomialRegressionBuildClassifier} 
+y el método \texttt{classifyInstance} se muestra en el código \ref{lst:PolynomialRegressionChangeInsClassifyIns}.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=16cm]{img/salidaMetodoLinearRegression.png}
+	\caption{Salida del método LinearRegression.exampleFromFile().}
+	\label{fig:salidaMetodoLinearRegression}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=10cm]{img/representacionGraficaDatosLinearR.png}
+	\caption{Salida del método LinearRegression.exampleFromFile().}
+	\label{fig:representacionGraficaDatosLinearR}
+\end{figure}
+\clearpage
+
+\lstset{language=Xml, label=lst:PolynomialRegressionBuildClassifier, caption={[Método \texttt{PolynomialRegression.buildClassifier}] Método \texttt{PolynomialRegression.buildClassifier}},
+tabsize=3 ,numbers=left,  stepnumber=1, firstnumber=100}
+
+\begin{lstlisting}[frame=single]  
+@Override
+public void buildClassifier(Instances data) throws Exception {
+	if(data.classIndex()<0){
+		throw new UnassignedClassException("Class index is "+
+			"negative (not set)!");
+	}
+	ArrayList<Attribute> attribs = new ArrayList<>(
+		(data.numAttributes() -1) * degree);
+	int att;
+	for (att = 0; att < data.numAttributes(); att++) {
+		attribs.add(data.attribute(att));
+	}
+	for (int j = 0; j < data.numAttributes(); j++) {
+		if(data.classIndex()==j)
+			continue;
+		for (int d = 2; d <= degree; d++) {
+			StringBuilder sb= new StringBuilder(data.attribute(j)
+				.name());
+			sb.append("^").append(d);
+			attribs.add(new Attribute(sb.toString()));
+		}
+	}
+	Instances newInstances = new Instances(data.relationName()+
+		"polynomial", attribs, data.numInstances());
+	for (int in = 0; in < data.numInstances(); in++) {
+		Instance inst= data.get(in);
+		Instance newInst = changeInstance(inst, 
+			newInstances.numAttributes());
+		newInstances.add(newInst);
+	}
+	instances= newInstances;
+	instances.setClassIndex(data.classIndex());
+	classifier.buildClassifier(newInstances);
+}
+\end{lstlisting}
+
+Como se está usando el método de regresión lineal para hacer regresión polinomial, primero se tiene que hacer una transformación del modelo, la cual se explica en el apartado Regresión polinomial, en la página \pageref{subsec:regresionPolinomial}, esta transformación del modelo se lleva a cabo desde la línea 106 hasta la línea 131, dejando solamente a la línea 132, la cual es la que se encarga de mandar a llamar el método de regresión lineal sobre la nueva instancia del modelo.
+
+El método \texttt{buildClassifier} hace uso del método \texttt{changeInstance}, el cual es una implementación de la transformación del modelo explicado en la sección Regresión polinomial, 
+este convierte una sola fila de la tabla de la figura \ref{tab:valoresMedidos} (pagina \pageref{tab:valoresMedidos}) en una sola fila de la tabla de la figura \ref{tab:transformacionModelo} (pagina \pageref{tab:transformacionModelo}), agregándole los parámetros que necesarios para hacer la regresión polinomial. 
+El método \texttt{changeInstance} se muestra en el código \ref{lst:PolynomialRegressionChangeInsClassifyIns}, donde también se muestra la implementación del método \texttt{classifyInstance}, el cual también hace uso del método \texttt{changeInstance}, para convertir instancia (única medición de las variables independientes) en una instancia a la cual se le puede aplicar la regresión.
+
+La clase \texttt{PolynomialRegression} se prueba desde el \texttt{main} de la clase principal del proyecto el cual se muestra en el codigo \ref{}, en este se construye un conjunto de datos modelados por la ecuación $y= x^{2}$, luego se construye el modelo en la línea 10 y de las líneas 11 a la 13 se hace un pronóstico para una instancia en la cual la variable independiente es igual a 20, y según el modelo que se usó para construir los datos, la variable independiente debería de ser $20^{2}= 400$.
+
+\lstset{language=Xml, label=lst:PolynomialRegressionChangeInsClassifyIns, 
+caption={[Métodos \texttt{changeInstance} y \texttt{classifyInstance} de la clase \texttt{PolynomialRegression}] 
+Métodos \texttt{changeInstance} y \texttt{classifyInstance} de la clase \texttt{PolynomialRegression}},
+tabsize=3 ,numbers=left,  stepnumber=1, firstnumber=100}
+
+\begin{lstlisting}[frame=single]  
+protected Instance changeInstance(Instance inst, int numAtt){
+	double values[]=new double[numAtt];
+	int att;
+	for (att = 0; att < inst.numAttributes(); att++) {
+		values[att]=inst.value(att);
+	}
+	for(int j=0;j<inst.numAttributes();j++){
+		if(inst.classIndex() == j){
+			continue;
+		}
+		double aux= values[j];
+		for (int d= 2; d <= degree; d++) {
+			aux*=values[j];
+			values[att++]= aux;
+		}
+	}
+	Instance newInst = new DenseInstance(1.0, values);
+	return newInst;
+}
+@Override
+public double classifyInstance(Instance instance) 
+		throws Exception {
+	instance.setDataset(instances);
+	Instance newInst= changeInstance(instance,
+		instances.numAttributes());
+	classifier.setEliminateColinearAttributes(false);
+	return classifier.classifyInstance(newInst);
+}
+\end{lstlisting}
