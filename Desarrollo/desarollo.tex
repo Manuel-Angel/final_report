@@ -1088,7 +1088,7 @@ protected void createSearchAlgorithms(){
 	SelectedTag scoretype= new SelectedTag(0, 
 		LocalScoreSearchAlgorithm.TAGS_SCORE_TYPE);//0-4
 	file= "maxNumPar " + maxNumPar+ " initAsNaive " + initAsNaive+ 
-		" markov "+ markov+ " scoretype " + scoretype.getSelectedTag()
+		" markov "+markov+" scoretype " + scoretype.getSelectedTag()
 		.getReadable();
 	if(debug)
 		System.out.println(file);
@@ -1750,8 +1750,6 @@ Como los datos son muchos, representarlos todos en una ventana resulta en una gr
 	\caption{Especificando área a magnificar.}
 	\label{fig:haciendoZoom}
 \end{figure}
-
-
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=11cm]{img/zoom.png}
@@ -1759,6 +1757,7 @@ Como los datos son muchos, representarlos todos en una ventana resulta en una gr
 	\label{fig:zoom}
 \end{figure}
 
+\clearpage
 Estos mismos pasos se pueden seguir para aplicar cualquiera de los otros algoritmos individuales, es decir los algoritmos en los menús:  \textit{Series de tiempo $\rightarrow$ aplicar base} (figura \ref{fig:menuSeriesDeTiempo}), \textit{Redes bayesianas $\rightarrow$ aplicar algoritmo de construcción de red} (figura \ref{fig:menuRedesBayesianasAlgoritmo}) y  \textit{Bagging $\rightarrow$ aplicar algoritmo base} (figura \ref{fig:menuBagging}); las opciones que tienen un resultado diferente a estas son las opciones de comparación de algoritmos, es decir las opciones \textit{Series de tiempo $\rightarrow$ comparar algoritmos base}, \textit{Redes bayesianas $\rightarrow$ comparar algoritmos de construcción} y \textit{Bagging $\rightarrow$ comparar algoritmos base del Bagging}. Estas se inician similar, se oprime la opción, aparece la ventana para especificar los parámetros, y al dar aceptar comienza a compararlos, esta vez teniendo una salida extra: los resultados de cada uno de los algoritmos y el algoritmo con mejor desempeñó, esta vista se muestra en la figura \ref{fig:resultadosCompararAlgoritmo}.
 
 \begin{figure}[h]
@@ -1788,3 +1787,134 @@ Esta gráfica representa las predicciones que se hicieron en el timeslot 385, en
 
 Para moverse entre las predicciones de los timeslots podemos oprimir el menú \textit{Estadísticas $\rightarrow$ Siguiente timeslot} o en \textit{Estadísticas $\rightarrow$ Anterior timeslot} tal como se ve en la figura \ref{fig:menuEstadisticas}, o bien con las teclas de dirección izquierda o arriba, para ir al timeslot anterior, o las teclas derecha o arriba, para ir al siguiente timeslot.
 El menú \textit{Estadísticas} también tiene la opción \textit{Calcular error global}, el cual sirve para obtener una métrica de error no solo del archivo actual, si no de todos los archivos que se encuentran en la carpeta, al seleccionarla aparecen los resultados en la barra de título, tal como en la imagen \ref{fig:GraficaEstadisticas}, pero con la cadena ``global:'' precediendo los resultados.
+
+
+\section{Pruebas del Agente COLDPower con el servidor de simulación PowerTAC} \label{sec:pruebasBroker}
+
+Las pruebas que se hicieron anteriormente fueron con los datos del servidor directamente, sin que hubiera los \textit{ruidos} generados por un juego de competencia real, donde las acciones de los otros agentes repercuten en los resultados de las predicciones, y en donde las predicciones del clima dadas por el servidor no son exactas (ver sección \ref{subsec:prediccionClimaProduccion}) y como los algoritmos para predecir la producción eólica y solar son de clasificación, dependen de saber las variables del clima para calcular la energía producida estimada (por lo que no sería predicción, si no clasificación), por lo que estas pruebas diferirían mucho de los resultados de las predicciones que se obtendrían en un juego real, y por esta razón fue necesario implementar mecanismos para medir el desempeño en este ambiente de ejecución real, que es una competencia.
+
+Para poder hacer estas pruebas con la API ya integrada al Agente, se necesitó guardar en archivos los resultados de las predicciones en cada timeslot, ya que en cada uno se necesitan las predicciones de los siguientes 24 timeslots, y cada que se avanza un lugar la predicción para los próximos 23 timeslots cambia. Lo que se hizo fue añadir una clase que se encargara únicamente de recolectar estos datos y guardarlos para después compararlos con ayuda de la interfaz gráfica, esta clase se le llamo \texttt{Statistics}.
+
+\subsection{La clase \texttt{Statistics}} \label{subsec:claseStatistics}
+Esta clase se encuentra en el paquete org.powertac.coldbroker.tools.forecast del Agente, y es usada por la clase \texttt{CustomersForecastDataView} para guardar las predicciones hechas por los métodos de predicción cada timeslot.
+El diagrama de la figura \ref{fig:StatisticsUML} muestra una representación en UML %poner en el marco teorico?
+de la clase \texttt{Statistics}.
+
+\begin{wrapfigure}{r}{7cm}
+	\includegraphics[width=7cm]{img/StatisticsUML.png}
+	\caption{Diagrama UML de la clase \texttt{Statistics}}
+	\label{fig:StatisticsUML}
+\end{wrapfigure}
+
+El objeto \texttt{forecasts} es un Hash map que contiene las predicciones de todos los timeslots, la llave es un entero que representa el id del timeslot origen (el timeslot donde se hicieron las predicciones), y los valores son objetos de la clase \texttt{Instances}, los cuales contienen las 24 predicciones hechas en el timeslot origen. 
+El atributo \texttt{name} es el nombre que se le da al principio al objeto mediante su constructor, este se usará como sufijo de los nombres de los archivos que va a guardar, así pues, si el nombre es ``Consumo'', los archivos generados por ese objeto serán de nombre ``ForecastConsumoX.arff'', donde X es el id del timeslot donde las predicciones se hicieron (ejemplo figura \ref{fig:ArchivoEstadisticas}).
+El atributo \texttt{turnOn} permite deshabilitar el objeto de manera que no guarde ningún archivo y no consuma memoria, debido a que esta clase es solo para fines de depuración, pues solo sirve para generar archivos con los cuales se analizará el desempeño de los algoritmos de predicción con la interfaz gráfica, en un futuro se querrá dejar de generar estos archivos, por lo que resulta muy conveniente solo llamar al método \texttt{setTurnOn} y pasarle \texttt{false} como parámetro, en lugar de quitar todos los usos de las variables de tipo \texttt{Statistics}.
+
+El método \texttt{addForecast} agrega una predicción hecha en el timeslot especificado por el parámetro \textit{currentTs}, este busca el objeto \texttt{Instances} en donde se están guardando las predicciones para ese timeslot, e inserta los datos \textit{timeslot, kwBn} y \textit{kwWV}, especificados en sus parámetros, el parámetro \textit{timeslot} es el timeslot el cual se está prediciendo, y los parámetros \textit{kwBn} y \textit{kwWV} son las predicciones para dicho timeslot usando los métodos de regresión nuevos y el método viejo respectivamente. El parámetro \textit{kwBn} se llama así ya que originalmente la clase se hizo para probar el desempeño de las redes bayesianas, (BayesNets), pero después se reutilizó esta clase para probar los demás métodos.
+
+El método \texttt{addActualKw} sirve para agregar los datos reales, es decir, los kilowatts que se produjeron o consumieron en un timeslot, ambos valores (los kilowats y el timeslot) son especificados en los parámetros de la función, y esta se encarga de buscar los objetos \texttt{Instances} que tienen una predicción para ese timeslot, y les asigna el valor real para después poder compararlo con las predicciones tal como se muestra en la figura \ref{fig:GraficaEstadisticas}, cuando se juntan las 24 predicciones con los 24 valores reales (24 timeslots después de que se hicieron las predicciones) la función guarda el objeto \texttt{Instances} en un archivo, y este archivo es el que se usa para generar las gráficas como la de la figura \ref{fig:GraficaEstadisticas}. Un ejemplo de archivo generado por la clase \texttt{Statistics} se muestra en la figura \ref{fig:ArchivoEstadisticas}, de hecho este archivo es el que se usó para generar la gráfica \ref{fig:GraficaEstadisticas}, este representa la predicción y los valores reales del balance general (la producción menos el consumo) para los timeslots 386 al 409 en un juego, también se guardaron datos de producción, datos de consumo, y datos de distintos power types para poder ver el desempeño de los algoritmos para sus específicos power types, incluso datos del clima.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=10cm]{img/ArchivoEstadisticas.png}
+	\caption{Archivo arff de las estadísticas generadas en el timeslot 385.}
+	\label{fig:ArchivoEstadisticas}
+\end{figure}
+%Mostrar que la predicción depende de la predicción del clima
+\subsection{Pruebas de predicción del clima y su influencia en producción} \label{subsec:prediccionClimaProduccion}
+
+Como el servidor PowerTAC le envía al Agente mensajes con la predicción del clima, las cuales fueron predicciones reales por un servicio meteorológico real (y los datos del clima usados en el servidor también son reales, correspondientes a estas predicciones) no valía la pena predecir uno mismo las variables del clima, así que se opto por tomar las que envía el servidor, no obstante también se le hicieron pruebas a estas predicciones para cuantificar su precisión, en la figura \ref{fig:prediccionViento1310} se muestran las predicciones de velocidad del viento enviadas por el servidor en el timeslot 1310, podemos observar que estas predicciones no fueron muy acertadas en ese timeslot (la gráfica roja son los valores reales y la verde los valores predichos) , y como el algoritmo usado para calcular la producción de los clientes de power type wind production fue una red bayesiana (luego cambiado por el algoritmo Bagging, véase \ref{subsec:comparacionBaggingRedB}), el proceso que realiza es una clasificación, por lo que necesita contar con las variables del clima del timeslot que desea calcular y para esto ocupa la predicción del servidor, esto hace que si el reporte del clima enviado es malo, la predicción de los kilowatts producidos sea mala. Como ejemplo a esto, en la figura \ref{fig:produccionViento1310} vemos la predicción de los kilowatts producidos por clientes de power type wind production (la gráfica roja son los valores reales y la azul los valores predichos), hecha en el mismo timeslot 1310, y podemos ver que al igual que la predicción de la velocidad del viento, es bastante errada, y de la misma forma ya que la predicción de velocidad del viento fue menor que los valores reales, y en el caso de la predicción de producción eólica también fue menor que la predicción real.
+
+En contraste a esto, la predicción de la velocidad del viento generada en el timeslot 1320 que se muestra en la figura \ref{fig:prediccionViento1320} fue bastante buena, esto hizo que la predicción de la producción eólica que se generó en dicho timeslot, fuera mejor que la que se generó en el timeslot 1310. En la figura \ref{fig:produccionViento1320} se puede ver la gráfica de las predicciones generadas en el timeslot 1320, podemos ver que su error medio absoluto fue de 265.633, a diferencia del generado en el timeslot 1310 que tuvo un error medio absoluto de 2541.622.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=11cm]{img/prediccionViento1310.png}
+	\caption{Predicción de velocidad del viento en el timeslot 1310}
+	\label{fig:prediccionViento1310}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=11cm]{img/produccionViento1310.png}
+	\caption{Predicciones para la producción de power type wind production en el timeslot 1310}
+	\label{fig:produccionViento1310}
+\end{figure}
+
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=11cm]{img/prediccionViento1320.png}
+	\caption{Predicción de velocidad del viento en el timeslot 1320.}
+	\label{fig:prediccionViento1320}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=11cm]{img/produccionViento1320.png}
+	\caption{Predicciones para la producción de power type wind production en el timeslot 1320.}
+	\label{fig:produccionViento1320}
+\end{figure}
+\clearpage
+%con 3 agentes, sin los 3 agentes, etc
+\subsection{Pruebas contra el default broker y los agentes Maxon y AgentUDE} \label{subsection:pruebasDefaultBrokerMaxonYUDE}
+
+Las primeros pruebas que se hicieron con el agente COLDPower corriendo con la API integrada, fueron únicamente contra el default broker, esto daba muy buenos resultados en las predicciones puesto que no había interferencias de los otros agentes, y el default broker no causa  mucho impacto en el juego contra el agente COLDPower, en la figura \ref{fig:errorGlobalInterrumpible1agente} podemos ver las gráficas de predicciones del consumo interrumpible (se eligieron estas para este ejemplo porque son las mas estables y se nota mas la interferencia de los otros agentes) mientras jugaba el agente COLDPower solo contra el default broker, estas predicciones fueron buenas en comparación con las hechas en juegos contra los agentes Maxon y AgentUDE, en donde estos ganan y pierden clientes durante el juego, haciendo que estos clientes se suscriban o cancelen a las tarifas del agente COLDPower, lo cual hace que la predicción justo antes que ocurra uno de estos cambios sea mala.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=11cm]{img/errorGlobalInterrumpible1agente.png}
+	\caption{Predicción de power type interrumpible en juego contra el default broker.}
+	\label{fig:errorGlobalInterrumpible1agente}
+\end{figure}
+
+En la figura \ref{fig:errorGlobalInterrumpible3agentes} vemos como fue la predicción para el timeslot 396 (gráfica en azul, datos reales en rojo) mientras jugaban los tres agentes (AgentUDE, Maxon y COLDPower), la cual dio 0 para los próximos 24 timeslots ya que en ese momento no había clientes, pero a partir del timeslot 397 empezó a tener clientes. 
+La población por cada timeslot para los power type de consumo y consumo interrumpible se guardo en el el archivo \texttt{Poblacion.txt} para después poder hacer análisis con estos datos y las predicciones, la figura \ref{fig:poblaciontxt} muestra el archivo en el cual podemos ver que en el timeslot 396 no había clientes y a partir del 397 empezaron a llegar.
+También podemos ver en este archivo que la predicción para los siguientes 24 timeslots fue 0 en el timeslot 396 y 396, esto lo dice después de las lineas que dicen ``Se lleno buffer'', ya que esta predicción se guarda en un buffer, y se puede ver que a partir del timeslot 397 esta predicción ya no es 0, pues ya tiene clientes que consuman energía y la predicción de esta energia consumida por ellos no es 0, aunque es baja, tal como se ve en la figura \ref{fig:interrumpibleTimeslot398}, en esta gráfica se ve la predicción que se hizo cuando el agente había ganado pocos clientes, y el modulo de predicción supone que se mantendrá con esos mismos clientes por los próximos 24 timeslots, por lo cual los valores predichos son bajos, de la misma magnitud de los valores reales del timeslot 399 al 403, pero como en los timeslots 404 y 410 se ganaron mas clientes, los valores reales aumentaron en estos timeslots, haciendo que la predicción hecha en los timeslots 396 y 398 no se parezcan en nada.
+En las figuras \ref{fig:interrumpibleTimeslot405} y \ref{fig:interrumpibleTimeslot411} se muestran los cambios en la predicción que provoco el ganar mas clientes en los timeslots 404 y 410, en las predicciones hechas en los timeslots 405 y 411 respectivamente. 
+Podemos ver que como en el timeslot 404 gana mas clientes, la predicción hecha en el 405 (figura \ref{fig:interrumpibleTimeslot405}) fue buena hasta el timeslot 409, ya que en el 410 llegaron mas clientes los cuales gastaron mas energía, y la predicción que se hizo fue asumiendo que no llegarían mas. 
+A su vez esta predicción mejoro en el timeslot 411 (figura \ref{fig:interrumpibleTimeslot411}) ya que en ese punto contaba con el numero de clientes que se mantuvo en los timeslots siguientes.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=11cm]{img/errorGlobalInterrumpible3agentes.png}
+	\caption{Predicción de power type interrumpible en juego contra los agentes Maxon y AgentUDE.}
+	\label{fig:errorGlobalInterrumpible3agentes}
+\end{figure}
+
+Por estas razones el error medio absoluto de todo el juego fue menor cuando solo participo el Agente COLDPower con el default broker (520.98 como se ve en la figura \ref{fig:errorGlobalInterrumpible1agente} en el titulo de la ventana) que cuando participaron también los agentes Maxon y AgentUDE (2179.60 como se ve en la figura \ref{fig:errorGlobalInterrumpible3agentes}).
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=11.25cm]{img/poblaciontxt.png}
+	\caption{Archivo \texttt{Poblacion.txt}.}
+	\label{fig:poblaciontxt}
+\end{figure}
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=11cm]{img/interrumpibleTimeslot398.png}
+	\caption{Predicción hecha en timeslot 398, cuando tenia pocos clientes.}
+	\label{fig:interrumpibleTimeslot398}
+\end{figure}
+
+%\begin{figure}[h]
+%	\centering
+%	\includegraphics[width=17cm]{images/predicciones405y411.png}
+%	\caption{Predicciones hechas en los timeslots 405 y 411}
+%	\label{fig:predicciones405y411}
+%\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=12cm]{img/interrumpibleTimeslot405.png}
+	\caption{Predicciones hechas en el timeslot 405.}
+	\label{fig:interrumpibleTimeslot405}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=12cm]{img/interrumpibleTimeslot411.png}
+	\caption{Predicciones hechas en el timeslot 411.}
+	\label{fig:interrumpibleTimeslot411}
+\end{figure}

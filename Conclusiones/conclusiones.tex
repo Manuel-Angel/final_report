@@ -1,1 +1,9 @@
 \chapter{Conclusión}
+
+Al final de este periodo de residencias se puede concluir que se lograron los objetivos para este periodo, los cuales fueron implementar e integrar un modulo de pronostico en el agente COLDPower (lo cual es el objetivo general del proyecto), y desarrollar una interfaz con la cual hacer pruebas y analizar mas fácilmente los resultados. 
+
+Se aprendió cuales fueron los algoritmos mas eficientes para cada situación que se encuentra en el ambiente de simulación PowerTAC, siendo estas situaciones la predicción de producción o consumo de los clientes de diferentes power types,
+eligiendo algoritmos de clasificación como redes bayesianas o el método bagging (este ultimo un poco mas preciso) cuando el clima es un factor importante en ese power type, por ejemplo: producción eólica y solar, y prefiriendo algoritmos de series de tiempo con un enfoque de regresión para los power types donde el clima no afecta demasiado y el consumo/producción es un patrón con cierta regularidad.
+%se puede hablar de la conclusion de llegar a hacer predicciones por cliente y un hilo extra
+
+El modulo de predicción represento una mejora de al rededor de 43\% en la exactitud con respecto al método anterior de hacer predicciones en pruebas donde participaron otros dos agentes (véase sección \ref{subsec:ComparacionesNuevoYviejoMetodo}), por lo que podemos decir que este objetivo tuvo un cierto aporte al agente, dejando el potencial de que en el futuro estos métodos se puedan usar para otras cosas ademas del mercado al por mayor, como por ejemplo en decisiones del mercado de tarifas, o en el mercado de balance. También se dejo una herramienta extensible para hacer pruebas (la interfaz gráfica) con diferentes algoritmos de predicción y comparar los resultados de las predicciones hechas en los juegos de manera mas intuitiva y fácil.
