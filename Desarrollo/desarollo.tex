@@ -202,7 +202,7 @@ Al aplicar regresión lineal a los datos de la tabla de la figura \ref{tab:trans
 polinomial de modelo original representado en la tabla de la figura \ref{tab:valoresMedidos}. 
 Este método de transformar el modelo para aplicar una regresión polinomial, se usó en la actividad de Implementación de regresión polinomial en la página \pageref{subsec:implementacionRegresionPolinomial}, a su ves, mas adelante se usa un método parecido a este para hacer análisis de series de tiempo, el cual esta encapsulado en la clase \texttt{WekaForecaster}, parecido en el sentido de que se toma un modelo y se le agregan variables transformándolo en otro modelo que se puede aprender por otro algoritmo de regresión o clasificación cualquiera de la librería weka.
 
-\subsection{Estudio de redes bayesianas} \label{subsec:redesbayesianas}
+\subsection{Redes bayesianas} \label{subsec:redesbayesianas}
 El estudio de redes bayesianas es necesario ya que se usara este modelo probabilístico como técnica de predicción, más específicamente las redes bayesianas dinámicas, las cuales surgen a partir de las redes bayesianas. Una red bayesiana dinámica o temporal es un modelo estadístico y estocástico que amplía el concepto de red bayesiana.
 
 A diferencia de este último, una red bayesiana dinámica puede representar la evolución de variables aleatorias basándose en una secuencia discreta, por ejemplo, pasos de tiempo. 
@@ -220,7 +220,7 @@ Un ejemplo de una red bayesiana sería en el diagnóstico médico, para determin
 	\label{fig:redBayesianaDiagnostico}
 \end{figure}
 
-\subsection{Estudio de series de tiempo} \label{subsec:estudiost}
+\subsection{Series de tiempo} \label{subsec:estudiost}
 Para comprender el uso de las herramientas para el análisis de series de tiempo primero se hizo una investigación sobre estas de forma general, después una investigación mas enfocada a las herramientas que existen en la librería weka.\\
 Una \textit{serie de tiempo} es una secuencia de datos, que representan observaciones o
 mediciones de algún fenómeno, indexados por tiempo, mas comúnmente, una
@@ -288,7 +288,7 @@ Los datos para hacer las siguientes pruebas fueron recabados usando el broker CO
 (tarifas publicadas por otros brokers), mercado de balance y servicio de contabilidad, el reporte del clima,
 información sobre sus clientes (información de producción y consumo de energía entre sus clientes, nuevos subscriptores, clientes que cancelaron subscripción) entre otras, en la figura \ref{fig:activity} se muestra un diagrama de la información compartida entre el broker y el servidor en cada time slot.
 
-La información recogida mediante el broker se guardo en un archivo .arff, que es el formato que usa la librería weka para guardar los \textit{"datasets"} o conjunto de datos; este data set incluye información sobre el clima, y sobre la producción y el consumo de cada tipo de cliente, los archivos generados fueron los siguientes: 
+La información recogida mediante el broker se guardo en un archivo .arff, que es el formato que usa la librería weka para guardar los \textit{"datasets"} o conjunto de datos; este data set\footnote{Objetos de la clase weka.core.Instances que almacenan un conjunto de datos listos para ser procesados por un algoritmo de la librería weka.} incluye información sobre el clima, y sobre la producción y el consumo de cada tipo de cliente, los archivos generados fueron los siguientes: 
 
 \renewcommand{\labelenumi}{$\bullet$ }
 \renewcommand{\labelenumii}{$\bullet$ }
@@ -861,6 +861,61 @@ protected void calculateErrors(int n){
 	\label{fig:redBayesianaResZoom}
 \end{figure}
 
+\subsection{Implementación del meta-algoritmo bagging}
+El meta-algoritmo bagging es otra opción a las redes bayesianas ya que al igual que estas, es un algoritmo de clasificación (cuando se usa con otro algoritmo de clasificación, como en este caso) que toma en cuenta los valores de las variables de una instancia para poder "clasificar" la variable de clase, es decir, en el caso de este proyecto, toma en cuenta las variables del clima de un cierto momento en el tiempo y usa estos datos para calcular el numero de kilowatts esperados para ese momento.
+
+Implementar este método usando la librería weka es mas fácil que implementar la red bayesiana, ya que no hace falta preprocesar los datos de entrada (discretizarlos) o los de salida (calcular el valor esperado con base a las probabilidades), por lo que no fue necesario hacer una clase que envuelva este comportamiento, y se uso directamente la clase \texttt{weka.classifiers.meta.Bagging}, permitiendo que su uso sea tan simple como el que se ve en el código \ref{lst:testBaggin}, 
+en donde se usa con un árbol de decisión como algoritmo base, este se encuentra encapsulado en la clase \texttt{weka.classifiers.trees.REPTree}, en la linea 102 vemos como se asigna como algoritmo base, en la linea 106 se leen los datos del archivo \texttt{SOLAR\_PRODUCTION.arff}, 
+la variable \texttt{numPred} de la linea 108 guarda el numero de predicciones que se harán, según esto se crearan los datasets de entrenamiento y de pruebas (lineas 112, 113) donde el entrenamiento es todo el data set leído en la linea 106 y las pruebas son los últimos \texttt{numPred} registros, en este caso, los últimos 24. 
+En la linea 116 se construye el clasificador con los datos de entrenamiento, y en el for de la linea 118 se imprimen las predicciones hechas con este clasificador, junto con los valores reales y la fecha.
+Al final se imprime el error medio absoluto y el tiempo en milisegundos que se tardo en correr el algoritmo, un ejemplo de esta salida se encuentra en la figura \ref{fig:salidaConsolaBagging}.
+
+\lstset{language=Java, label=lst:testBaggin, caption={[Método \texttt{createSearchAlgorithms} de la clase \texttt{TimeSeries}] Método \texttt{createSearchAlgorithms} de la clase \texttt{TimeSeries}},
+tabsize=3 ,numbers=left,  stepnumber=1, firstnumber=100}
+
+\begin{lstlisting}[frame=single]  
+protected static void testBaggin(){
+	Bagging bg = new Bagging();
+	bg.setClassifier(new REPTree());
+	String target="kw",xaxis="date",file="SOLAR_PRODUCTION";
+	long time= System.currentTimeMillis();
+	try { 
+		Instances datos = Util.instancesFromFile(file+".arff");
+		
+		int numPred=24;
+		int classIndex= datos.attribute(target).index();
+		datos.setClassIndex(classIndex);
+		int size=datos.numInstances();
+		Instances train = new Instances(datos, 0, size - numPred);
+		Instances test=new Instances(datos, size-numPred,numPred);
+		Attribute atX = test.attribute(xaxis);
+		double mae= 0, real, pred;
+		bg.buildClassifier(train);
+		
+		for (int i = 0; i < test.numInstances(); i++) {
+			Instance ins = test.get(i);
+			real=ins.classValue();
+			pred= bg.classifyInstance(ins);
+			System.out.printf("%s %.3f %.3f\n",
+				atX.formatDate(ins.value(atX)),real, pred );
+			mae+= Math.abs(real-pred);
+		}
+		mae/= test.numInstances();
+		System.out.println("Mean absolute error (MAE): " + mae+ 
+			" tm " + (System.currentTimeMillis()- time));
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+}
+\end{lstlisting}
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=13.5cm]{img/salidaConsolaBagging.png}
+	\caption{Salida de la ejecución del método bagging (código \ref{lst:testBaggin}).}
+	\label{fig:salidaConsolaBagging}
+\end{figure}
+
 \section{Comparación de algoritmos} \label{sec:comparacion}
 Una de las principales diferencias entre una red bayesiana con una la serie de tiempo es que el pronóstico con red bayesiana requiere datos sobre el futuro (los otros datos que no son la variable a predecir), es decir los datos del clima. Otros campos como los de hora y día de la semana si se conocen al momento de querer predecir una fecha y hora, pues si se sabe que fecha y hora se quieren predecir, se puede saber que día de la semana y que hora sera.
 Las pruebas que se hicieron aquí fueron con los datos reales, es decir se ocuparon los datos del clima como si ya supiéramos como estará el clima, pero en la realidad lo que se usara para implementar la solución en el broker, serán los datos del reporte del clima dado por el servidor.
@@ -919,10 +974,10 @@ try {
 	String targetName="kw" ;
 	String xaxis="date";
 	
-	int numInstPred=24;
+	int numPred=24;
 	int size=datos.numInstances();
-	Instances train=new Instances(datos, 0, size - numInstPred);
-	Instances test=new Instances(datos,size-numInstPred,numInstPred);
+	Instances train=new Instances(datos, 0, size - numPred);
+	Instances test=new Instances(datos,size-numPred,numPred);
 	String periodicTest=
 		"day=>=*:*:*:*:*:*:*:6:*:* <=*:*:*:*:*:*:*:18:*:*";
 	
@@ -955,22 +1010,22 @@ try {
 			bestBase=i;
 			best= preds;
 		}
-		System.out.printf("%s\nMAE: %4.7f MSE: %4.7f RMSE: %4.7f MAPE: "
-			+"%4.7f time %d \n", timeseries.baseLearners[i].getClass()
-			.getName(),timeseries.getMAE(),timeseries.getMSE(),timeseries
-			.getRMSE(),timeseries.getMAPE(),System.currentTimeMillis()
-			- time);
+		System.out.printf("%s\nMAE: %4.7f MSE: %4.7f RMSE: %4.7f"
+			+" MAPE: %4.7f time %d \n", timeseries.baseLearners[i]
+			.getClass().getName(),timeseries.getMAE(),timeseries.
+			getMSE(),timeseries.getRMSE(),timeseries.getMAPE(),
+			System.currentTimeMillis()- time);
 	}
 	System.out.println("Best:\n"
 		+timeseries.baseLearners[bestBase].getClass().getName());
 	System.out.print("MAE: "+ mae);
-	JPanel graph=Util.graphSeries(best.get(0),datos,targetName,xaxis);
+	JPanel gr=Util.graphSeries(best.get(0),datos,targetName,xaxis);
 	JFrame jf = new JFrame("Serie de tiempo " 
 		+timeseries.baseLearners[bestBase].getClass().getName());
 	jf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	jf.setSize(800, 600);
 	jf.getContentPane().setLayout(new BorderLayout());
-	jf.getContentPane().add(graph, BorderLayout.CENTER);
+	jf.getContentPane().add(gr, BorderLayout.CENTER);
 	jf.setVisible(true);
 } catch (Exception e) {
 	e.printStackTrace();
@@ -1112,7 +1167,7 @@ Por los resultados de la
 
 \begin{figure}[!ht]
 	\centering
-	\includegraphics[width=15cm]{img/graficaResultadosCompRed.png}
+	\includegraphics[width=11cm]{img/graficaResultadosCompRed.png}
 	\caption{Gráfica del resultado de la comparación algoritmos de aprendizaje de redes bayesianas.}
 	\label{fig:GraficaResultadosCompRed}
 \end{figure}
@@ -1135,9 +1190,601 @@ en donde se uso un set de datos en donde un día estaba muy nublado y la producc
 	\label{fig:graficaSerieIrregluar}
 \end{figure}
 
+\subsection{Diferencias entre redes bayesianas y series de tiempo}
 Con las comparaciones hechas en el algoritmo de series de tiempo se puede concluir que lo que hace es encontrar cierto patrón de repetición, y cuando se le pide que pronostique a futuro, lo que hace es repetir este patrón, tal como se ve en la figuras 
 \ref{fig:graficaResultadosCompSeries} y \ref{fig:graficaSerieIrregluar}, en donde repitió el patrón casi exactamente igual; en la 
 \hyperref[fig:graficaResultadosCompSeries]{ figura \ref{fig:graficaResultadosCompSeries}} se observa que acertó la predicción del primer día, pero la del segundo fue mas errado. En la 
 \hyperref[fig:graficaSerieIrregluar]{ figura \ref{fig:graficaSerieIrregluar}} hizo un pronostico pobre desde el principio, y solamente lo repitió para el primero y segundo día.\\
 El algoritmo de redes bayesianas puede tomar en cuenta las variables del clima, lo cual le permite hacer predicciones mas acertadas cuando el clima es un factor importante, cuando el clima no es un factor importante el algoritmo de series de tiempo tiene un desempeño parecido a la de la red bayesiana, así que en conclusión el uso de un algoritmo o de otro depende de la situación que se tenga y de la procedencia de los datos, por ejemplo, las plantas solares y eólicas dependen mucho del clima, por lo que el uso de una red bayesiana es mas apropiado para la predicción de la producción de estas, mientras que para otro tipo de clientes puede ser suficiente una serie de tiempo.
 
+\subsection{Comparación de algoritmo bagging y red bayesiana} \label{subsec:comparacionBaggingRedB}
+
+Después de hacer pruebas con los algoritmos de series de tiempo y redes bayesianas, se hicieron pruebas con otros algoritmos de clasificación de la librería weka, entre estos se hicieron pruebas con la clase \texttt{weka.classifiers.meta.Bagging} la cual tuvo mejores resultados que los obtenidos con los algoritmos de redes bayesianas. %poner referencia aqui
+%El método bagging o ``Agregación bootstrap'' (bootstrap aggregating) se trata de un metaalgoritmo diseñado para mejorar la estabilidad y precision de algoritmos de aprendizaje automático (machine learning) usados en la clasificación estadística y regresión. 
+%Esto significa que trabaja con otro algoritmo de base, mejorando su desempeño. 
+Para estas pruebas se uso como algoritmo base del bagging el algoritmo de arboles de decisión encapsulado en la clase \texttt{weka.classifiers.trees.REPTree}, este es un algoritmo de clasificación como es el caso de las redes bayesianas por lo que el método bagging se comporta como un algoritmo de clasificación, esto lo hace una alternativa ideal al método de redes bayesianas.
+
+Al tratarse de un algoritmo de clasificación, también necesita datos del clima para hacer las predicciones, así que para estas pruebas se usaron los datasets con los datos reales del clima (y no con las predicciones que da el servidor) para eliminar esa incertidumbre extra y enfocarse en que algoritmo clasifica mejor. 
+Se hicieron varias pruebas con varios data sets, en la figura \ref{fig:prediccionSolarRedBayesiana} se visualiza el resultado de una de estas pruebas usando el algoritmo de red bayesiana, la cual dio un error medio absoluto de 0.2309, mientras que al probar el mismo data set con el algoritmo bagging obtuvo un error medio absoluto de 0.0762, es decir que el error se redujo a menos de la mitad, la gráfica de este resultado se puede ver en la figura \ref{fig:prediccionSolarBagging}.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=11cm]{img/prediccionSolarRedBayesiana.png}
+	\caption{Predicciones de producción solar usando red bayesiana.}
+	\label{fig:prediccionSolarRedBayesiana}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=11cm]{img/prediccionSolarBagging.png}
+	\caption{Predicciones de producción solar usando algoritmo bagging.}
+	\label{fig:prediccionSolarBagging}
+\end{figure}
+
+\clearpage
+\section{Diseño de la arquitectura del módulo de predicción de balance} \label{sec:disArqu}
+
+Después de hacer las pruebas de los algoritmos con los datos del agente COLDPower, se analizo en donde podría aprovecharse la predicción del consumo y producción de energía, para decidir como sería su mejor implementación; se encontró que se puede usar en: el experto de balance para saber cuantos kilowatts de \textit{up regulation} o \textit{down regulation} poner en las órdenes de balance, %aqui poner una referencia 
+en el mercado al por mayor, para saber la oferta y demanda de energía aproximada que habrá en un determinado timeslot en el futuro, y en el mercado de tarifas para saber la energía consumida durante los próximos 24 timeslots y decidir si vale la pena publicar una nueva tarifa. 
+Se llegó a la conclusión de que la implementación para el mercado de tarifas sería de complejidad mayor, y llevaría a que los \textit{MDP} tengan más variables a considerar y no alcanzaría el tiempo para implementarlo y probarlo antes de la competencia.
+En cuanto al mercado de balance, este se desarrollo en paralelo con el módulo de predicción, así que se concluyo que tampoco alcanzaría el tiempo para implementarlo y hacer pruebas, puesto que el experto de balance necesitaría que ya estuviera listo el módulo de  predicción para empezar a hacer pruebas que arrojen resultados significativos.
+Por estos motivos se decidió usar la predicción para tomar decisiones en el mercado al por mayor, el cual es un módulo que se reutilizará casi completamente de la versión pasada del broker COLDPower. Este módulo obtiene predicciones de un \textit{dataview}, el cual tiene implementado su propio método básico para hacer predicción.
+
+\subsection{Arquitectura actual del agente COLDPower} \label{sec:arquitecturaActualAgente}
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=16cm]{img/arquitecturaGeneral.png}
+	\caption{Arquitectura general del agente COLDPower.}
+	\label{fig:arquitecturaGeneral}
+\end{figure}
+
+El actual módulo de predicción básico está implementado en el \textit{dataview} (visualizador de datos)  \texttt{CustomerDataView} %poner referencia a que es un dataview
+que escucha los mensajes \texttt{TariffTransaction}, los cuales contienen información del consumo o producción de cada uno de los clientes que tiene el broker, la relación entre los \textit{dataview} en general, los expertos y el servidor se muestra en la figura \ref{fig:arquitecturaGeneral}, la cual representa la arquitectura general del agente COLDPower y el servidor PowerTAC.
+
+Los componentes de software enfocados al manejo de datos permiten abstraer al resto de los componentes del agente del manejo de mensajes del servidor y proveer información oportuna a los expertos en los mercados. Los mensajes del servidor son guardados en el \textit{data store} (almacén de datos) manteniendo la estructura de mismos. Sin embargo, los expertos no aceden directamente al
+almacén de datos sino a través de los visualizadores de datos, los cuales muestran vistas de los mismos, a través de consultas predefinidas. Las vistan incluyen datos particulares, estadísticas, conjuntos ordenados, entre otros; estructuras simples que pueden ser fácilmente usadas por los expertos. Los principales componentes de software enfocados en el mercado de tarifas son el experto en tarifas de producción  el experto en tarifas de consumo \cite{Entregable4CemieEolico}. 
+
+La funcionalidad enfocada en el mercado al por mayor tiene como principal componente al
+experto de mercado al por mayor el cual se describe en la sección \ref{subsec:mercadoAlPorMayor}, este experto utiliza los datos de los \textit{data views} Customer Data View y  Wholesale Data View, para obtener la información de producción y consumo de energía, y sobre los precios del mercado al por mayor respectivamente. El visualizador de datos Customer Data View además de proveer la información del pasado sobre la producción y el consumo, también realiza una predicción simple de cual será la producción y el consumo hasta 24 horas en el futuro, para tomar en cuenta el balance (producción menos consumo) en la toma de decisiones del experto del mercado al por mayor. 
+Este método de predicción sencillo para calcular el balance que habrá en una cierta hora
+consiste en realizar un promedio ponderado de todos los valores guardados para esa misma hora del día, teniendo más peso los datos más recientes. Este método tiene la ventaja de ser muy sencillo y de que se ejecuta rápidamente, pero la desventaja de que es poco preciso,  y se pretende mejorar usando los algoritmos estudiados en las etapas pasadas.
+
+\subsection{El Mercado al por Mayor} \label{subsec:mercadoAlPorMayor}
+En el mercado al por mayor los agentes pueden negociar energía a través de órdenes de compra o venta para una hora determinada (hora objetivo) en cualquiera de las 24 horas anteriores. Estas órdenes pueden o no ser ejecutadas, en dependencia del precio de cruce del mercado, el cual es calculado a partir de los precios de compra y ventas de todas las órdenes recibidas por el mercado \cite{WKetterJCollinsyMdWeerdtThe2016PowerTAC}.
+
+El experto del mercado al por mayor se enfoca en explotar la oportunidad de negocio que representa comprar energía cuando su precio se estima ser bajo y para venderla cuando se estima su precio ser alto. También tiene como objetivo obtener energía adicional necesitada por los clientes consumidores o deshacerse de la energía producida en exceso por los clientes productores y así balancear al agente evitando penalizaciones adicionales \cite{Entregable4CemieEolico}. Es importante tener en cuenta que el desbalance entre lo producido y lo consumido por los clientes de un agente, genera gastos, que en el caso de PowerTAC se reflejan como penalizaciones significativas. 
+
+El experto del mercado al por mayor implementa los siguientes pasos para lograr sus objetivos:
+
+\renewcommand{\labelenumi}{\arabic{enumi}$)$}
+
+\begin{enumerate}
+	\item Obtener una proyección estimada de los futuros precios de la energía y de la cantidad de energía que podría ser negociada para cada una de las 24 oportunidades asociadas a la
+hora objetivo. La proyección es obtenida a partir del historial de precios de la energía y
+de las cantidades de energía negociada en dicho mercado para la hora objetivo deseada.
+	\item Decidir (a partir de la proyección estimada de precios de la energía), para cada una de las oportunidades asociadas a la hora objetivo si es una oportunidad de compra, de venta, o
+no se negociará en la misma.
+	\item Calcular el precio de la orden de compra o venta de energía para la hora objetivo (solo en caso de ser la hora actual una oportunidad de compra o venta), a partir de la proyección estimada de precios de la energía.
+	\item Calcular la cantidad de energía a negociar en la hora actual, a partir de la proyección estimada de energía a negociar, de la energía de las órdenes ejecutadas y del balance estimado de energía de los clientes para la hora objetivo, esto último se saca del visualizador de datos Customer Data View con el método descrito en la sección anterior.
+	\item En caso de ser la hora actual un oportunidad de compra o venta de energía, enviar la
+orden al mercado por el precio y cantidad calculados.
+\end{enumerate}
+
+
+\subsection{Arquitectura del módulo de predicción} \label{subsection:arquitecturaModuloPred}
+Tomando en cuenta la arquitectura actual del agente, para implementar el módulo de predicción lo mejor fue programar un nuevo data view, el cual se le llamo \textit{Customers Forecast Data View}, por su parecido al data view  \texttt{CustomerDataView}, con la diferencia de que implementa la predicción (forecast) con los algoritmos estudiados en el reporte pasado. La arquitectura de este nuevo visualizador de datos y su relación con los demás componentes se muestra en la figura \ref{fig:ArquitecturaModuloPrediccion}.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=16cm]{img/ArquitecturaModuloPrediccion.png}
+	\caption{Arquitectura del módulo de predicción, el data view \texttt{CustomerForecastDataView}.}
+	\label{fig:ArquitecturaModuloPrediccion}
+\end{figure}
+
+En la figura \ref{fig:ArquitecturaModuloPrediccion} se han omitido las demás partes del Agente COLDPower que no se relacionan con el módulo de predicción, y se dejó solamente al almacén de datos y el experto del mercado al por mayor, que son los que tienen contacto directo con el módulo. El almacén de datos le envía mensajes al módulo de predicción, y este hace dos cosas con ellos, los procesa para cambiarlos de formato y almacenarlos en data sets agrupándolos por power type\footnote{Clientes de un tipo específico, p. ej. consumo, consumo interrumpible, producción, baterías, autos eléctricos, etc.}, y los envía al objeto \texttt{ClientClassifier}, que se encarga de hacer predicciones por cada cliente individual, sin agruparlos por power type, estos son los dos tipos de predicción que se manejan. 
+
+La predicción agrupando por power type consiste en sumar todos los kilowatts consumidos o producidos por todos los clientes de un power type específico en un timeslot específico, almacenarlos en un solo data set y aplicar los algoritmos de predicción sobre ese data set. 
+Esto tiene como ventaja que se ejecuta mucho más rápido y ocupa menos memoria que hacer la predicción por cada uno de los clientes, pero su desventaja es que depende de que los clientes suscritos sean estables, es decir, que no cancelen el contrato con el agente, o que no lleguen más clientes; cuando esto ocurre la predicción varía pues ya habrá menos o más clientes para producir la misma cantidad de energía. 
+Para  intentar minimizar este efecto se dividió la cantidad de energía entre el número de clientes, dando así un estimado del consumo o producción por cliente, y al hacer la predicción sobre estos datos, como es un valor estimado de cuanto produce/consume un cliente, solo se multiplica por el número actual de clientes para tener un estimado de la producción total por power type. 
+Esto daría mejores resultados si todos los clientes tuvieran patrones de consumo similares, pero debido a que algunos clientes consumen miles de veces más que otros, cuando uno de estos se suscribe (o cancela) a una tarifa, aunque solo aumente (o disminuya) en un cliente, el cociente de consumo y número de clientes cambia significativamente, este efecto se explica y ilustra mas a detalle en la sección \ref{subsection:pruebasDefaultBrokerMaxonYUDE}.
+
+Por esta razón se decidió implementar también la predicción por cliente, la cual en vez de sumar todos los kilowatts consumidos/producidos por un cliente en cada timeslot y ponerlos en un mismo data set, guarda un data set por cada cliente y realiza una predicción por cada uno de ellos, la cual al final suma para obtener el total de energía producida/consumida esperada para un timeslot. 
+Esta forma tiene la ventaja de ser más precisa, y no le afecta tanto el hecho de que se suscriban nuevos clientes o cancelen clientes actuales, pero tiene la desventaja de ser mucho más lento y ocupar más recursos. 
+Es importante aclarar que los clientes de los que se hablan aquí no representan a un individuo, sino a una población de hasta 30 mil individuos, cada uno con un patrón de consumo similar, por lo que el método anterior para hacer predicciones con datos agrupados es más efectivo.
+Este método está implementado en la clase \texttt{ClientClassifier}, la cual hace uso de un \textit{buffer de predicciones} el cual guarda todas las predicciones hechas hasta el momento, y al mismo tiempo corre un hilo que constantemente está produciendo nuevas predicciones y cada vez que tiene nuevos resultados los pone en el buffer, de esta manera no necesita calcular las predicciones para las próximas 24 horas en cada timeslot (como el método anterior) pues no le daría tiempo en los 5 segundos que dura un timeslot, ya que se puede llegar a tardar hasta 9 segundos. Este método se ocupa solo para los power types de consumo y consumo interrumpible, que son los que consumen más energía, aportando mas desbalance a la red.
+Una vez hecha las predicciones por power type en un timeslot, se toman las predicciones disponibles del buffer de \texttt{ClientClassifier} y se da una predicción de como será el balance de los clientes del agente en las próximas 24 horas.
+
+
+\section{Diseño de interfaz gráfica para representar los datos} \label{sec:disInterfaz}
+Desde el reporte pasado se represento gráficamente los resultados de las diversas pruebas realizadas, esto se hizo usando la librería \texttt{org.jfree.*}, la cual es una herramienta para generar diferentes tipos de gráficos (barras, de pastel, etc.), en este proyecto se usó para representar series de tiempo usando un plano cartesiano con el eje $X$ que representa al tiempo, y el eje $Y$ que represento en su mayoría de los casos kilowatts consumidos o producidos por cierto tipo de cliente. 
+Para estas primeras pruebas de rendimiento presentadas en el reporte anterior, se programó el código necesario para cada tipo de prueba por separado, y para poder realizar una nueva prueba con un archivo diferente, un algoritmo diferente, o con un dataset con un formato diferente se necesitó modificar el código fuente, esta vez lo que se pretende hacer es una interfaz gráfica desde la cual el usuario pueda seleccionar el archivo y el algoritmo a aplicar sin necesidad de modificar el código.
+Para esto se diseño una interfaz que mostrara los diferentes tipos de pruebas que se pueden hacer, y que hiciera más fácil el cargar los archivos y aplicarle diferentes algoritmos a un mismo data set, y así comparar más rápidamente los algoritmos entre si.
+En la figura \ref{fig:ventanaPrincipal} podemos ver el diseño de la ventana principal de la interfaz. 
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=12cm]{img/ventanaPrincipal.png}
+	\caption{Ventana principal.}
+	\label{fig:ventanaPrincipal}
+\end{figure}
+
+La barra de menú contiene las siguientes opciones:
+\renewcommand{\labelenumi}{$\bullet$ }
+\renewcommand{\labelenumii}{$\bullet$ }
+\begin{enumerate}
+	\item Archivo: El menú Archivo contiene opciones para cargar los datos, ya sea un solo archivo arff, o toda una carpeta llena de archivos arff que contiene los resultados de las predicciones en un juego y de los cuales se pueden sacar estadísticas.
+	\item Estadísticas: Una vez cargada una carpeta con archivos arff, el menú estadísticas nos permite navegar en esos archivos y calcular el error global (el error medio absoluto de todos los archivos).
+	\item Series de tiempo: El menú Series de tiempo contiene la opción de aplicar un análisis de serie de tiempo usando diferentes algoritmos base para aprender el modelo, o bien, tiene la opción de probar todos los posibles algoritmos y compararlos entre ellos, y después mostrar los resultados de cada uno, y cual fue el algoritmo que tuvo una mejor predicción. 
+	\item Redes bayesianas: Contiene opciones para construir una red bayesiana con el archivo arff cargado, estas opciones son el algoritmo para aprender la estructura de la red, el \textit{score type}, o métrica a usar para definir que estructura de red bayesiana es mejor, y una opción para comparar todos los algoritmos de construcción, desplegando los resultados por algoritmo y señalando el mejor.
+	\item Bagging: Al igual que los dos anteriores, el menú bagging da opciones para aplicar el análisis sobre el modelo cargado usando un algoritmo base, y también ofrece la opción de comparar estos posibles algoritmos.
+\end{enumerate}
+
+
+\subsection{Menú archivo} \label{subsec:menuArchivo}
+El menú archivo, que aparece en la figura \ref{fig:menuArchivo} tiene tres opciones, abrir archivo .arff, abrir carpeta de estadísticas y salir.
+\begin{figure}[h]%Ambiente ’figure’
+	\centering
+	\includegraphics[width=12cm]{img/menuArchivo.png}
+	\caption{Menú archivo.}
+	\label{fig:menuArchivo}
+\end{figure}
+
+\renewcommand{\labelenumi}{$\bullet$ }
+\begin{enumerate}
+	\item Abrir archivo .arff: Esta opción despliega un componente \texttt{JFileChooser} con el cual el usuario seleccionará el archivo .arff a abrir. Inmediatamente después se desplegará el contenido del archivo en la ventana.
+	\item Abrir carpeta de estadísticas: Ya que el broker guarda los resultados de las predicciones por timeslot, la clase \texttt{Statistics} genera muchos archivos (1300 por power type aproximadamente), uno por timeslot, y uno por cada power type o tipo de cliente, (cliente de producción, consumo, consumo interrumpible, etc), es por esto que es más fácil guardarlos en una carpeta y después abrir dicha carpeta. Al elegir esta opción carga las predicciones de todos los timeslots y grafica la primera.
+	\item Sale del programa.
+\end{enumerate}
+
+\subsection{Menú estadísticas}\label{subsec:menuEstadisticas}
+El menú estadísticas contiene tres opciones, calcular el error global y dos opciones para navegar entre las predicciones de los timeslots como se ve en la figura \ref{fig:menuEstadisticas}.
+
+\renewcommand{\labelenumi}{$\bullet$ }
+\begin{figure}[h]%Ambiente ’figure’
+	\centering
+	\includegraphics[width=12cm]{img/menuEstadisticas.png}
+	\caption{Menú estadísticas.}
+	\label{fig:menuEstadisticas}
+\end{figure}
+
+\renewcommand{\labelenumi}{$\bullet$ }
+\begin{enumerate}
+	\item Calcular error global: Recorre todos los archivos que se encuentran en la carpeta, sumando el error absoluto de cada predicción para al final entregar el \textit{error medio absoluto} global, es decir el error medio en todos los timeslots del juego.
+	\item Siguiente timeslot: Cambia la gráfica actualmente mostrada a la del siguiente timeslot.
+	\item Anterior timeslot: Cambia la gráfica actualmente mostrada a la del siguiente timeslot.
+\end{enumerate}
+
+\subsection{Menú series de tiempo}\label{subsec:menuSeriesDeTiempo}
+El menú series de tiempo consiste en una opción de comparar los algoritmos base, y un submenú con todos los algoritmos que se pueden usar para construir el modelo de serie de tiempo los cuales se pueden observar en la figura \ref{fig:menuSeriesDeTiempo}.
+
+\begin{figure}[h]%Ambiente ’figure’
+	\centering
+	\includegraphics[width=12cm]{img/menuSerieDeTiempo.png}
+	\caption{Menú series de tiempo.}
+	\label{fig:menuSeriesDeTiempo}
+\end{figure}
+\renewcommand{\labelenumi}{$\bullet$ }
+\begin{enumerate}
+	\item Comparar algoritmos base: Usar todos los algoritmos disponibles para construir un modelo de serie de tiempo del archivo elegido, y comparar los resultados, eligiendo el que tuvo mayor precisión.
+	\item Aplicar algoritmo: Elije un algoritmo en específico para construir un modelo de serie de tiempo del archivo elegido.
+\end{enumerate}
+
+\subsection{Menú redes bayesianas} \label{subsec:menuRedesBayesianas}
+Este menú consta de una opción y dos submenús, la opción comparar algoritmos de construcción, y los submenús aplicar algoritmo de construcción de red tal como se ve en la figura \ref{fig:menuRedesBayesianasAlgoritmo}, y el submenú score type, que aparece en la figura \ref{fig:menuRedesBayesianasScore}.
+
+\begin{figure}[h]%Ambiente ’figure’
+	\centering
+	\includegraphics[width=14cm]{img/menuRedBayesianaAlgo.png}
+	\caption{Menú redes bayesianas, submenú aplicar algoritmo de construcción de red.}
+	\label{fig:menuRedesBayesianasAlgoritmo}
+\end{figure}
+
+\begin{figure}[h]%Ambiente ’figure’
+	\centering
+	\includegraphics[width=14cm]{img/menuredBayesianaScore.png}
+	\caption{Menú redes bayesianas, submenú score type.}
+	\label{fig:menuRedesBayesianasScore}
+\end{figure}
+\renewcommand{\labelenumi}{$\bullet$ }
+\begin{enumerate}
+	\item Comparar algoritmos de construcción: Existen varios algoritmos para construir la estructura de una red bayesiana, los cuales se encuentran en el submenú \textit{Aplicar algoritmo}, esta opción construye una red bayesiana del archivo elegido con cada uno de los algoritmos disponibles, y muestra los resultados para cada una de las redes construidas, y cual fue el algoritmo que construyó el mejor modelo.
+	\item Aplicar algoritmo de construcción de red: Elije un algoritmo en específico para construir la estructura de una red bayesiana a partir de los datos del archivo arff que el usuario selecciono.
+	\item Score type: El tipo de métrica a tomar en cuenta para decidir que estructura es mejor.
+\end{enumerate}
+
+\subsection{Menú bagging} \label{subsec:menuBagging}
+Al igual que los últimos dos, el menú Bagging contiene una opción para comparar los algoritmos base que este clasificador recibe, y contiene una opción para seleccionar un algoritmo base específico a aplicar, este menú se muestra en la figura \ref{fig:menuBagging}.
+
+\begin{figure}[ht]%Ambiente ’figure’
+	\centering
+	\includegraphics[width=14cm]{img/menuBagging.png}
+	\caption{Menú bagging.}
+	\label{fig:menuBagging}
+\end{figure}
+
+\renewcommand{\labelenumi}{$\bullet$ }
+\begin{enumerate}
+	\item Comparar algoritmos base del bagging: opción para comparar los algoritmos base que se pueden usar con el método bagging, probando cada uno de estos construyendo un modelo del archivo elegido por el usuario, y muestra los resultados de cada modelo construido, señalando el mejor.
+	\item Aplicar algoritmo base: Elije un algoritmo base a usar con el método bagging.
+\end{enumerate}
+
+
+\section{Implementación del módulo de pronóstico en una API} \label{sec:implementacionAPI}
+
+Para facilitar la integración de la nueva funcionalidad de predicción al agente, se pusieron las clases más importantes implementadas hasta el momento en un paquete, y se agregaron clases para implementar el  \textit{patrón de diseño Factory} formando una API y así facilitar la integración con el agente, las siguientes fueron las clases agregadas al paquete: 
+
+\renewcommand{\labelenumi}{$\bullet$ }
+\begin{enumerate}
+	\item \texttt{BayesianNetwork}: Clase que encapsula la construcción de un modelo de red bayesiana a partir de un data set, internamente hace el filtrado de los datos, que consiste en convertir los campos de tipo numérico a tipo nominal\footnote{En el contexto de la librería weka, un dato nominal es una variable discreta, con posibles valores específicos, y un dato numérico es una variable que puede tomar cualquier valor real.} dividiendo los posibles valores en rangos. Utiliza la clase \texttt{weka.classifiers.bayes.BayesNet} para crear el modelo una vez teniendo los datos filtrados. La clase hereda de la clase \texttt{AbstractClassifier} para implementar los métodos \texttt{buildClassifier} y \texttt{classifyInstance} así que se puede usar como una clase \texttt{Classifier} de weka normal, lo cual se aprovecha en la clase \texttt{RegressionFactory} en la sección \ref{subsec:claseRegressionFactory}.
+	
+	\item \texttt{TimeSeries}: El algoritmo para análisis y predicción en series de tiempo se encuentra encapsulado en la clase \texttt{TimeSeries}, usando la clase \texttt{WekaForecaster} que se encuentra como una extensión de la libreria weka en el paquete \texttt{weka.classifiers.timeseries} como analizador de series de tiempo, junto con métodos para hacer pruebas y calcular el error de las predicciones hechas. La clase \texttt{TimeSeries} también hereda de \texttt{AbstractClassifier} para poder tomarse como un método de regresión genérico y poder usarse con el patrón de diseño Factory. %agregar al marco teorico
+	
+	\item \texttt{NewLagMaker}: La clase \texttt{weka.classifiers.timeseries.WekaForecaster} utilizada en la clase \texttt{TimeSeries} funciona creando variables de arrastre (lag variables) que modelan el data set como una serie de tiempo, la clase encargada de esto es \texttt{TSLagMaker} dentro del paquete \texttt{weka.classifiers.timeseries.core}, pero debido a que se encontraron algunos problemas con esta, se hizo la clase \texttt{NewLagMaker} a partir de esta, para corregir ciertos errores y adaptarla a la API.
+	
+	\item \texttt{Util}: La clase \texttt{Util} contiene distintos métodos que son comunes a lo largo de las otras clases de la API, tales como leer un archivo arff (extensión de los data set de weka) o escribir en uno, crear los datasets usados para almacenar los datos de producción y consumo (especificando sus variables y tipos de datos), crear una sola instancia de un data set, entre otros.
+	
+	\item \texttt{BayesNetFactory}: Esta clase encapsula la decisión de como se crean los objetos de la clase \texttt{BayesianNetwork} según el power type que vaya a pronosticar. La implementación de esta clase se detalla en la sección \ref{subsec:claseBayesNetFactory}.
+	
+	\item \texttt{TimeSeriesFactory}: Esta clase encapsula la creación y configuración del objeto \\\texttt{TimeSeries} según su power type y el tamaño del dataset, ya que los clientes de cada power type se comportan diferente y la predicción resulta mejor con diferentes configuraciones.
+	
+	\item \texttt{RegressionFactory}: Esta clase decide qué algoritmo se usará para cada power type, usando las clases \texttt{BayesNetFactory} y \texttt{TimeSeriesFactory} para crear los objetos de la clase \texttt{weka.classifiers.Classifier} que encapsulan los métodos de predicción.
+\end{enumerate} %puede ser util poner un diagrama de uml de estas clases pero no da tiempo D:
+
+\subsection{Clase \texttt{BayesNetFactory}} \label{subsec:claseBayesNetFactory}
+La clase \texttt{BayesianNetwork} tiene dos maneras de construir la estructura de una red bayesiana, la primera es usando uno de los algoritmos de construcción vistos en el segundo reporte, la otra es cargándolo desde un archivo. Después de hacer varias pruebas con los algoritmos de construcción, se observó que los mejores modelos tardaban en construirse, así que se decidió aprovechar y guardar la estructura construida en un archivo para no tener que volver a construirla y perder valioso tiempo de ejecución al hacerlo. La clase \texttt{BayesNetFactory} fue pensada para crear los objetos \texttt{BayesianNetwork} con la estructura ya cargada según su power type (ya que los clientes de cada power type tienen un comportamiento diferente). Las pruebas que se hicieron arrojaron que el power type que mejor se puede predecir con una red bayesiana fue el de producción solar, por lo cual se guardó esta estructura para ser cargada después.
+La implementación de la clase \texttt{BayesianNetwork} se muestra en el código \ref{lst:claseBayesNetFactory}.
+
+\lstset{language=Java, label=lst:claseBayesNetFactory, caption={[Clase \texttt{BayesNetFactory}] Clase \texttt{BayesNetFactory}},
+tabsize=3 ,numbers=left,  stepnumber=1, firstnumber=100}
+
+\begin{lstlisting}[frame=single]  
+public class BayesNetFactory {
+	public static BayesianNetwork buildFactory(PowerType pt){
+		BayesianNetwork bn=null;
+		String path="src/main/resources/config/"+
+			"bayes_net_structures/";
+		if(pt.equals(PowerType.SOLAR_PRODUCTION)){
+			bn= new BayesianNetwork();
+			bn.loadStructureFromFile(path+
+				"Structure_SOLAR_PRODUCTION");
+		}else{
+			bn= new BayesianNetwork(); 
+			bn.maxNumPar=3;
+			bn.initAsNaive=true;
+			bn.markov=false;
+			bn.setScoreType(1);
+		}
+		return bn;
+	}
+}
+\end{lstlisting}
+Cuando el power type no es del tipo producción solar, se deja configurada la red para que aprenda la estructura usando un algoritmo que corre en un tiempo suficientemente rápido para correr en un timeslot. Debido a que en las últimas pruebas realizadas el algoritmo Bagging superó en precisión al de red bayesiana, este lo sustituyó en la clase \texttt{RegressionFactory}, estas pruebas se describen en la sección \ref{subsec:comparacionBaggingRedB}.
+
+\subsection{Clase \texttt{TimeSeriesFactory}} \label{subsec:claseTimeSeriesFactory}
+La clase \texttt{TimeSeriesFactory} realiza la configuración del objeto \texttt{TimeSeries} que se va a usar para predicción según el power type y el tamaño del data set. Cuando se trabaja con el power type de consumo, es conveniente especificar que hay un periodo cíclico entre las 6 de la mañana y las 6 de la tarde, con un algoritmo base \texttt{weka.classifiers.meta. RandomCommittee}, mientras que cuando se trabaja con el power type de consumo interrumpible, cuando el data set es pequeño (menos de 165 instancias) le conviene usar el algoritmo base \texttt{RandomCommittee}, y si es mayor el algoritmo \texttt{weka.classifiers.rules.DecisionTable}. La implementación puede verse en el código \ref{lst:claseTimeSeriesFactory}.
+
+
+\lstset{language=Java, label=lst:claseTimeSeriesFactory, caption={[Clase \texttt{TimeSeriesFactory}] Clase \texttt{TimeSeriesFactory}},
+tabsize=3 ,numbers=left,  stepnumber=1, firstnumber=100}
+
+\begin{lstlisting}[frame=single]  
+public class TimeSeriesFactory {
+	public static TimeSeries buildFactory(PowerType pt, 
+			int dsSize, String xaxis, String targetName){
+		NewLagMaker lag=new NewLagMaker();
+		lag.setIncludePowersOfTime(false);
+		lag.setIncludeTimeLagProducts(false);
+		lag.setPrimaryPeriodicFieldName("hour"); 
+		CustomPeriodicTest period= new CustomPeriodicTest(
+			">=*:*:*:*:*:*:*:*:*:* <=*:*:*:*:*:*:*:*:*:*");
+		TimeSeries timeseries = new TimeSeries();
+		timeseries.setDebug(false);
+		timeseries.setTimestamp(xaxis);
+		timeseries.setFieldsToForecast(targetName);
+        timeseries.setHorizon(24);
+        timeseries.setPrimeWindowSize(24);
+        lag.setAddWeekendIndicator(true);
+        String periodicTest;
+		if(pt.equals(PowerType.CONSUMPTION)){
+			period.getLowerTest().setOperator(">=");
+			period.getLowerTest().setHourOfDay("6");
+			period.getUpperTest().setOperator("<=");
+			period.getUpperTest().setHourOfDay("18");
+	        timeseries.setBaseLearner(new RandomCommittee());
+		} else if(pt.equals(PowerType.INTERRUPTIBLE_CONSUMPTION)){
+			if(datasetSize<165){
+				timeseries.setBaseLearner(new RandomCommittee());
+			}else{
+				timeseries.setBaseLearner(new DecisionTable());
+			}
+		}else{
+			timeseries.setBaseLearner(new LinearRegression());
+		}
+		periodicTest="day="+ period.toString()+"";
+		lag.addCustomPeriodic(periodicTest);
+		timeseries.forecaster.setTSLagMaker(lag);
+		return timeseries;
+	}
+}
+
+\end{lstlisting}
+
+\clearpage 
+\subsection{Clase \texttt{RegressionFactory}} \label{subsec:claseRegressionFactory}
+La clase \texttt{RegressionFactory} crea y devuelve el objeto que encapsula el algoritmo de regresión que mejor funcione para el power type dado y el tamaño del data set. Para el power type solar lo mejor es usar el método Bagging con el algoritmo base \texttt{weka.classifiers.trees. REPTree}, si el power type es de tipo consumo o consumo interrumpible lo mejor es usar análisis de series de tiempo, si es de producción eólica también es conveniente usar el método Bagging, y si es de otro tipo, en general es buena idea usar una serie de tiempo.
+En el código \ref{lst:claseRegressionFactory} se encuentra la implementación de esta clase.
+
+\lstset{language=Java, label=lst:claseRegressionFactory, caption={[Clase \texttt{RegressionFactory}] Clase \texttt{RegressionFactory}},
+tabsize=3 ,numbers=left,  stepnumber=1, firstnumber=100}
+
+\begin{lstlisting}[frame=single]  
+public class RegressionFactory {
+	public static final PowerType powerTypes[]= new PowerType[]{
+		PowerType.BATTERY_STORAGE, PowerType.ELECTRIC_VEHICLE,
+		PowerType.CONSUMPTION,PowerType.INTERRUPTIBLE_CONSUMPTION, 
+		PowerType.PRODUCTION, PowerType.PUMPED_STORAGE_PRODUCTION, 
+		PowerType.RUN_OF_RIVER_PRODUCTION,PowerType.SOLAR_PRODUCTION, 
+		PowerType.STORAGE, PowerType.THERMAL_STORAGE_CONSUMPTION, 
+		PowerType.WIND_PRODUCTION, PowerType.FOSSIL_PRODUCTION, 
+		PowerType.CHP_PRODUCTION};
+	
+	private static HashMap<PowerType, Integer> indexs;
+	private static int lastTS;
+	
+	private static Classifier classifiers[];
+	
+	public static  Classifier getRegressionAlgorithm(PowerType pt, 
+			int dsSize, int timeslot){
+		Classifier cl= null;
+		if(indexs==null){
+			buildIndex(dsSize);
+		}
+		if(!ClientClassifier.isPowertypeSupported(pt)){
+			if(timeslot==lastTS){ 
+				if(classifiers[indexs.get(pt)]!=null)
+					return classifiers[indexs.get(pt)];
+			}else{
+				if(timeslot<lastTS){
+					return null;
+				}
+				Arrays.fill(classifiers, null);
+				lastTS=Math.max(timeslot, lastTS);
+			}
+		}
+		if(pt==PowerType.SOLAR_PRODUCTION){
+			Bagging bg = new Bagging();
+	    	bg.setClassifier(new REPTree());
+	    	cl = bg;
+		} else if(pt== PowerType.CONSUMPTION 
+				|| pt==PowerType.INTERRUPTIBLE_CONSUMPTION){
+			cl=TimeSeriesFactory.buildFactory(pt,dsSize,"date","kw");
+		} else if(pt== PowerType.WIND_PRODUCTION){
+			Bagging bg = new Bagging();  
+	    	bg.setClassifier(new REPTree());
+	    	cl =bg;
+		}else{
+			cl=TimeSeriesFactory.buildFactory(pt,dsSize,"date","kw");
+		}
+		return classifiers[indexs.get(pt)]=cl;
+	}
+	public static boolean isBuilt(PowerType pt, int dsSize, 
+			int timeslot){
+		return lastTS==timeslot && classifiers[indexs.get(pt)]!=null 
+				&& !ClientClassifier.isPowertypeSupported(pt); 
+	}
+	private static void buildIndex(int dsSize) {
+		lastTS=dsSize-1;
+		indexs= new HashMap<>();
+		for (int i = 0; i < powerTypes.length-1; i++) {
+			indexs.put(powerTypes[i], i);
+		}
+		indexs.put(PowerType.CHP_PRODUCTION, 11);
+		classifiers= new Classifier[powerTypes.length];
+	}
+}	
+\end{lstlisting}
+además de decidir que algoritmo retornar según el power type, la clase \texttt{RegressionFactory} también se encarga de construir solamente una instancia por cada timeslot, ya que cada timeslot, se mandan a llamar los métodos de pronóstico 24 veces, uno por cada hora en el futuro. Esto se hace para que el modelo solo sea construido una vez por timeslot, excepto cuando el encargado de pronosticar ese timeslot sea la clase \texttt{ClientClassifier}, esto se corrobora en la línea 121 del código \ref{lst:claseRegressionFactory}, llamando al método \texttt{isPowertypeSupported(pt)} de la misma clase \texttt{ClientClassifier} el cual regresa true cuando el power type que se requiere predecir es responsabilidad de esta clase.
+
+El construir el modelo una sola vez por timeslot se logra guardándolos en el arreglo de objetos \texttt{Classifier} en la línea 113. Cada elemento del arreglo guarda un objeto que encapsula el método de regresión\footnote{En weka los algoritmos de regresión y clasificación son implementados por igual en una subclase de la clase \texttt{classifier}, aunque el algoritmo no sea un clasificador} para un power type, el \texttt{HashMap indexs} guarda los indices que representan donde guardar los objetos \texttt{Classifier} en el arreglo \texttt{classifiers} según su power type, así que se usa para acceder al arreglo como se ve en las lineas 123, 124, 147 y 151. En el método \texttt{buildIndex} de la línea 154 vemos como se construye este indice.
+
+El método \texttt{isBuilt} sirve para saber si el objeto \texttt{Classifier} que se devuelve ya construyó el modelo o no, y así no construirlo dos veces.
+
+\section{Integración de la API con el agente COLDPower} \label{sec:integracionAPI}
+
+Para integrar el módulo de predicción  % metodos de prediccion?
+se copió el paquete que fungirá como API en el proyecto del agente COLDPower, añadiendo algunas clases necesarias para la integración, clases tales como:
+
+\renewcommand{\labelenumi}{$\bullet$ }
+\begin{enumerate}
+	\item \texttt{ClientClassifier}: Administra los datos de cada uno de los clientes, quiénes están presentes, quiénes se salen y quiénes llegan (con el hash map \texttt{clientesActivos}), además guarda el buffer de los resultados de las predicciones por cliente, este contiene las predicciones hechas por cliente individual por la clase \texttt{ForecasHandler} de las próximas 120 horas (ya que no se actualizan cada timeslot, necesita un buffer de más de 24 horas, suficientes para que no se le acabe el tiempo en lo que la clase \texttt{ForecasHandler} hace la siguientes predicciones.
+	
+	\item \texttt{ClientData}: Contiene los datos de un modelo de cliente individual, cada que llega información de producción/consumo nueva de un cliente, la clase \texttt{ClientClassifier} le pasa los datos al objeto \texttt{ClientData} correspondiente mediante el método \texttt{addData}, y este después recibe la información del clima de la clase \texttt{ForecastHandler} (la cual la obtuvo de \texttt{CustomersForecastDataView}) a través del método \texttt{addInstances}, cada vez que el hilo de \texttt{ForecastHandler} termina de hacer una predicción, antes de empezar la siguiente, para juntarla con los datos de producción/consumo y anexarla al data set interno de la clase \texttt{weka.core.Instances}, el cual la clase \texttt{ForecastHandler} usa para hacer las predicciones.
+La razón por la cual primero obtiene los datos de producción/consumo y luego los del clima, es para mantener sincronizada la comunicación, ya que los mensajes de producción/consumo son varios por timeslot y si se agregan al objeto \texttt{ClientData.instances} usado por la clase \texttt{ForecastHandler} puede ser que este los este usando en ese momento. Para evitar esto la clase \texttt{ClientData} los va guardando en una cola ({\tt\lstinline$Queue<DataTimeslot> data$ }  en la figura \ref{fig:clasesAPI}), y cuando la clase \texttt{ForecastHandler} empieza otra predicción, este junta los datos del clima con los datos de producción/consumo de la cola, para agregarlo al objeto \texttt{ClientData.instances}.
+	
+	\item \texttt{ForecastHandler}: Esta clase se encarga de hacer las predicciones por cliente individual y guardarlas en un buffer en la clase \texttt{ClientClassifier}. Ya que la predicción se demora de 3 a 9 segundos en función del tamaño del data set (cada timeslot crece más por lo que cada vez se tarda más), esta se realiza en un hilo diferente al de los demás para no entorpecer la ejecución de todo el agente. Este toma la información de las instancias \texttt{ClientData} y pone los resultados en el buffer de \texttt{ClientClassifier} cada vez que tiene nuevas predicciones.
+	
+	\item \texttt{LoadBootstrap}: El servidor PowerTAC primero simula algo que llama ``periodo bootstrap'' el cual es una simulación de dos semanas (336 timeslots) en donde el único broker activo es el default broker que tiene el servidor, esto con el objetivo de recabar los datos sobre la producción y el consumo de los clientes, para después enviárselos a cada uno de los agentes en mensajes de tipo \texttt{CustomerBootstrapData} y que estos puedan tomar decisiones, esta clase recibe esos mensajes y los guarda en los objetos \texttt{ClientData}.
+\end{enumerate}
+
+Todas estas clases serán usadas por el data view
+\texttt{CustomersForecastDataView} directa o indirectamente,
+ en el diagrama \ref{fig:clasesAPI} se muestra la relación entre estas clases.
+
+La clase \texttt{CustomersForecastDataView} contiene el objeto \texttt{HashMap<String, ClientData> clientes}, que es un Hash map donde la llave es el nombre del cliente, y el valor guardado es la información de dicho cliente, este objeto es único y se comparte entre las clases \texttt{ClientClassifier}, \texttt{ForecastHandler} y \texttt{LoadBootstrap}, es por eso que la clase \texttt{ClientData} tiene una relación de agregación con estas tres clases como se ve en el diagrama \ref{fig:clasesAPI}, ya que cada una hace uso de esta clase. Es por medio de este objeto que la clase \texttt{ClientClassifier} le comparte la información sobre los clientes a la clase \texttt{ForecastHandler}, y cada que esta termina de llenar su buffer interno de predicciones, se lo pasa a la clase \texttt{ClientClassifier} usando el método \texttt{setBuffer}, y para mandar a llamarlo necesita tener la instancia de la clase \texttt{ClientClassifier}, por lo que una relación de agregación existe entre ellas; la clase \texttt{ClientClassifier} forma parte de la clase \texttt{ForecastHandler}.
+
+
+\begin{figure}[ht]%https://www.seas.es/blog/informatica/agregacion-vs-composicion-en-diagramas-de-clases-uml/
+	\centering
+	\includegraphics[width=15cm]{img/DiagramaUMLClasesAPI.png}
+	\caption{Diagrama UML de las clases en la API de predicción.}
+	\label{fig:clasesAPI}
+\end{figure}
+
+\subsection{La clase CustomersForecastDataView}
+
+El data view \texttt{CustomersForecastDataView} se basa en la clase \texttt{CustomerDataView}, la cual recibe los mensajes de transacciones de tarifas y da predicciones de balance, solo que la clase \texttt{CustomersForecastDataView} usa los métodos de machine learning estudiados en este proyecto (y detallados en reportes anteriores)para dar las predicciones de balance, y no un promedio ponderado como en el caso de la anterior clase \texttt{CustomerDataView}. Como esta nueva clase necesita datos sobre el clima, ademas de escuchar los mensajes de transacciones de tarifas, también escucha los mensajes del reporte del clima (como se encuentra el clima en ese momento) y de predicción del clima. Estos diferentes tipos de mensajes se encapsulan en sus respectivas clases y son enviados al objeto \texttt{CustomersForecastDataView}, en la figura \ref{fig:UMLCustomerForecastDataview} se muestran los diagramas UML de la clase \texttt{CustomersForecastDataView} y las clases que contienen los mensajes de transacciones de tarifas y el reporte y predicción del clima.
+
+Los mensajes de transacciones de tarifas son encapsulados en la clase \texttt{TariffTransaction}, esta contiene la información acerca del tipo de transacción que se realiza en el atributo \texttt{txType} de tipo Type, este es un enum con los posibles valores:  \texttt{Type \{PUBLISH, PRODUCE, CONSUME, PERIODIC, SIGNUP, WITHDRAW, REVOKE\}}, aunque la clase solo toma en cuenta los mensajes de tipo \texttt{PRODUCE, CONSUME, SIGNUP} y \texttt{WITHDRAW}, y los demás los ignora.
+\renewcommand{\labelenumi}{$\bullet$ }
+\begin{enumerate}
+	\item \texttt{PRODUCE}: Significa que el objeto \texttt{TariffTransaction} guarda información sobre la compra de energía producida a un cliente productor o conjunto de clientes, por lo cual el atributo \texttt{kw} es positivo y el atributo \texttt{charge} es negativo, lo cual significa que el agente le paga al cliente. Para saber mas sobre el o los cliente se puede consultar el objeto \texttt{CustomerInfo} retornado por el método \texttt{getCustomerInfo} el cual contiene su nombre, power type, población, y otros atributos que no se usan en esta competencia. Recordemos que los clientes en el servidor son agrupados por tipo, por lo que un cliente puede representar una población de clientes del mismo tipo (un edificio de oficinas por ejemplo tiene varios clientes los cuales se pueden agrupar), la información de este conjunto de clientes esta en este objeto, y para saber la población o numero de clientes agrupados, se puede consultar el método \texttt{getCustomerCount}.
+	
+	 \item \texttt{CONSUME}: Cuando una transacción de tarifa es de este tipo, significa que hubo una venta de energía a un cliente o clientes consumidores,  por lo que el atributo \texttt{kw} es negativo y el atributo \texttt{charge} es positivo, lo cual significa que el cliente le paga al agente.
+	
+	\item \texttt{SIGNUP}: Las transacciones de este tipo indican que un cliente o clientes se han suscrito a una tarifa, el atributo \texttt{kw}	 es 0 puesto que se acaba de suscribir, y el atributo \texttt{charge} puede ser positivo o negativo, dependiendo de la tarifa, este tipo de mensaje se usa para actualizar el hash map \texttt{clientesActivos} que contiene los clientes activos en la clase \texttt{ClientClassifier}, que luego se usa en el método \texttt{getActiveClients} tal como se ve en la figura \ref{fig:clasesAPI}, este ultimo método se usa para saber de que clientes predecir el consumo en la clase \texttt{ForecastHandler}, por lo que la clase \texttt{CustomersForecastDataView} le pide a la clase \texttt{ClientClassifier} una lista con los clientes activos, y le envía esta lista al objeto \texttt{ForecastHandler} tal como se ve en el diagrama de secuencia de la figura \ref{fig:diagramaDeSecuencia}.
+	
+	\item \texttt{WITHDRAW}: Las transacciones de este tipo indican que un cliente o clientes se han retirado de la tarifa, por lo que ya no son clientes a partir de ese momento (hasta que se vuelvan a suscribir), el atributo \texttt{kw} es de 0 y el \texttt{charge} puede ser positivo si la tarifa especifico un ``early withdraw penalty'', esto es un pago por abandonar la tarifa antes de que se cumpla el plazo mínimo \cite{WKetterJCollinsyMdWeerdtThe2017PowerTAC}. Este tipo de mensajes también se usan para actualizar el registro de los clientes activos guardados en el hash map%ponerlo en el marco teorico ?
+	 \texttt{ClientClassifier.clientesActivos}, al llegar uno de estos mensajes el cliente se saca de este hash map, o se actualiza el valor asociado a la clave del hash map (la clave es el nombre del cliente), un entero que representa la población actual de ese cliente.
+\end{enumerate}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=15cm]{img/UMLCustomerForecastDataview.png}
+	\caption{Diagrama UML de la clase \texttt{CustomersForecastDataView}}
+	\label{fig:UMLCustomerForecastDataview}
+\end{figure}
+
+Las clases \texttt{WeatherReport} y \texttt{WeatherForecast} contienen el estado del clima en el timeslot actual y el reporte del clima para las próximas 24 horas respectivamente, estos datos son: la temperatura, velocidad del viento, dirección del viento y nubosidad.
+Estos tres tipos de mensajes son enviados al data view \texttt{CustomersForecastDataView} mediante el método \texttt{put(String feature, Object msg)}, el cual decide a que otro método pasar el mensaje con base en el parámetro \texttt{feature}, el cual describe si el objeto es un \texttt{TariffTransaction}, \texttt{weatherReport} o \texttt{WeatherForecast}, y con esto se decide enviar al método \texttt{put(TariffTransaction msg), putWeather(WeatherReport msg)} o \texttt{putWeatherForecast(WeatherForecast msg)} (véase figura \ref{fig:UMLCustomerForecastDataview}).
+
+El método \texttt{getBalance(Timeslot toForecast)} de la clase \texttt{CustomersForecastDataView} es el encargado de hacer la predicción y es el que manda a llamar el experto del mercado al por mayor, este calcula el balance esperado para el timeslot \texttt{toForecast}, el balance es los kilowatts producidos menos los kilowatts consumidos por sus clientes, para calcular esto se llama respectivamente a los métodos \texttt{getProductionKWhsForecast} y \texttt{getConsumptionKWhsForecast}, estos métodos calculan la producción o consumo calculando las dos maneras de hacer predicción, por power type o por cliente, como se describió en la sección \ref{subsection:arquitecturaModuloPred}, las predicciones por cliente, estas se piden al objeto \texttt{ClientClassifier} mediante el método \texttt{getPredictionsByClients}, este método retorna la predicción guardada en el buffer, el cual se actualiza cada cierto tiempo por el hilo que corre la clase \texttt{ForecastHandler}, es por eso que los mensajes a la clase \texttt{ForecastHandler} se representan en el diagrama de secuencia de la figura \ref{fig:diagramaDeSecuencia} como asíncronos, este día grama representa todo este proceso.
+Este hilo que corre en la clase \texttt{ForecastHandler} se actualiza con nuevos datos de dos maneras, la información sobre el consumo de los clientes la toma cada que la necesita del objeto \texttt{HashMap<String,ClientData> clientes}, este objeto a su vez es actualizado cada timeslot por el objeto \texttt{ClientClassifier} el cual le pasa datos sobre el balance (kilowatts de producción y consumo) como se ve en la figura \ref{fig:diagramaDeSecuencia}, 
+ y como la clase \texttt{ClientData} esta sincronizada (como se explica en la sección \ref{sec:integracionAPI}) no hay ningún problema con que la clase \texttt{ClientClassifier} y \texttt{ForecastHandler} accedan al mismo tiempo a los objetos del hash map \texttt{clientes}.
+La otra manera en que se actualiza el hilo es por los mensajes que le llegan del data view \texttt{CustomersForecastDataView} cada timeslot, el cual le pasa una lista con los nombres de los clientes, datos del clima mediante un objeto \texttt{Instances} (que contiene los datos mostrados en la figura \ref{fig:archivoAbierto}, la cual es una representación de texto del objeto \texttt{Instances}) y el id del timeslot actual, mediante la función \texttt{generate} descrita en el diagrama UML de la figura \ref{fig:clasesAPI}.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=17.5cm]{img/diagramaDeSecuencia.png}
+	\caption{Diagrama de secuencia de la clase \texttt{CustomersForecastDataView} y asociadas.}
+	\label{fig:diagramaDeSecuencia}
+\end{figure}
+
+
+\section{Implementación de la interfaz gráfica} \label{sec:implementacionInterfazGraf}
+
+La interfaz se implemento usando el patrón de diseño  \textit{modelo vista controlador}, para separar la funcionalidad de la vista, en la figura \ref{fig:estructuraAPI} se puede ver las estructuras de los paquetes usada para crear la interfaz.
+Esta estructura está dividida en 4 paquetes, un paquete para las clases pertenecientes al modelo, otro para las clases pertenecientes a la vista, otro para las clases controladoras. El paquete \texttt{org.manuel.examples.RegressionAndClassificationExamples.weka} contiene las clases que encapsulan el modelo, es decir, los algoritmos usados para las pruebas, el paquete \texttt{org.manuel.examples.RegressionAndClassificationExamples.vistas} contiene las clases que se encargan de mostrar los datos en ventanas, y el paquete \texttt{org.manuel.examples. RegressionAndClassificationExamples.controladores}, contiene las clases \textit{``controladoras''}, es decir, las encargadas de gestionar la comunicación del usuario y el modelo a través de la interfaz, respondiendo a los eventos generados por el usuario. Por último la clase \texttt{App} contenida en el paquete \texttt{org.manuel.examples.RegressionAndClassificationExamples} contiene el \texttt{main}, el cual solo lanza la interfaz. 
+
+\begin{figure}[ht]%Ambiente ’figure’
+	\centering
+	\includegraphics[width=15cm]{img/paquetesInterfaz.png}
+	\caption{Estructura de paquetes de la interfaz gráfica.}
+	\label{fig:estructuraAPI}
+\end{figure}
+
+Las clases pertenecientes al \texttt{modelo}, pertenecientes al paquete \texttt{weka} son:
+
+\renewcommand{\labelenumi}{$\bullet$ }
+\begin{enumerate}
+	\item \texttt{BayesianNetwork}: Clase que encapsula los algoritmos de redes bayesianas, como se explicó en la sección \ref{sec:implementacionAPI}, también contiene un arreglo de objetos que encapsulan todos los algoritmos de aprendizaje de  la estructura de una red bayesiana (mostrados en la figura \ref{fig:menuRedesBayesianasAlgoritmo}) usado para la funcionalidad de comparar algoritmos de construcción.
+	
+	\item \texttt{LinearRegression}: Clase usada en las primeras actividades para comprender el funcionamiento de la librería weka, encapsula el algoritmo de regresión lineal.
+	
+	\item \texttt{NewLagMaker}: Clase encargada de generar las variables de arrastre de los data sets usados por la clase \texttt{TimeSeriesFactory} como se explicó en la sección \ref{sec:implementacionAPI}.
+	
+	\item \texttt{PolynomialRegression}: Clase usada en las primeras actividades para extender el funcionamiento de la clase \texttt{LinearRegression} para hacer regresión polinomial, usando variables de arrastre generadas a partir del modelo original. Esto permitió comprender la importancia de las variables de arrastre. %poner referencia al la parte donde se habla de esta clase.
+	
+	\item \texttt{TimeSeries}: Clase que encapsula métodos para el análisis de series de tiempo como se explicó en la sección \ref{sec:implementacionAPI}.
+	
+	\item \texttt{Util}: La clase \texttt{Util} contiene los mismos métodos explicados en la sección \ref{sec:implementacionAPI}, además de métodos para graficar los resultados de los algoritmos (metodos no usados en la API).	
+\end{enumerate}
+
+Las clases pertenecientes a la \textit{vista}, pertenecientes al paquete \texttt{vistas} son:
+
+\renewcommand{\labelenumi}{$\bullet$ }
+\begin{enumerate}
+	\item \texttt{Ventana}: Esta clase se encarga de construir la ventana que se muestra en la figura \ref{fig:ventanaPrincipal}, construyendo sus menús y sirviendo como contenedor para mostrar los resultados de los algoritmos.
+	
+	\item \texttt{VentanaParametros}: Esta clase muestra el formulario al usuario que aparece en la figura \ref{fig:VentanaParametros} para que este especifique algunos parámetros antes de correr un algoritmo, los cuales son:
+	
+	 \begin{enumerate}
+	 	\item Instancias de pruebas: cuando un algoritmo de regresión se ejecuta y se desea medir su precisión, se necesita dividir el data set seleccionado en dos partes, una parte (la más grande) es usada para entrenamiento del modelo y la otra es usada para probar la precisión del modelo generado por el algoritmo y así cuantificar que tan bueno es este. Este campo le especifica cuantas instancias se usarán para hacer pruebas.
+
+	 	\item Variable objetivo: Especifica que variable del data set se va a predecir.
+
+	 	\item Variable de tiempo: Especifica que variable del data set modela el tiempo, por lo general es una fecha, pero también puede ser de tipo numérico, y esta es usada como eje $X$ al momento de graficar los resultados.
+	 \end{enumerate} 
+
+\end{enumerate}
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=10cm]{img/VentanaParametros.png}
+	\caption{Formulario creado por la clase \texttt{VentanaParametros}.}
+	\label{fig:VentanaParametros}
+\end{figure}
+
+\subsection{Aplicar un algoritmo a un data set}
+El menú archivo permite abrir archivos de dos formas diferentes: un data set individual (archivos con extensión arff), y un conjunto de data sets que contienen las estadísticas de un juego (toda una carpeta). Los algoritmos contenidos en los menús \texttt{Series de tiempo, Redes bayesianas} y \texttt{Bagging}, trabajan con la primera opción, un solo data set el cual se selecciona con la opción \texttt{Abrir archivo .arff} del menú archivo el cual se muestra en la figura \ref{fig:menuArchivo}, en la figura \ref{fig:seleccionArchivo} se muestra la ventana que sale al elegir esta opción.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=10cm]{img/seleccionArchivo.png}
+	\caption{Selección de archivo arff.}
+	\label{fig:seleccionArchivo}
+\end{figure}
+
+Al seleccionar el dataset (archivo arff), inmediatamente se muestra su contenido en la ventana principal de la interfaz, mostrándolo como solo lectura. Podemos ver el aspecto de la ventana con el archivo abierto en la figura \ref{fig:archivoAbierto}. 
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=10cm]{img/archivoAbierto.png}
+	\caption{Interfaz después de abrir un archivo arff}
+	\label{fig:archivoAbierto}
+\end{figure}
+
+En este momento se encuentra listo para que se le aplique alguno de los algoritmos de los menús \texttt{Series de tiempo, Redes bayesianas} o \texttt{Bagging}, todos estos tienen la misma manera de mostrarse, excepto la comparación de los algoritmos. Para hacer una prueba se aplicó un análisis de serie de tiempo usando como base el algoritmo encapsulado en la clase \texttt{LinearRegression}, esta opción  del menú se ve en la figura \ref{fig:menuSeriesDeTiempo}, en el submenú algoritmos base; al elegir esta opción (o cualquier otra) se despliega la vista \texttt{VentanaParametros} de la figura \ref{fig:VentanaParametros} para elegir la configuración de la prueba, y después de oprimir el botón aceptar, aparece una nueva ventana similar a la de la figura \ref{fig:resultadoAplicarAlgoritmo} con una gráfica representando los resultados de la prueba, en el título de esta se encuentra el nombre del algoritmo aplicado, y el error medio absoluto (MAE) que arrojo la prueba.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=11cm]{img/resultadoAplicarAlgoritmo.png}
+	\caption{gráfica con los resultados de aplicar un algoritmo}
+	\label{fig:resultadoAplicarAlgoritmo}
+\end{figure}
+
+La gráfica de resultados muestra la serie de tiempo usada para el entrenamiento en azul, y los datos predichos por el algoritmo seleccionado en rojo. El tamaño de la predicción es del tamaño especificado por el parámetro \textit{``Instancias de pruebas''} en la figura \ref{fig:VentanaParametros}, estos datos de pruebas pertenecen a las últimas $n$ instancias del archivo arff elegido. Todo lo demás que no son las instancias de pruebas se usan para entrenar el modelo, y los datos de prueba se usan para comparar la predicción con estos. Tanto los datos de entrenamiento como los datos de pruebas se muestran en azul.
+Como los datos son muchos, representarlos todos en una ventana resulta en una gráfica donde los detalles no se aprecian, para ver los detalles se puede acercar la imagen a un segmento específico de la gráfica presionando el botón izquierdo del ratón en una equina superior izquierda, y arrastrando el puntero hasta una esquina inferior derecha formando el cuadro del área a agrandar, tal como se muestra en la figura \ref{fig:haciendoZoom}, al soltar el botón se realiza el acertamiento, el cual muestra solamente el área seleccionada en la ventana, dando como resultado algo similar a la figura \ref{fig:zoom}, Esto permite comparar mejor los resultados del algoritmo.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=11cm]{img/haciendoZoom.png}
+	\caption{Especificando área a magnificar.}
+	\label{fig:haciendoZoom}
+\end{figure}
+
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=11cm]{img/zoom.png}
+	\caption{Acercamiento al área especificada.}
+	\label{fig:zoom}
+\end{figure}
+
+Estos mismos pasos se pueden seguir para aplicar cualquiera de los otros algoritmos individuales, es decir los algoritmos en los menús:  \textit{Series de tiempo $\rightarrow$ aplicar base} (figura \ref{fig:menuSeriesDeTiempo}), \textit{Redes bayesianas $\rightarrow$ aplicar algoritmo de construcción de red} (figura \ref{fig:menuRedesBayesianasAlgoritmo}) y  \textit{Bagging $\rightarrow$ aplicar algoritmo base} (figura \ref{fig:menuBagging}); las opciones que tienen un resultado diferente a estas son las opciones de comparación de algoritmos, es decir las opciones \textit{Series de tiempo $\rightarrow$ comparar algoritmos base}, \textit{Redes bayesianas $\rightarrow$ comparar algoritmos de construcción} y \textit{Bagging $\rightarrow$ comparar algoritmos base del Bagging}. Estas se inician similar, se oprime la opción, aparece la ventana para especificar los parámetros, y al dar aceptar comienza a compararlos, esta vez teniendo una salida extra: los resultados de cada uno de los algoritmos y el algoritmo con mejor desempeñó, esta vista se muestra en la figura \ref{fig:resultadosCompararAlgoritmo}.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=11cm]{img/resultadosCompararAlgoritmo.png}
+	\caption{Resultados de comparación de algoritmos.}
+	\label{fig:resultadosCompararAlgoritmo}
+\end{figure}
+
+Para esta prueba se compararon los resultados de los algoritmos base de series de tiempo, pero esta ventana de resultados es común para los otras opciones de comparación de algoritmos, en todas se muestra el nombre de la clase que contiene el algoritmo, el error medio absoluto (MAE) que tuvo ese algoritmo, el error cuadrado medio (MSE), la raíz del error cuadrado medio (RMSE),  %poner esto en el marco teorico
+ la media del error porcentual absoluto (MAPE) y al final se muestra el algoritmo que mejor se desempeñó (el que tuvo menor error medio absoluto). 
+Además de esta salida, también se muestra la gráfica de resultados del algoritmo que tuvo mejor desempeño, esta es la misma gráfica que la de la figura \ref{fig:resultadoAplicarAlgoritmo}.
+
+\subsection{Visualizar estadísticas}
+Además de probar los algoritmos con los datos del servidor, la interfaz también ofrece la funcionalidad de visualizar los resultados de las predicciones mientras estaba en funcionamiento el Agente COLDPower, y así ver que tan bien se dan las predicciones en cada timeslot. 
+Estas estadísticas son guardadas en archivos por la clase \texttt{Statistics} (véase sección \ref{subsec:claseStatistics}) en una carpeta, y todos estos archivos guardados se pueden abrir de una sola vez con la opción \textit{Abrir carpeta de estadísticas} del menú Archivo. Esta opción abre un \texttt{JFileChooser} similar al de la figura \ref{fig:seleccionArchivo}, pero destinado a elegir una carpeta en vez de un archivo.
+Al elegir una carpeta con los archivos arff correspondientes a los resultados, esta carga los archivos, y abre el primero de ellos, graficándolo en la ventana como se muestra en la figura \ref{fig:GraficaEstadisticas}.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=11cm]{img/GraficaEstadisticas.png}
+	\caption{Gráfica de las estadísticas generadas en el timeslot 385.}
+	\label{fig:GraficaEstadisticas}
+\end{figure}
+
+Esta gráfica representa las predicciones que se hicieron en el timeslot 385, en este momento el agente solo contaba con los datos de los timeslots anteriores, e hizo una predicción la cual está graficada en color azul, conforme fueron avanzando los timeslots la clase \texttt{Statistics} se encargó de guardar los valores reales de los kilowatts producidos/consumidos, para poder compararlos con la predicción, estos valores reales están graficados en color rojo. La gráfica de color verde representa los resultados hechos por el método de predicción básico anterior, un promedio ponderado de los valores para las mismas horas, donde los valores anteriores tienen menos peso que los recientes, esta gráfica ayuda a comparar que tanto se mejoro en la predicción, podemos ver que la gráfica de la predicción con los métodos de regresión (la azul) es mucho mejor que la del método anterior (la verde); y si se diese el caso en el que las dos gráficas son muy parecidas, podemos compararlas por su error medio absoluto que aparece en el título de la ventana, en la que el primer valor (Regresión: 3109.324) es el error medio absoluto de la predicción hecha con los nuevos métodos, y el segundo valor (Exponential weighted 9366.662) corresponde al error medio absoluto de la predicción hecha con el método anterior.
+
+Para moverse entre las predicciones de los timeslots podemos oprimir el menú \textit{Estadísticas $\rightarrow$ Siguiente timeslot} o en \textit{Estadísticas $\rightarrow$ Anterior timeslot} tal como se ve en la figura \ref{fig:menuEstadisticas}, o bien con las teclas de dirección izquierda o arriba, para ir al timeslot anterior, o las teclas derecha o arriba, para ir al siguiente timeslot.
+El menú \textit{Estadísticas} también tiene la opción \textit{Calcular error global}, el cual sirve para obtener una métrica de error no solo del archivo actual, si no de todos los archivos que se encuentran en la carpeta, al seleccionarla aparecen los resultados en la barra de título, tal como en la imagen \ref{fig:GraficaEstadisticas}, pero con la cadena ``global:'' precediendo los resultados.
