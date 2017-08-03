@@ -414,7 +414,7 @@ Con capacidad controlable, los broker pueden presentar órdenes de balance que l
 Los brokers deben presentar sus órdenes de balance antes de que se ejecuten los modelos de cliente y el DU ejecuta su proceso de balance después de que se conozca el consumo del cliente para el intervalo de tiempo actual. 
 El DU puede determinar las cantidades reales disponibles para cada orden de balance.
 \\
-\section{Métodos de regresión}
+\section{Regresión}
 En estadística, el análisis de la regresión es un proceso estadístico para estimar las relaciones entre variables. Incluye muchas técnicas para el modelado y análisis de diversas variables, cuando la atención se centra en la relación entre una variable
 dependiente y una o más variables independientes (o productoras, o regresoras).
 Más específicamente, el análisis de regresión ayuda a entender cómo el valor de la variable dependiente varía al cambiar el valor de una de las variables independientes, manteniendo el valor de las otras variables independientes fijas \cite{BoundlessRegressionAnalysis}.
@@ -501,4 +501,27 @@ Los cuatro componentes básicos son: Tendencia secular, variación estacional, v
 
 \section{Clasificación}
 
+Una gran cantidad de enfoques se han tomado en esta tarea, tres ramas históricas principales de investigación se pueden identificar: estadística, \textit{machine learning} o aprendizaje automático y redes neuronales. 
+En el aprendizaje automático y estadística, la clasificación es el problema de identificar a que conjunto de categorías pertenece una nueva observación, con base en un conjunto de datos de entrenamiento (training set) que contiene observaciones  (o instancias) cuyas pertenencias a las diferentes categorías es conocida.
 
+Estas tres ramas han involucrado ampliamente diferentes grupos profesionales y academicos, y enfatizado diferentes problemas.
+Sin embargo todos los grupos han tenido algunos objetivos en común, todos han intentado desarrollar procedimientos que puedan:
+
+\begin{enumerate}
+	\item Igualar o superar un comportamiento humano de toma de decisiones, pero con la ventaja de consistencia y a medida variable, explicidad.
+	\item Manejar una gran variedad de problemas y, con suficientes datos, ser extremadamente general.
+	\item Ser usado en entornos prácticos con éxito comprobado.
+\end{enumerate}
+
+\subsection{Enfoque estadístico}
+El acercamiento estadistico a la clasificación es generalmente caracterizado por modelo probabilistico explicito subyasente, el cual provee una probabilidad de que una observacion se encuentre en cada clase en lugar de una simple clasificación. Ademas es normalmente asumido que las técnicas serán usadas por estadísticos, y por lo tanto, algo de intervención humana es asumida con respecto a la selección y transformación de variables, y la estructuración general del problema.
+
+\subsection{Aprendizaje automático}
+El aprendizaje automático o machine learning generalmente se considera que abarca procedimientos automaticos de computacion basados en operciones logicas o binarias, que aprenden una tarea a partir de una serie de ejemplos.
+La atención se ha concentrado en enfoques de arboles de decisión, en la cual la clasificación resulta de una secuencia de pasos lógicos, estos son capaces de representar los problemas mas complejos dados suficientes datos.
+Otras tecnicas como los algoritmos geneticos y procedimientos logicos inductivos (ILP) estan actualmente en desarrollo activo y en principio nos permitirian tratar con tipos de datos mas generales, incluyendo casos donde el numero y tipo de atributos puede variar, y donde capas adicionales de aprendizaje son superpuestas, con gerarquia estructural de atributos y clases y demás. 
+
+El aprendizaje automático apunta a generar expresiones de clasificación lo suficientemente simples para ser entendidas fácilmente por un humano, estas deben imitar el razonamiento humano lo suficiente para proveer de pistas sobre el proceso de decisión. 
+Como el enfoque estadístico, el conocimiento previo puede ser explotado en el desarrollo, pero en la operación se asume que se realiza sin intervención humana.
+
+\subsection{Redes neuronales}
