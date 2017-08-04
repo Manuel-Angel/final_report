@@ -488,7 +488,7 @@ En la \ref{fig:redBayesianaEjemplo} podemos ver un ejemplo de red bayesiana simp
 Una serie de tiempo es una secuencia de datos, que representan observaciones o mediciones de algún fenómeno, indexados por tiempo, mas comúnmente, una secuencia de observaciones tomadas en puntos sucesivos en el tiempo igualmente espaciados. Por lo tanto es una secuencia de datos de tiempo discretos. 
 Ejemplos de una serie de tiempo son la altura de las mareas cada hora, la tasa mensual de desempleo de los últimos 5 años, el valor de cierre diario de cierta empresa.
 
-Las series de tiempo son muy frecuentemente ilustradas con graficas de líneas. 
+Las series de tiempo son muy frecuentemente ilustradas con gráficas de líneas. 
 Son usadas en la estadística, procesado de señales, reconocimiento de patrones, matemática financiera, pronóstico climático, y en general en cualquier dominio de ciencia aplicada e ingeniería, que involucren mediciones temporales.
 
 El análisis de series de tiempo comprende métodos para analizar datos de series de tiempo con el objetivo de extraer valores estadísticos útiles y otras características de los datos. 
@@ -504,7 +504,7 @@ Los cuatro componentes básicos son: Tendencia secular, variación estacional, v
 Una gran cantidad de enfoques se han tomado en esta tarea, tres ramas históricas principales de investigación se pueden identificar: estadística, \textit{machine learning} o aprendizaje automático y redes neuronales. 
 En el aprendizaje automático y estadística, la clasificación es el problema de identificar a que conjunto de categorías pertenece una nueva observación, con base en un conjunto de datos de entrenamiento (training set) que contiene observaciones  (o instancias) cuyas pertenencias a las diferentes categorías es conocida.
 
-Estas tres ramas han involucrado ampliamente diferentes grupos profesionales y academicos, y enfatizado diferentes problemas.
+Estas tres ramas han involucrado ampliamente diferentes grupos profesionales y académicos, y enfatizado diferentes problemas.
 Sin embargo todos los grupos han tenido algunos objetivos en común, todos han intentado desarrollar procedimientos que puedan:
 
 \begin{enumerate}
@@ -514,14 +514,39 @@ Sin embargo todos los grupos han tenido algunos objetivos en común, todos han i
 \end{enumerate}
 
 \subsection{Enfoque estadístico}
-El acercamiento estadistico a la clasificación es generalmente caracterizado por modelo probabilistico explicito subyasente, el cual provee una probabilidad de que una observacion se encuentre en cada clase en lugar de una simple clasificación. Ademas es normalmente asumido que las técnicas serán usadas por estadísticos, y por lo tanto, algo de intervención humana es asumida con respecto a la selección y transformación de variables, y la estructuración general del problema.
+El acercamiento estadístico a la clasificación es generalmente caracterizado por modelo probabilistico explicito subyacente, el cual provee una probabilidad de que una observación se encuentre en cada clase en lugar de una simple clasificación. Ademas es normalmente asumido que las técnicas serán usadas por estadísticos, y por lo tanto, algo de intervención humana es asumida con respecto a la selección y transformación de variables, y la estructuración general del problema.
 
 \subsection{Aprendizaje automático}
-El aprendizaje automático o machine learning generalmente se considera que abarca procedimientos automaticos de computacion basados en operciones logicas o binarias, que aprenden una tarea a partir de una serie de ejemplos.
+El aprendizaje automático o machine learning generalmente se considera que abarca procedimientos automáticos de computación basados en operaciones lógicas o binarias, que aprenden una tarea a partir de una serie de ejemplos.
 La atención se ha concentrado en enfoques de arboles de decisión, en la cual la clasificación resulta de una secuencia de pasos lógicos, estos son capaces de representar los problemas mas complejos dados suficientes datos.
-Otras tecnicas como los algoritmos geneticos y procedimientos logicos inductivos (ILP) estan actualmente en desarrollo activo y en principio nos permitirian tratar con tipos de datos mas generales, incluyendo casos donde el numero y tipo de atributos puede variar, y donde capas adicionales de aprendizaje son superpuestas, con gerarquia estructural de atributos y clases y demás. 
+Otras técnicas como los algoritmos genéticos y procedimientos lógicos inductivos (ILP) están actualmente en desarrollo activo y en principio nos permitirían tratar con tipos de datos mas generales, incluyendo casos donde el numero y tipo de atributos puede variar, y donde capas adicionales de aprendizaje son superpuestas, con jerarquía estructural de atributos y clases y demás. 
 
 El aprendizaje automático apunta a generar expresiones de clasificación lo suficientemente simples para ser entendidas fácilmente por un humano, estas deben imitar el razonamiento humano lo suficiente para proveer de pistas sobre el proceso de decisión. 
 Como el enfoque estadístico, el conocimiento previo puede ser explotado en el desarrollo, pero en la operación se asume que se realiza sin intervención humana.
 
 \subsection{Redes neuronales}
+Una amplia clase de técnicas pueden caer dentro de este titulo, pero generalmente, las redes neuronales consisten en capas de nodos interconectados, cada nodo produce una función no lineal de su entrada. La entrada de un nodo puede venir de otros nodos o directamente de los datos de entrada. También, algunos nodos son identificados como la salida de la red. La red completa por lo tanto representa un muy complejo conjunto de interdependencias las cuales pueden incorporar cualquier grado de no-linealidad, permitiendo moldear funciones muy generales.
+
+El enfoque de redes neuronales combina la complejidad de algunas de las técnicas estadísticas con el objetivo del aprendizaje automático de imitar la inteligencia humana, sin embargo esto es hecho a un nivel mas ``inconsciente'' y por lo tanto no hay una manera de hacer los conceptos aprendidos transparentes para el usuario \cite{Michie94machinelearning}.
+
+\subsection{Arboles de decisión}
+
+El aprendizaje basado en árboles de decisión utiliza un árbol de decisión como un modelo predictivo que mapea observaciones sobre un artículo a conclusiones sobre el valor objetivo del artículo. Es uno de los enfoques de modelado predictivo utilizados en estadísticas, minería de datos y aprendizaje automático. 
+Los modelos de árbol, donde la variable de destino puede tomar un conjunto finito de valores se denominan árboles de clasificación. 
+En estas estructuras de árbol, las hojas representan etiquetas de clase y las ramas representan las conjunciones de características que conducen a esas etiquetas de clase. 
+Los árboles de decisión, donde la variable de destino puede tomar valores continuos (por lo general números reales) se llaman árboles de regresión. El aprendizaje basado en árboles de decisión es una de las técnicas más eficaces para la clasificación supervisada.
+
+Un árbol puede ser ``aprendido'' mediante el fraccionamiento del conjunto inicial en subconjuntos basados en una prueba de valor de atributo. 
+Este proceso se repite en cada subconjunto derivado de una manera recursiva llamada particionamiento recursivo. 
+La recursividad termina cuando el subconjunto en un nodo tiene todo el mismo valor de la variable objetivo, o cuando la partición ya no agrega valor a las predicciones. 
+Este proceso de inducción top-down de los árboles de decisión \cite{InductionofDecisionTrees1986}
+es un ejemplo de un algoritmo voraz, y es, con mucho, la estrategia más común para aprender árboles de decisión a partir de datos.
+
+\subsection{Método bagging}
+La agregacion bootstrap o bagging es un meta algoritmo para generar múltiples versiones de un predictor y con estos conseguir un predictor agregado. La agregación hace un promedio de todas las versiones cuando predice una salida numérica (comúnmente regresión) y hace una votación por mayoría cuando predice clases (clasificación).
+Las multiples versiones se forman haciendo replicas bootstrap de el conjunto de datos de entrenamiento y usando estas como nuevos conjuntos de entrenamiento.
+Una replica bootstrap de un conjunto de entrenamiento $D$ de tamaño $n$ se trata de un muestreo uniforme y con reemplazo de $D$, obteniendo un subconjunto $D'$ de tamaño $n'$. En el caso de muestreo con reemplazo algunas observaciones deben repetirse en $D'$. Si $n'=n$ entonces para un $n$ grande el conjunto $D'$ se espera que tenga $(1-1/e) \approx 63.2\%$ de ejemplos unicos de $D$ siendo el resto duplicados \cite{EstimatingtheSizeandConfidenceofaStatisticalAudit}.
+
+Pruebas en conjuntos de datos reales y simulados usando arboles de regresion y clasificacion y seleccion de subconjuntos en regresion lineal muestran que el metodo bagging puede dar ganancias substanciales en exactitud.
+El elemento importante es la inestabilidad del método de predicción, si perturbar el dataset de entrenamiento puede causar cambios significativos en el predictor construido, entonces el metodo bagging puede mejorar la exactitud. Por otra parte, esto puede degradar levemente el rendimiento de métodos estables tales como K-nearest neighbors.
+\cite{BreimanLMachineLearning1996}.
