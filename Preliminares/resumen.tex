@@ -3,7 +3,16 @@
 El proyecto ``Agente inteligente de compra venta de energía'' es un subproyecto que se encuentra en el marco del proyecto 
 ``CEMIE - Eólico P12: Desarrollo de tecnología basada en inteligencia artificial y mecatrónica, para integrar un parque de generación de energía eólica a una red inteligente'' 
 el cual es desarrollado por el INAOE. 
-En este subproyecto se realizo el desarrollo de un nuevo modulo de prediccion para el broker COLDPower, el cual es un agente inteligente creado para participar en la competencia PowerTAC
+En este subproyecto se realizo el desarrollo de un nuevo modulo de predicción para el broker COLDPower, el cual es un agente inteligente creado para participar en la competencia PowerTAC. 
 
+Power TAC es una competencia de simulación de futuros mercados minoristas de energía eléctrica, en los que los competidores son agentes inteligentes llamados \textit{``brokers''} que compran y venden energía en una simulación de un mercado energético. 
+
+Los brokers ofrecen servicios de energía a los clientes tanto de consumo y producción a través de contratos tarifarios, tratando que la energía comprada a clientes de producción sea igual a la vendida a clientes de consumo, teniendo la opción de comprar energía en el mercado al por mayor para tratar de balancear esto.
+
+En la competencia los brokers son desafiados a maximizar sus ganancias comprando y vendiendo energía en los mercados mayorista y minorista, sujetos a costos fijos y restricciones, el ganador de un juego o simulación individual es el broker con el saldo bancario más alto al final de la simulación \cite{WKetterJCollinsyMdWeerdtThe2017PowerTAC}.
+
+El entorno  de simulación proporcionaba una gama de problemas para los agentes, incluyendo un mercado de energía al por mayor para el día a día, pronósticos de tiempo realistas que afectan la producción de energía eólica y solar, así como el consumo, una variedad de preferencias sobre términos de tarifas y un distribuidor de utilidades que cobra por el transporte de energía y por desequilibrios entre la oferta y la demanda.
+
+Este proyecto se enfoca en el desarrollo de un modulo de predicción para la nueva version del agente inteligente de compraventa de energía COLDPower, para que este pueda tomar en cuenta la oferta y demanda de energía de las próximas 24 horas,  prediciendo la cantidad de energía producida por los clientes productores y la usada por los consumidores en cada una de las proximas 24 horas, tomando en cuenta las variables del clima usando algoritmos de regresión y clasificación de la librería weka.
 
 \end{center}
