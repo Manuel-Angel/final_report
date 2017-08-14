@@ -502,24 +502,23 @@ El acercamiento estadístico a la clasificación es generalmente caracterizado p
 
 \subsection{Aprendizaje automático}
 El aprendizaje automático o machine learning generalmente se considera que abarca procedimientos automáticos de computación basados en operaciones lógicas o binarias, que aprenden una tarea a partir de una serie de ejemplos.
-La atención se ha concentrado en enfoques de arboles de decisión, en la cual la clasificación resulta de una secuencia de pasos lógicos, estos son capaces de representar los problemas más complejos dados suficientes datos.
+La atención se ha concentrado en enfoques de árboles de decisión, en la cual la clasificación resulta de una secuencia de pasos lógicos, estos son capaces de representar los problemas más complejos dados suficientes datos.
 Otras técnicas como los algoritmos genéticos y procedimientos lógicos inductivos (ILP) están actualmente en desarrollo activo y en principio nos permitirían tratar con tipos de datos más generales, incluyendo casos donde el número y tipo de atributos puede variar, y donde capas adicionales de aprendizaje son superpuestas, con jerarquía estructural de atributos y clases y demás. 
 
 El aprendizaje automático apunta a generar expresiones de clasificación lo suficientemente simples para ser entendidas fácilmente por un humano, estas deben imitar el razonamiento humano lo suficiente para proveer de pistas sobre el proceso de decisión. 
 Como el enfoque estadístico, el conocimiento previo puede ser explotado en el desarrollo, pero en la operación se asume que se realiza sin intervención humana.
 
 \subsection{Redes neuronales}
-Una amplia clase de técnicas pueden caer dentro de este título, pero generalmente, las redes neuronales consisten en capas de nodos interconectados, cada nodo produce una función no lineal de su entrada. La entrada de un nodo puede venir de otros nodos o directamente de los datos de entrada. También, algunos nodos son identificados como la salida de la red. La red completa por lo tanto representa un muy complejo conjunto de interdependencias las cuales pueden incorporar cualquier grado de no-linealidad, permitiendo moldear funciones muy generales.
+Una amplia clase de técnicas pueden caer dentro de este título, pero generalmente, las redes neuronales consisten en capas de nodos interconectados, cada nodo produce una función no lineal de su entrada. La entrada de un nodo puede venir de otros nodos o directamente de los datos de entrada. También, algunos nodos son identificados como la salida de la red. La red completa por lo tanto representa un muy complejo conjunto de interdependencias las cuales pueden incorporar cualquier grado de no-linealidad, permitiendo moldear funciones muy generales. 
 
 El enfoque de redes neuronales combina la complejidad de algunas de las técnicas estadísticas con el objetivo del aprendizaje automático de imitar la inteligencia humana, sin embargo esto es hecho a un nivel más ``inconsciente'' y por lo tanto no hay una manera de hacer los conceptos aprendidos transparentes para el usuario \cite{Michie94machinelearning}.
 
-\subsection{Arboles de decisión}
+\subsection{Árboles de decisión}
 Un árbol de decisión es un modelo predictivo que puede ser usado para representar un modelos de clasificación y regresión. 
-Los arboles de decisión se usan para clasificar objetos o instancias (tal como la medicion de kilowatts 
-Classification trees are used to classify an object or an instance (such as insurant) to a
-predefined set of classes (such as risky/non-risky) based on their attributes values (such as age or gender)
+Los árboles de decisión se usan para clasificar objetos o instancias (como una persona asegurada) en un conjunto de clases predefinidas (tales como riesgoso/no riesgoso) basado en los valores de sus atributos (tales como edad, genero, etc.), midiendo el error de predicción en términos del numero de instancias erróneamente clasificadas \cite{RokachLiorMaimonDataMiningDecisionTrees}.
+Los árboles de regresión son para variables dependientes que toman valores continuos o valores ordenados discretos, y sus errores de predicción típicamente se miden por el cuadrado de la diferencia entre el valor observado y el valor predicho. \cite{LohWei-YinClassificationAndRegressionTrees}
 
-El aprendizaje basado en árboles de decisión utiliza un árbol de decisión como un modelo predictivo que mapea observaciones de los atributos de una instancia (representado en las ramas) a conclusiones sobre el valor objetivo de la instancia (representado en las hojas).
+
 Es uno de los enfoques de modelado predictivo utilizados en estadísticas, minería de datos y aprendizaje automático. 
 Los modelos de árbol, donde la variable de destino puede tomar un conjunto finito de valores se denominan árboles de clasificación. 
 En estas estructuras de árbol, las hojas representan etiquetas de clase y las ramas representan las conjunciones de características que conducen a esas etiquetas de clase. 
@@ -532,11 +531,11 @@ Este proceso de inducción top-down de los árboles de decisión \cite{Induction
 es un ejemplo de un algoritmo voraz, y es, con mucho, la estrategia más común para aprender árboles de decisión a partir de datos.
 
 \subsection{Método bagging}
-La agregacion bootstrap o bagging es un meta algoritmo para generar múltiples versiones de un predictor y con estos conseguir un predictor agregado. La agregación hace un promedio de todas las versiones cuando predice una salida numérica (comúnmente regresión) y hace una votación por mayoría cuando predice clases (clasificación).
-Las multiples versiones se forman haciendo replicas bootstrap de el conjunto de datos de entrenamiento y usando estas como nuevos conjuntos de entrenamiento.
-Una replica bootstrap de un conjunto de entrenamiento $D$ de tamaño $n$ se trata de un muestreo uniforme y con reemplazo de $D$, obteniendo un subconjunto $D'$ de tamaño $n'$. En el caso de muestreo con reemplazo algunas observaciones deben repetirse en $D'$. Si $n'=n$ entonces para un $n$ grande el conjunto $D'$ se espera que tenga $(1-1/e) \approx 63.2\%$ de ejemplos unicos de $D$ siendo el resto duplicados \cite{EstimatingtheSizeandConfidenceofaStatisticalAudit}.
+La agregación bootstrap o bagging es un meta algoritmo para generar múltiples versiones de un predictor y con estos conseguir un predictor agregado. La agregación hace un promedio de todas las versiones cuando predice una salida numérica (comúnmente regresión) y hace una votación por mayoría cuando predice clases (clasificación).
+Las multiples versiones se forman haciendo réplicas bootstrap de el conjunto de datos de entrenamiento y usando estas como nuevos conjuntos de entrenamiento.
+Una réplica bootstrap de un conjunto de entrenamiento $D$ de tamaño $n$ se trata de un muestreo uniforme y con reemplazo de $D$, obteniendo un subconjunto $D'$ de tamaño $n'$. En el caso de muestreo con reemplazo algunas observaciones deben repetirse en $D'$. Si $n'=n$ entonces para un $n$ grande el conjunto $D'$ se espera que tenga $(1-1/e) \approx 63.2\%$ de ejemplos únicos de $D$ siendo el resto duplicados \cite{EstimatingtheSizeandConfidenceofaStatisticalAudit}.
 
-Pruebas en conjuntos de datos reales y simulados usando arboles de regresion y clasificacion y seleccion de subconjuntos en regresion lineal muestran que el metodo bagging puede dar ganancias substanciales en exactitud.
+Pruebas en conjuntos de datos reales y simulados usando árboles de regresión y clasificación y selección de subconjuntos en regresión lineal muestran que el metodo bagging puede dar ganancias substanciales en exactitud.
 El elemento importante es la inestabilidad del método de predicción, si perturbar el dataset de entrenamiento puede causar cambios significativos en el predictor construido, entonces el metodo bagging puede mejorar la exactitud. Por otra parte, esto puede degradar levemente el rendimiento de métodos estables tales como K-nearest neighbors.
 \cite{BreimanLMachineLearning1996}.
 

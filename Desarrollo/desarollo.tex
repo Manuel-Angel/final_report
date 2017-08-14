@@ -5,7 +5,7 @@ Como parte de la actividad de estudio de la plataforma PowerTAC, fue necesario f
 %no se si sea necesario
 \subsection{Power TAC}
 
-Power TAC es una competencia anual que se ha realizado desde 2012, donde se simulan futuros mercados minoristas liberados de energía eléctrica, en la que los competidores son entidades de negocios o ``Brokers'' (En la simulación son agentes Inteligentes) minoristas que compran y venden energía tanto en los mercados al por mayor como al por menor.
+Power TAC es una competencia anual que se ha realizado desde 2012, donde se simulan futuros mercados minoristas de energía eléctrica libres, en la que los competidores son entidades de negocios o ``Brokers'' (En la simulación son agentes Inteligentes) minoristas que compran y venden energía tanto en los mercados al por mayor como al por menor. La competencia tiene cede en la universidad de Países Bajos, Rotterdam School of Management, Erasmus University, y diversas universidades de otras partes del mundo también han colaborado en el desarrollo del servidor, tales como Aristotle University of Thessaloniki en Grecia, Delft University of Technology de Países bajos, Carnegie Mellon University, University of Minnesota en estados unidos y University of Zagreb en Croacia.
 
 Los brokers ofrecen servicios de energía a los clientes a través de contratos tarifarios, y luego deben servir a esos clientes negociando esa energía en el mercado al por mayor. En la competencia los brokers son desafiados a maximizar sus ganancias comprando y vendiendo energía en los mercados mayorista y minorista, sujetos a costos fijos y restricciones, el ganador de un juego o simulación individual es el broker con el saldo bancario más alto al final de la simulación \cite{WKetterJCollinsyMdWeerdtThe2017PowerTAC}.
 
@@ -78,7 +78,7 @@ Los otros parámetros (Server-config, Log suffix, Seed file, Weather file) se de
 
 Una vez listos los parámetros se inició la sesión dando click en el boton Run Sim, justo abajo del formulario de los parámetros, esto inicia el simulador pero no empieza la simulación %(muestra el mensaje “simulation started”) 
 (muestra el mensaje ``simulation started'') 
-es decir, no inicio el juego, ya que el servidor quedo en espera del broker Sample.
+es decir, no inicio el juego, ya que el servidor quedó en espera del broker Sample.
 
 \subsection{Broker}
 Debido a que el broker es en lo que se trabajará agregando funcionalidades, se decidió usar un IDE para tener un buen ambiente de desarrollo, y no solo manejarlo desde la consola como se hizo con el servidor. El IDE elegido para esta prueba fue NetBeans.
@@ -114,15 +114,15 @@ tiene que coincidir con el parámetro Brokers que se le pasa al servidor al inic
 Una vez asegurado que los parámetros del broker y el servidor coincidan, se procede a ejecutar el broker, para esto solo damos clic derecho al proyecto y seleccionamos la opción run; 
 Si no está seleccionada una clase Main por defecto (que contenga el método main), nos aparecerá una ventana para que seleccionemos la clase a ejecutar, esta es:\\ \texttt{org.powertac.samplebroker.core.BrokerMain}.
 
-Al hacer esto NetBeans se encargara de construir y corre el proyecto usando Maven, al ser NetBeans quien lo ejecuta, no usa ningún parámetro extra en la ejecución por lo que todas las propiedades las lee del archivo \texttt{broker.properties}.
+Al hacer esto NetBeans se encargará de construir y correr el proyecto usando Maven, al ser NetBeans quien lo ejecuta, no usa ningún parámetro extra en la ejecución por lo que todas las propiedades las lee del archivo \texttt{broker.properties}.
 
-También es posible correr el broker desde la consola del sistema, Para correr el broker desde la consola, es necesario posicionarse en el directorio raiz del proyecto, en este caso es \texttt{/root/NetBeansProjects/sample-broker\#} y simplemente ejecutar el comando:\\
+También es posible correr el broker desde la consola del sistema, Para correr el broker desde la consola, es necesario posicionarse en el directorio raíz del proyecto, en este caso es \texttt{/root/NetBeansProjects/sample-broker\#} y simplemente ejecutar el comando:\\
 \texttt{mvn compile exec:exec -Dexec.args="--config \\
 broker.properties"\\
 }
 
 Donde \texttt{broker.properties} es el archivo de configuración que contiene las propiedades del broker (Como el nombre y su JMS URL).
-Esto iniciara la descarga de las dependencias necesarias (si aún no se tienen), la construcción del proyecto y la ejecución del broker con los parámetros especificados en el archivo \texttt{broker.properties}, si se desea especificar otro archivo de propiedades es necesario hacerlo en el comando.
+Esto iniciará la descarga de las dependencias necesarias (si aún no se tienen), la construcción del proyecto y la ejecución del broker con los parámetros especificados en el archivo \texttt{broker.properties}, si se desea especificar otro archivo de propiedades es necesario hacerlo en el comando.
 
 \subsection{Servidor en marcha}
 La versión web del servidor dispone de una herramienta de visualización web, la cual muestra los resultados de la prueba en tiempo real, después de varios minutos de correr la simulación, la ventana de resultados se parece a la que se muestra en la figura \ref{fig:visualizadorWebResultados}.
@@ -135,12 +135,12 @@ La versión web del servidor dispone de una herramienta de visualización web, l
 \end{figure}
 
 En la figura \ref{fig:visualizadorWebResultados} el eje $x$ representa el tiempo y el eje $y$ representa la ganancia del broker correspondiente, podemos ver como el Sample broker (el broker que se ejecutó desde NetBeans) inicio con menos ganancias pero conforme
-transcurrió el tiempo le gano por mucho al default broker (el broker por defecto que tiene el simulador el cual no ejecuta ninguna estrategia), de igual manera, si hubiera más brokers conectados al servidor estos aparecerían en el gráfico.
+transcurrió el tiempo le ganó por mucho al default broker (el broker por defecto que tiene el simulador el cual no ejecuta ninguna estrategia), de igual manera, si hubiera más brokers conectados al servidor estos aparecerían en el gráfico.
 
 Estos resultados de la simulación se guardan además en la carpeta log, que está en la raíz del proyecto, en los archivos \texttt{powertac-sim-0.state} y \texttt{powertac-sim-0.trace}, y cada vez que se corre una simulación el número que en esta primera prueba fue 0, va aumentando.
 
 \section{Estudio de métodos de regresión}
-El objetivo es este proyecto es mejorar el broker del INAOE COLDPower, implementando nuevas técnicas que permitan predecir mejor el clima y los patrones de consumo de energía de la población para tomar mejores decisiones y mejorar el rendimiento del broker (aumentar las ganancias en las simulaciones); para llegar a esto fue necesario primero estudiar diversas técnicas de predicción como parte del desarrollo del proyecto, empezando por análisis de regresión. En esta parte del proyecto se llego al siguiente resumen.
+El objetivo es este proyecto es mejorar el broker del INAOE COLDPower, implementando nuevas técnicas que permitan predecir mejor el clima y los patrones de consumo de energía de la población para tomar mejores decisiones y mejorar el rendimiento del broker (aumentar las ganancias en las simulaciones); para llegar a esto fue necesario primero estudiar diversas técnicas de predicción como parte del desarrollo del proyecto, empezando por análisis de regresión. En esta parte del proyecto se llegó al siguiente resumen.
 
 Dentro del análisis de regresión hay dos modelos simples por los cuales se
 empezó: La regresión lineal y polinomial.
@@ -175,7 +175,7 @@ $$h_i = \beta_1 t_i + \beta_2 t_i^{2} + \varepsilon_i$$
 				5 & 30  \\\hline
 		\end{tabular}			
 	\end{center}
-	\caption{Valores medidos.}
+	\caption{Valores medidos de la altura respecto al tiempo de un objeto en caída libre.}
 	\label{tab:valoresMedidos}
 \end{table}
 
@@ -200,13 +200,10 @@ La regresión lineal puede ser usada para estimar los valores de $\beta_1$ y $\b
 
 Al aplicar regresión lineal a los datos de la tabla de la figura \ref{tab:transformacionModelo} se obtiene una regresión
 polinomial de modelo original representado en la tabla de la figura \ref{tab:valoresMedidos}. 
-Este método de transformar el modelo para aplicar una regresión polinomial, se usó en la actividad de Implementación de regresión polinomial en la página \pageref{subsec:implementacionRegresionPolinomial}, a su ves, mas adelante se usa un método parecido a este para hacer análisis de series de tiempo, el cual esta encapsulado en la clase \texttt{WekaForecaster}, parecido en el sentido de que se toma un modelo y se le agregan variables transformándolo en otro modelo que se puede aprender por otro algoritmo de regresión o clasificación cualquiera de la librería weka.
+Este método de transformar el modelo para aplicar una regresión polinomial, se usó en la actividad de Implementación de regresión polinomial en la página \pageref{subsec:implementacionRegresionPolinomial}, a su vez, más adelante se usa un método parecido a este para hacer análisis de series de tiempo, el cual esta encapsulado en la clase \texttt{WekaForecaster}, parecido en el sentido de que se toma un modelo y se le agregan variables transformándolo en otro modelo que se puede aprender por otro algoritmo de regresión o clasificación cualquiera de la librería weka.
 
 \subsection{Redes bayesianas} \label{subsec:redesbayesianas}
-El estudio de redes bayesianas es necesario ya que se usara este modelo probabilístico como técnica de predicción, más específicamente las redes bayesianas dinámicas, las cuales surgen a partir de las redes bayesianas. Una red bayesiana dinámica o temporal es un modelo estadístico y estocástico que amplía el concepto de red bayesiana.
-
-A diferencia de este último, una red bayesiana dinámica puede representar la evolución de variables aleatorias basándose en una secuencia discreta, por ejemplo, pasos de tiempo. 
-El término dinámico caracteriza el sistema modelado, no la red que no cambia.
+El estudio de redes bayesianas fue necesario ya que se uso este modelo probabilístico como técnica de predicción.
 
 Como tal lo que se puede calcular con una red bayesiana es la posibilidad de un evento ocurra,
 por ejemplo la posibilidad de que una planta eólica produzca entre 40 y 45 kilowatts de energía, o la probabilidad de que el día este soleado, así que no arroja directamente predicciones de variables numéricas (solo de variables nominales), sin embargo se puede calcular el valor esperado a partir de estas probabilidades. Por ello, los campos numéricos son transformados a campos nominales, así que se tienen que discretizar los datos.
@@ -221,20 +218,21 @@ Un ejemplo de una red bayesiana sería en el diagnóstico médico, para determin
 \end{figure}
 
 \subsection{Series de tiempo} \label{subsec:estudiost}
-Para comprender el uso de las herramientas para el análisis de series de tiempo primero se hizo una investigación sobre estas de forma general, después una investigación mas enfocada a las herramientas que existen en la librería weka.\\
+Para comprender el uso de las herramientas para el análisis de series de tiempo primero se hizo una investigación sobre estas de forma general, después una investigación más enfocada a las herramientas que existen en la librería weka.\\
 Una \textit{serie de tiempo} es una secuencia de datos, que representan observaciones o
-mediciones de algún fenómeno, indexados por tiempo, mas comúnmente, una
+mediciones de algún fenómeno, indexados por tiempo, más comúnmente, una
 secuencia de observaciones tomadas en puntos sucesivos en el tiempo igualmente
-espaciados. Por lo tanto es una secuencia de datos de tiempo discretos. Ejemplos
-de una serie de tiempo son la altura de las mareas cada hora, la tasa mensual de
+espaciados. Por lo tanto es una secuencia de datos de tiempo discretos. 
+
+Ejemplos de una serie de tiempo son la altura de las mareas cada hora, la tasa mensual de
 desempleo de los últimos 5 años, el valor de cierre diario de cierta empresa.\\
 El \textit{Análisis de series de tiempo} es el proceso de usar técnicas estadísticas para modelar y explicar una serie de puntos (datos) dependientes del tiempo. El \textit{pronóstico de series de tiempo} es el proceso
 de  usar un modelo para generar predicciones de futuros eventos basados en los eventos pasados conocidos.
 Los datos de series de tiempo tienen un orden temporal natural, esto difiere de aplicaciones típicas de 
 machine learning donde cada dato es un ejemplo independiente del concepto que se va a aprender, y el orden
 de los datos en el conjunto de dato no importa. 
-La librería weka a partir de su version 3.7.3 tiene un ambiente dedicado al análisis de series de tiempo que
-permite que modelos de predicción sean desarrollados evaluados y visualizados. Este ambiente viene en un plugin y toma la forma de una pestaña en la interfaz gráfica ``Explorer" de weka y puede ser instalado a través del gestor de paquetes de weka, y para usar la API se puede agregar al proyecto usando Maven agregando al \texttt{POM.xml} en el elemento {\tt \lstinline$ <dependencies>$ } la dependencia que se encuentra en el código \ref{lst:dependency}.
+
+La librería weka a partir de su version 3.7.3 tiene un ambiente dedicado al análisis de series de tiempo que permite que modelos de predicción sean desarrollados evaluados y visualizados. Este ambiente viene en un plugin y toma la forma de una pestaña en la interfaz gráfica ``Explorer" de weka y puede ser instalado a través del gestor de paquetes de weka, y para usar la API se puede agregar al proyecto usando Maven agregando al \texttt{POM.xml} en el elemento {\tt \lstinline$ <dependencies>$ } la dependencia que se encuentra en el código \ref{lst:dependency}.
 \lstset{language=XML, label=lst:dependency, caption={[Dependencia] Dependencia} } 
 \begin{lstlisting}[frame=single]  
 <dependency>
@@ -255,18 +253,30 @@ También es necesario agregar el repositorio en donde se encuentra esta dependen
 \end{lstlisting}
 El framework de weka para las series de tiempo toma un enfoque de machine learning/data mining para modelar series de tiempo transformando los datos en una forma que los algoritmos estándar de aprendizaje proposicional puedan procesar. Esto lo hace quitando el orden temporal de cada fila en el conjunto de datos, y codificando la dependencia del tiempo vía campos adicionales en cada una de las filas. 
 Estos campos a veces son llamados variables rezagadas (``lagged variables") o características de interacción (``interaction features"), este proceso es similar a la regresión polinomial discutido en el reporte anterior, ya que este también necesita de dichas variables adicionales. 
+
 Varios otros campos son generados para permitir a los algoritmos modelar tendencias y estacionalidad. 
-Después de que los datos han sido transformados, cualquier algoritmo de regresión de weka puede ser aplicado para aprender el modelo, en este periodo se hicieron pruebas con el algoritmo de regresión lineal, pero cualquier método capas de predecir una variable continua puede ser aplicado, incluyendo poderosos métodos no lineales tales como  máquinas de soporte vectorial para regresión (``support vector machines"). Este enfoque de análisis de series de tiempo y pronostico de series de tiempo es a veces mas poderoso y mas flexible que técnicas estadísticas clásicas  tales como ARMA y ARIMA \cite{pentaho}.
+Después de que los datos han sido transformados, cualquier algoritmo de regresión de weka puede ser aplicado para aprender el modelo, en este periodo se hicieron pruebas con el algoritmo de regresión lineal, pero cualquier método capas de predecir una variable continua puede ser aplicado, incluyendo poderosos métodos no lineales tales como  máquinas de soporte vectorial para regresión (``support vector machines"). 
+
+Este enfoque de análisis de series de tiempo y pronostico de series de tiempo es a veces más poderoso y más flexible que técnicas estadísticas clásicas  tales como ARMA y ARIMA \cite{pentaho}.
 
 \section{Implementación de métodos de regresión usando la librería weka}
 
-Parte de las actividades futuras es crear un software de pronóstico de producción de energía y pronóstico de consumo de energía que después se adaptara al broker para que este pueda tomar mejores decisiones, para esto se implementaran varios algoritmos de regresión y clasificación que están en la librería weka, por lo que el primer paso hacia llegar al este objetivo es aprender a usar la librería weka.
+El objetivo de este proyecto fue crear un software de pronóstico de producción de energía y pronóstico de consumo de energía que después se adapto al broker para que este tome mejores decisiones, para esto se implementaron varios algoritmos de regresión y clasificación que están en la librería weka, por lo que el primer paso para llegar al este objetivo fue aprender a usar la librería weka.
 
 \subsection{Librería weka}
 Weka es una colección de algoritmos del área de machine learning, para tareas de minería de datos. Estos algoritmos pueden ya sea aplicarse directamente a un conjunto de datos, o llamarse desde código java mediante la API de weka.
-Weka contiene herramientas para el preprocesado de datos, clasificación, regresión, clusterización, reglas de asociación y visualización. También está bien adaptado para el desarrollo de nuevos esquemas de machine learning. 
 
-El nombre proviene de un ave no voladora de naturaleza inquisitiva que vive solamente en la isla de Nueva Zelanda.
+It is designed so that you
+can  quickly  try  out  existing  methods  on  new  datasets  in  flexible  ways.   It  provides  extensive
+support for the whole process of experimental data mining, including preparing the input data,
+evaluating learning schemes statistically, and visualizing the input data and the result of learning.
+As well as a wide variety of learning algorithms, it includes a wide range of preprocessing tools.
+This diverse and comprehensive toolkit is accessed through a common interface so that its users
+can compare different methods and identify those that are most appropriate for the problem at
+hand.  WEKA was developed at the University of Waikato in New Zealand; the name stands for
+Waikato  Environment  for Knowledge Analysis
+
+Aunque es pronunciado para que rime con \textit{Mecca}, el nombre de un ave no voladora de naturaleza inquisitiva que vive solamente en la isla de Nueva Zelanda \cite{EibeFMarkAHallIanHTheWekaWorkbench}.
 
 Weka es un software de código abierto, bajo la licencia GNU General Public License.
 
@@ -284,11 +294,13 @@ El programa recibe el conjunto de datos a clasificar en el archivo \texttt{data/
 
 \subsection{Extracción de datos} 
 \label{subsec:extraccion}
-Los datos para hacer las siguientes pruebas fueron recabados usando el broker COLDPower corriendo en el servidor de PowerTAC, este interactúa con el broker enviándole información para que este tome decisiones y responda con diversos tipos de órdenes, tales como órdenes de compra/venta en el mercado al por mayor, creación modificación y eliminación de nuevas tarifas, órdenes de balance, entre otras. La información que el servidor le envía al broker incluye datos sobre el mercado al por mayor y el de tarifas 
+Los datos para hacer las siguientes pruebas fueron recabados usando el broker COLDPower corriendo en el servidor de PowerTAC, este interactúa con el broker enviándole información para que este tome decisiones y responda con diversos tipos de órdenes, tales como órdenes de compra/venta en el mercado al por mayor, creación modificación y eliminación de nuevas tarifas, órdenes de balance, entre otras. 
+
+La información que el servidor le envía al broker incluye datos sobre el mercado al por mayor y el de tarifas 
 (tarifas publicadas por otros brokers), mercado de balance y servicio de contabilidad, el reporte del clima,
 información sobre sus clientes (información de producción y consumo de energía entre sus clientes, nuevos subscriptores, clientes que cancelaron subscripción) entre otras, en la figura \ref{fig:activity} se muestra un diagrama de la información compartida entre el broker y el servidor en cada time slot.
 
-La información recogida mediante el broker se guardo en un archivo .arff, que es el formato que usa la librería weka para guardar los \textit{"datasets"} o conjunto de datos; este data set\footnote{Objetos de la clase weka.core.Instances que almacenan un conjunto de datos listos para ser procesados por un algoritmo de la librería weka.} incluye información sobre el clima, y sobre la producción y el consumo de cada tipo de cliente, los archivos generados fueron los siguientes: 
+La información recogida mediante el broker se guardo en un archivo .arff, que es el formato que usa la librería weka para guardar los \textit{"datasets"} o conjunto de datos; este data set\footnote{Objetos de la clase weka.core.Instances que almacenan un conjunto de datos listos para ser procesados por un algoritmo de la librería weka.} incluye información sobre el clima, y sobre la producción y el consumo de cada tipo de cliente, los archivos generados fueron los siguientes: \\
 
 \renewcommand{\labelenumi}{$\bullet$ }
 \renewcommand{\labelenumii}{$\bullet$ }
@@ -323,7 +335,7 @@ Como cada cliente se comporta diferente, se guardaron los kilowatts consumidos o
 	\label{fig:datos}
 \end{figure}	
 
-En la figura \ref{fig:datos} se pueden ver los campos y sus tipos de datos (numéricos o nominales); el campo \texttt{kw} representa la cantidad total de kilowatts que todas las plantas solares produjeron en el último time slot, esta cantidad es positiva ya que es de producción, para los clientes de consumo esta cantidad es negativa. El campo \texttt{day} representa que día de la semana fue, este es útil para que se tome en cuenta los hábitos de consumo de ciertos tipos de clientes de consumo, como las casas, ya que puede ser que en ciertos días (ejemplo, fines de semana) consuman mas o menos energía. El campo \texttt{hour} tiene el mismo propósito, este también ayuda por ejemplo a predecir la producción de las plantas solares, pues estas tienen un pico de producción al medio día, y disminuye a 0 a medida que se acerca a la noche. El campo \texttt{temp} modela la temperatura, la cual también influye en el consumo de ciertos tipos de cliente, por ejemplo si la temperatura sube los consumidores pueden gastar energía en aire acondicionado, o si baja demasiado pueden empezar a gastar energía en calefacción o almacenamiento térmico (\texttt{thermal storage}). 
+En la figura \ref{fig:datos} se pueden ver los campos y sus tipos de datos (numéricos o nominales); el campo \texttt{kw} representa la cantidad total de kilowatts que todas las plantas solares produjeron en el último time slot, esta cantidad es positiva ya que es de producción, para los clientes de consumo esta cantidad es negativa. El campo \texttt{day} representa que día de la semana fue, este es útil para que se tome en cuenta los hábitos de consumo de ciertos tipos de clientes de consumo, como las casas, ya que puede ser que en ciertos días (ejemplo, fines de semana) consuman más o menos energía. El campo \texttt{hour} tiene el mismo propósito, este también ayuda por ejemplo a predecir la producción de las plantas solares, pues estas tienen un pico de producción al medio día, y disminuye a 0 a medida que se acerca a la noche. El campo \texttt{temp} modela la temperatura, la cual también influye en el consumo de ciertos tipos de cliente, por ejemplo si la temperatura sube los consumidores pueden gastar energía en aire acondicionado, o si baja demasiado pueden empezar a gastar energía en calefacción o almacenamiento térmico (\texttt{thermal storage}). 
 Los campos \texttt{windspeed} y \texttt{winddir} modelan la velocidad y dirección del viento, estos datos son cruciales para estimar la producción de las plantas eólicas, así como también el campo \texttt{cloudcover} que modela la nubosidad, es crucial para predecir la producción en las plantas solares. 
 Por último el campo \texttt{date} representa la fecha y hora de cuando se tomaron las mediciones, esto es esencial para el modelado de la serie de tiempo, en la librería weka se le conoce también como \texttt{timestamp}.
 
@@ -511,7 +523,7 @@ public static void main(String[] ar){
 
 \subsection{Implementación de algoritmo de series de tiempo} \label{subsec:implementacionSeries}
 
-La librería weka dispone de una implementación de un algoritmo para analizar series de tiempo el cual toma como base otro algoritmo de la librería que pueda manejar datos numéricos, tal como se vio en la sección \ref{subsec:estudiost} en la \hyperref[subsec:estudiost]{página \pageref{subsec:estudiost}}, este módulo también dispone de una clase para graficar las series de tiempo el cual se uso para ayudar a analizar los resultados de manera mas intuitiva.\\
+La librería weka dispone de una implementación de un algoritmo para analizar series de tiempo el cual toma como base otro algoritmo de la librería que pueda manejar datos numéricos, tal como se vio en la sección \ref{subsec:estudiost} en la \hyperref[subsec:estudiost]{página \pageref{subsec:estudiost}}, este módulo también dispone de una clase para graficar las series de tiempo el cual se uso para ayudar a analizar los resultados de manera más intuitiva.\\
 En la \hyperref[fig:diagramaUml]{figura \ref{fig:diagramaUml}} 
 se muestra un diagrama con la implementación del algoritmo de series de tiempo en la clase \texttt{TimeSeries}, el cual hereda de la clase \texttt{AbstractClassifier} para heredar los métodos base de cualquier algoritmo de regresión o clasificación de la librería, y poder usarla junto con otras clases de la librería. La clase implementa de \texttt{TSForecaster} ya que esta interfaz es la que define un analizador de series de tiempo, y esto permite que se use con otras clases de la librería como \texttt{JFreeChartDriver} que sirve para graficar los resultados del análisis, o \texttt{TSEvaluation} que sirve para evaluar el modelo generado.
 \begin{figure}[!b]%Ambiente ’figure’
@@ -581,7 +593,7 @@ try {
 	e.printStackTrace();
 }
 \end{lstlisting}
-En la línea 100 se cargan los datos del archivo \texttt{SOLAR\_PRODUCTION.arff}, de la línea 101 a la 104 se crea y configura el objeto de la clase \texttt{TimeSeries} que realizara el análisis y construcción del modelo, a este se le tiene que decir que campo es el que representa la dimension del tiempo en la serie (línea 102), también se tiene que especificar cuales son los campos objetivos (los que se quieren predecir), en este caso se eligió los kilowatts producidos por la planta solar (línea 103), y lo mas importante se tiene que especificar el algoritmo de aprendizaje a usar, para esta prueba se eligió la regresión líneal (línea 104).
+En la línea 100 se cargan los datos del archivo \texttt{SOLAR\_PRODUCTION.arff}, de la línea 101 a la 104 se crea y configura el objeto de la clase \texttt{TimeSeries} que realizara el análisis y construcción del modelo, a este se le tiene que decir que campo es el que representa la dimension del tiempo en la serie (línea 102), también se tiene que especificar cuales son los campos objetivos (los que se quieren predecir), en este caso se eligió los kilowatts producidos por la planta solar (línea 103), y lo más importante se tiene que especificar el algoritmo de aprendizaje a usar, para esta prueba se eligió la regresión líneal (línea 104).
 De la línea 105 a la 107 se separan los datos del archivo \texttt{SOLAR\_PRODUCTION.arff} en dos partes, la mayoría se pone en el objeto \texttt{train} que es el que se usara para construir el modelo, este contiene todos excepto los últimos 24 registros, estos últimos registros se ponen en el archivo \texttt{test}, que sera usado para probar el modelo generado y medir su precision.
 En la línea 109 se crea el objeto \texttt{evaluation} de la clase \texttt{TSEvaluation} pasandole los datos de entrenamiento y pruebas. Como no se desea imprimir el progreso se crea el arreglo \texttt{prog} de tamaño 0 en la línea 110 y  antes de ejecutar la evaluación se ejecutan las líneas 111 y 112 que especifican el número de unidades de tiempo a predecir.
 \\Por ultimo se ejecuta el método \texttt{evaluateForcaster()} que recibe el objeto que contiene el modelo de la serie de tiempo (este debe implementar la interfaz \texttt{TSForecaster}), un booleano que significa que debe construir el modelo, y el arreglo de flujos donde se imprimirá el progreso. 
@@ -648,7 +660,7 @@ System.out.println("Mean absolute percentage error: "
 	+ timeseries.getMAPE());
 \end{lstlisting}
 
-En el \hyperref[lst:maincustomtest]{código \ref{lst:maincustomtest}}, de las líneas 100 a la 102 esta especificada la configuración general, la cual es el nombre del archivo donde sacar los datos, el nombre de la variable objetivo o campo a pronosticar, y el campo de fecha que le daré la característica de serie de tiempo a los datos. Es necesario especificar porque puede ser que tenga mas de un campo de fecha y solo uno representa el eje temporal, o que no tenga campo de fecha tipo date, y tenga uno tipo numeric.\\
+En el \hyperref[lst:maincustomtest]{código \ref{lst:maincustomtest}}, de las líneas 100 a la 102 esta especificada la configuración general, la cual es el nombre del archivo donde sacar los datos, el nombre de la variable objetivo o campo a pronosticar, y el campo de fecha que le daré la característica de serie de tiempo a los datos. Es necesario especificar porque puede ser que tenga más de un campo de fecha y solo uno representa el eje temporal, o que no tenga campo de fecha tipo date, y tenga uno tipo numeric.\\
 De la línea 104 a la 108 se crea el objeto de la clase \texttt{TimeSeries} que hará el análisis de la serie y el pronostico, se le especifica los datos anteriormente mencionados y el algoritmo base para aprender el modelo que en este caso es regresión lineal. En las líneas 104-116 se le da información extra sobre la serie de tiempo, al ser el conjunto de datos la producción en kw de una planta solar, sabemos que la producción va a tener un ciclo constante de día y noche, produciendo energía entre las 6 am y las 6 pm, por lo que se le especifica este horario en la línea 110.	De la línea 118 a la 123 se especifican que datos se van a usar para entrenamiento (los primeros de 0 al tamaño-24) y cuales se van a usar para pruebas (los últimos 24), tal como se hizo en el \hyperref[lst:tsevaluation]{código \ref{lst:tsevaluation}}, la línea 124 es la que manda a llamar la función que hace la evaluación con los datos de entrenamiento y pruebas, usa los primeros para entrenar y construir un modelo, y los segundos para comparar el pronostico que se hizo con el modelo y calcular métricas de error.\\
 Después viene la parte de graficar los resultados, esto es de la línea 125 a la 137. Hay dos maneras de graficar los resultados, usando la clase \texttt{JFreeChartDriver} y pasandole al método \texttt{getGraphPanelSteps} un  objeto que implemente la interfaz \texttt{TSForecaster} (por eso la clase \texttt{TimeSeries} implementa esta interfaz), las predicciones a graficar, el nombre de la variable objetivo a graficar, un arreglo con los indices de las pruebas a graficar, cuyas pruebas salieron de la clase \texttt{TSEvaluation} y que cada una tiene los datos de $n$ pasos hacia el futuro, como esta clase esta personalizada, no retorna pruebas agrupadas por el número de pasos, retorna una sola prueba con los $n=24$ pasos hacia el futuro, por lo que solo se le pasa el indice 0; por ultimo se le pasa a este método el entero \textit{\texttt{offset}} y los datos de entrenamiento, que es, respectivamente, de donde empezar a graficar (0 significa desde el principio) y los datos reales que se compararan con los pronosticados. La gráfica generada por la clase \texttt{JFreeChartDriver} se puede ver en la 
 \hyperref[fig:JFreeChartDriver]{figura \ref{fig:JFreeChartDriver}}, 
@@ -757,7 +769,7 @@ Los datos ahora no aparecen como un número, sino como un rango, y esto permite 
 Al tener el cálculo de las posibilidades de que eventos ocurran se calcula el valor esperado
 usando los datos de la distribución de probabilidades calculada por la red bayesiana, por ejemplo, para el caso de que se tenga la  variable que representa los kilowatts producidos en una planta eólica $KW$ , la cual fue discretizada en $n=3$ rangos: 
 $KW= \{[0-2), [2-4), [4-\infty)\}$, y la distribución de probabilidad es: 
-$DP= \{0.2,~0.5,~0.3\} $; lo cual significa que la probabilidad de que la planta produzca entre 0 y 2 kilowatts es de 0.2, la probabilidad de que se produzca de 2 a 4 kilowatts es de 0.5 y la probabilidad de que se produzca mas de 6 kilowatts es de 0.3. 
+$DP= \{0.2,~0.5,~0.3\} $; lo cual significa que la probabilidad de que la planta produzca entre 0 y 2 kilowatts es de 0.2, la probabilidad de que se produzca de 2 a 4 kilowatts es de 0.5 y la probabilidad de que se produzca más de 6 kilowatts es de 0.3. 
 Usando estas probabilidades se calcula el valor esperado $\mathbb{E}(KW)$ con la siguiente formula: 
 \begin{equation}  \label{eq:valorEsperado}
 	\mathbb{E}(KW) = \sum_{i=0}^{n}{LB}_i \cdot {DP}_i 
@@ -864,7 +876,7 @@ protected void calculateErrors(int n){
 \subsection{Implementación del meta-algoritmo bagging}
 El meta-algoritmo bagging es otra opción a las redes bayesianas ya que al igual que estas, es un algoritmo de clasificación (cuando se usa con otro algoritmo de clasificación, como en este caso) que toma en cuenta los valores de las variables de una instancia para poder ``clasificar'' la variable de clase, es decir, en el caso de este proyecto, toma en cuenta las variables del clima de un cierto momento en el tiempo y usa estos datos para calcular el número de kilowatts esperados para ese momento.
 
-Implementar este método usando la librería weka es mas fácil que implementar la red bayesiana, ya que no hace falta preprocesar los datos de entrada (discretizarlos) o los de salida (calcular el valor esperado con base a las probabilidades), por lo que no fue necesario hacer una clase que envuelva este comportamiento, y se uso directamente la clase \texttt{weka.classifiers.meta.Bagging}, permitiendo que su uso sea tan simple como el que se ve en el código \ref{lst:testBaggin}, 
+Implementar este método usando la librería weka es más fácil que implementar la red bayesiana, ya que no hace falta preprocesar los datos de entrada (discretizarlos) o los de salida (calcular el valor esperado con base a las probabilidades), por lo que no fue necesario hacer una clase que envuelva este comportamiento, y se uso directamente la clase \texttt{weka.classifiers.meta.Bagging}, permitiendo que su uso sea tan simple como el que se ve en el código \ref{lst:testBaggin}, 
 en donde se usa con un árbol de decisión como algoritmo base, este se encuentra encapsulado en la clase \texttt{weka.classifiers.trees.REPTree}, en la línea 102 vemos como se asigna como algoritmo base, en la línea 106 se leen los datos del archivo \texttt{SOLAR\_PRODUCTION.arff}, 
 la variable \texttt{numPred} de la línea 108 guarda el número de predicciones que se harán, según esto se crearan los datasets de entrenamiento y de pruebas (líneas 112, 113) donde el entrenamiento es todo el data set leído en la línea 106 y las pruebas son los últimos \texttt{numPred} registros, en este caso, los últimos 24. 
 En la línea 116 se construye el clasificador con los datos de entrenamiento, y en el for de la línea 118 se imprimen las predicciones hechas con este clasificador, junto con los valores reales y la fecha.
@@ -1059,7 +1071,7 @@ En la \hyperref[fig:graficaResultadosCompSeries]{figura \ref{fig:graficaResultad
 \end{figure}
 
 \subsection{Redes bayesianas} \label{subsec:compRedes}
-En el caso de las redes bayesianas, estas necesitan dos algoritmos base para construirse, un algoritmo que aprenda la estructura de la red, y otro que aprenda las probabilidades dentro de la estructura. Al probar los algoritmos para aprender las probabilidades surgieron errores, el estimador \texttt{BMAEstimator} no puede manejar redes con nodos con mas de un padre, y la clase \texttt{MultiNomialBMAEstimator} solo puede soportar atributos nominales binarios, así que el estimador que se uso fue el \texttt{SimpleEstimator}, aunque se dejo la estructura por si en el futuro se agrega otro algoritmo, eso se creo en el método \texttt{createEstimators} en la clase \texttt{BayesianNetwork}, el cual aparece en el 
+En el caso de las redes bayesianas, estas necesitan dos algoritmos base para construirse, un algoritmo que aprenda la estructura de la red, y otro que aprenda las probabilidades dentro de la estructura. Al probar los algoritmos para aprender las probabilidades surgieron errores, el estimador \texttt{BMAEstimator} no puede manejar redes con nodos con más de un padre, y la clase \texttt{MultiNomialBMAEstimator} solo puede soportar atributos nominales binarios, así que el estimador que se uso fue el \texttt{SimpleEstimator}, aunque se dejo la estructura por si en el futuro se agrega otro algoritmo, eso se creo en el método \texttt{createEstimators} en la clase \texttt{BayesianNetwork}, el cual aparece en el 
 \hyperref[lst:createLearners]{código \ref{lst:createLearners}}.
 Los algoritmos para aprender la estructura de la red bayesiana se crearon en el método \texttt{createSearchAlgorithms} de la clase \texttt{BayesianNetwork}, el cual aparece en el 
 \hyperref[lst:createLearners]{código \ref{lst:createLearners}}, podemos ver que ciertos algoritmos reciben parámetros, estos se declararon al principio del método, los parámetros son: 
@@ -1193,16 +1205,16 @@ en donde se uso un set de datos en donde un día estaba muy nublado y la producc
 \subsection{Diferencias entre redes bayesianas y series de tiempo}
 Con las comparaciones hechas en el algoritmo de series de tiempo se puede concluir que lo que hace es encontrar cierto patrón de repetición, y cuando se le pide que pronostique a futuro, lo que hace es repetir este patrón, tal como se ve en la figuras 
 \ref{fig:graficaResultadosCompSeries} y \ref{fig:graficaSerieIrregluar}, en donde repitió el patrón casi exactamente igual; en la 
-\hyperref[fig:graficaResultadosCompSeries]{ figura \ref{fig:graficaResultadosCompSeries}} se observa que acertó la predicción del primer día, pero la del segundo fue mas errado. En la 
+\hyperref[fig:graficaResultadosCompSeries]{ figura \ref{fig:graficaResultadosCompSeries}} se observa que acertó la predicción del primer día, pero la del segundo fue más errado. En la 
 \hyperref[fig:graficaSerieIrregluar]{ figura \ref{fig:graficaSerieIrregluar}} hizo un pronostico pobre desde el principio, y solamente lo repitió para el primero y segundo día.\\
-El algoritmo de redes bayesianas puede tomar en cuenta las variables del clima, lo cual le permite hacer predicciones mas acertadas cuando el clima es un factor importante, cuando el clima no es un factor importante el algoritmo de series de tiempo tiene un desempeño parecido a la de la red bayesiana, así que en conclusión el uso de un algoritmo o de otro depende de la situación que se tenga y de la procedencia de los datos, por ejemplo, las plantas solares y eólicas dependen mucho del clima, por lo que el uso de una red bayesiana es mas apropiado para la predicción de la producción de estas, mientras que para otro tipo de clientes puede ser suficiente una serie de tiempo.
+El algoritmo de redes bayesianas puede tomar en cuenta las variables del clima, lo cual le permite hacer predicciones más acertadas cuando el clima es un factor importante, cuando el clima no es un factor importante el algoritmo de series de tiempo tiene un desempeño parecido a la de la red bayesiana, así que en conclusión el uso de un algoritmo o de otro depende de la situación que se tenga y de la procedencia de los datos, por ejemplo, las plantas solares y eólicas dependen mucho del clima, por lo que el uso de una red bayesiana es más apropiado para la predicción de la producción de estas, mientras que para otro tipo de clientes puede ser suficiente una serie de tiempo.
 
 \subsection{Comparación de algoritmo bagging y red bayesiana} \label{subsec:comparacionBaggingRedB}
 
 Después de hacer pruebas con los algoritmos de series de tiempo y redes bayesianas, se hicieron pruebas con otros algoritmos de clasificación de la librería weka, entre estos se hicieron pruebas con la clase \texttt{weka.classifiers.meta.Bagging} la cual tuvo mejores resultados que los obtenidos con los algoritmos de redes bayesianas. %poner referencia aqui
 %El método bagging o ``Agregación bootstrap'' (bootstrap aggregating) se trata de un metaalgoritmo diseñado para mejorar la estabilidad y precision de algoritmos de aprendizaje automático (machine learning) usados en la clasificación estadística y regresión. 
 %Esto significa que trabaja con otro algoritmo de base, mejorando su desempeño. 
-Para estas pruebas se uso como algoritmo base del bagging el algoritmo de arboles de decisión encapsulado en la clase \texttt{weka.classifiers.trees.REPTree}, este es un algoritmo de clasificación como es el caso de las redes bayesianas por lo que el método bagging se comporta como un algoritmo de clasificación, esto lo hace una alternativa ideal al método de redes bayesianas.
+Para estas pruebas se uso como algoritmo base del bagging el algoritmo de árboles de decisión encapsulado en la clase \texttt{weka.classifiers.trees.REPTree}, este es un algoritmo de clasificación como es el caso de las redes bayesianas por lo que el método bagging se comporta como un algoritmo de clasificación, esto lo hace una alternativa ideal al método de redes bayesianas.
 
 Al tratarse de un algoritmo de clasificación, también necesita datos del clima para hacer las predicciones, así que para estas pruebas se usaron los datasets con los datos reales del clima (y no con las predicciones que da el servidor) para eliminar esa incertidumbre extra y enfocarse en que algoritmo clasifica mejor. 
 Se hicieron varias pruebas con varios data sets, en la figura \ref{fig:prediccionSolarRedBayesiana} se visualiza el resultado de una de estas pruebas usando el algoritmo de red bayesiana, la cual dio un error medio absoluto de 0.2309, mientras que al probar el mismo data set con el algoritmo bagging obtuvo un error medio absoluto de 0.0762, es decir que el error se redujo a menos de la mitad, la gráfica de este resultado se puede ver en la figura \ref{fig:prediccionSolarBagging}.
@@ -1287,12 +1299,12 @@ En la figura \ref{fig:ArquitecturaModuloPrediccion} se han omitido las demás pa
 La predicción agrupando por power type consiste en sumar todos los kilowatts consumidos o producidos por todos los clientes de un power type específico en un timeslot específico, almacenarlos en un solo data set y aplicar los algoritmos de predicción sobre ese data set. 
 Esto tiene como ventaja que se ejecuta mucho más rápido y ocupa menos memoria que hacer la predicción por cada uno de los clientes, pero su desventaja es que depende de que los clientes suscritos sean estables, es decir, que no cancelen el contrato con el agente, o que no lleguen más clientes; cuando esto ocurre la predicción varía pues ya habrá menos o más clientes para producir la misma cantidad de energía. 
 Para  intentar minimizar este efecto se dividió la cantidad de energía entre el número de clientes, dando así un estimado del consumo o producción por cliente, y al hacer la predicción sobre estos datos, como es un valor estimado de cuanto produce/consume un cliente, solo se multiplica por el número actual de clientes para tener un estimado de la producción total por power type. 
-Esto daría mejores resultados si todos los clientes tuvieran patrones de consumo similares, pero debido a que algunos clientes consumen miles de veces más que otros, cuando uno de estos se suscribe (o cancela) a una tarifa, aunque solo aumente (o disminuya) en un cliente, el cociente de consumo y número de clientes cambia significativamente, este efecto se explica y ilustra mas a detalle en la sección \ref{subsection:pruebasDefaultBrokerMaxonYUDE}.
+Esto daría mejores resultados si todos los clientes tuvieran patrones de consumo similares, pero debido a que algunos clientes consumen miles de veces más que otros, cuando uno de estos se suscribe (o cancela) a una tarifa, aunque solo aumente (o disminuya) en un cliente, el cociente de consumo y número de clientes cambia significativamente, este efecto se explica y ilustra más a detalle en la sección \ref{subsection:pruebasDefaultBrokerMaxonYUDE}.
 
 Por esta razón se decidió implementar también la predicción por cliente, la cual en vez de sumar todos los kilowatts consumidos/producidos por un cliente en cada timeslot y ponerlos en un mismo data set, guarda un data set por cada cliente y realiza una predicción por cada uno de ellos, la cual al final suma para obtener el total de energía producida/consumida esperada para un timeslot. 
 Esta forma tiene la ventaja de ser más precisa, y no le afecta tanto el hecho de que se suscriban nuevos clientes o cancelen clientes actuales, pero tiene la desventaja de ser mucho más lento y ocupar más recursos. 
 Es importante aclarar que los clientes de los que se hablan aquí no representan a un individuo, sino a una población de hasta 30 mil individuos, cada uno con un patrón de consumo similar, por lo que el método anterior para hacer predicciones con datos agrupados es más efectivo.
-Este método está implementado en la clase \texttt{ClientClassifier}, la cual hace uso de un \textit{buffer de predicciones} el cual guarda todas las predicciones hechas hasta el momento, y al mismo tiempo corre un hilo que constantemente está produciendo nuevas predicciones y cada vez que tiene nuevos resultados los pone en el buffer, de esta manera no necesita calcular las predicciones para las próximas 24 horas en cada timeslot (como el método anterior) pues no le daría tiempo en los 5 segundos que dura un timeslot, ya que se puede llegar a tardar hasta 9 segundos. Este método se ocupa solo para los power types de consumo y consumo interrumpible, que son los que consumen más energía, aportando mas desbalance a la red.
+Este método está implementado en la clase \texttt{ClientClassifier}, la cual hace uso de un \textit{buffer de predicciones} el cual guarda todas las predicciones hechas hasta el momento, y al mismo tiempo corre un hilo que constantemente está produciendo nuevas predicciones y cada vez que tiene nuevos resultados los pone en el buffer, de esta manera no necesita calcular las predicciones para las próximas 24 horas en cada timeslot (como el método anterior) pues no le daría tiempo en los 5 segundos que dura un timeslot, ya que se puede llegar a tardar hasta 9 segundos. Este método se ocupa solo para los power types de consumo y consumo interrumpible, que son los que consumen más energía, aportando más desbalance a la red.
 Una vez hecha las predicciones por power type en un timeslot, se toman las predicciones disponibles del buffer de \texttt{ClientClassifier} y se da una predicción de como será el balance de los clientes del agente en las próximas 24 horas.
 
 
@@ -1627,7 +1639,7 @@ El data view \texttt{CustomersForecastDataView} se basa en la clase \texttt{Cust
 Los mensajes de transacciones de tarifas son encapsulados en la clase \texttt{TariffTransaction}, esta contiene la información acerca del tipo de transacción que se realiza en el atributo \texttt{txType} de tipo Type, este es un enum con los posibles valores:  \texttt{Type \{PUBLISH, PRODUCE, CONSUME, PERIODIC, SIGNUP, WITHDRAW, REVOKE\}}, aunque la clase solo toma en cuenta los mensajes de tipo \texttt{PRODUCE, CONSUME, SIGNUP} y \texttt{WITHDRAW}, y los demás los ignora.
 \renewcommand{\labelenumi}{$\bullet$ }
 \begin{enumerate}
-	\item \texttt{PRODUCE}: Significa que el objeto \texttt{TariffTransaction} guarda información sobre la compra de energía producida a un cliente productor o conjunto de clientes, por lo cual el atributo \texttt{kw} es positivo y el atributo \texttt{charge} es negativo, lo cual significa que el agente le paga al cliente. Para saber mas sobre el o los cliente se puede consultar el objeto \texttt{CustomerInfo} retornado por el método \texttt{getCustomerInfo} el cual contiene su nombre, power type, población, y otros atributos que no se usan en esta competencia. Recordemos que los clientes en el servidor son agrupados por tipo, por lo que un cliente puede representar una población de clientes del mismo tipo (un edificio de oficinas por ejemplo tiene varios clientes los cuales se pueden agrupar), la información de este conjunto de clientes esta en este objeto, y para saber la población o número de clientes agrupados, se puede consultar el método \texttt{getCustomerCount}.
+	\item \texttt{PRODUCE}: Significa que el objeto \texttt{TariffTransaction} guarda información sobre la compra de energía producida a un cliente productor o conjunto de clientes, por lo cual el atributo \texttt{kw} es positivo y el atributo \texttt{charge} es negativo, lo cual significa que el agente le paga al cliente. Para saber más sobre el o los cliente se puede consultar el objeto \texttt{CustomerInfo} retornado por el método \texttt{getCustomerInfo} el cual contiene su nombre, power type, población, y otros atributos que no se usan en esta competencia. Recordemos que los clientes en el servidor son agrupados por tipo, por lo que un cliente puede representar una población de clientes del mismo tipo (un edificio de oficinas por ejemplo tiene varios clientes los cuales se pueden agrupar), la información de este conjunto de clientes esta en este objeto, y para saber la población o número de clientes agrupados, se puede consultar el método \texttt{getCustomerCount}.
 	
 	 \item \texttt{CONSUME}: Cuando una transacción de tarifa es de este tipo, significa que hubo una venta de energía a un cliente o clientes consumidores,  por lo que el atributo \texttt{kw} es negativo y el atributo \texttt{charge} es positivo, lo cual significa que el cliente le paga al agente.
 	
@@ -1859,7 +1871,7 @@ En contraste a esto, la predicción de la velocidad del viento generada en el ti
 %con 3 agentes, sin los 3 agentes, etc
 \subsection{Pruebas contra el default broker y los agentes Maxon y AgentUDE} \label{subsection:pruebasDefaultBrokerMaxonYUDE}
 
-Las primeros pruebas que se hicieron con el agente COLDPower corriendo con la API integrada, fueron únicamente contra el default broker, esto daba muy buenos resultados en las predicciones puesto que no había interferencias de los otros agentes, y el default broker no causa  mucho impacto en el juego contra el agente COLDPower, en la figura \ref{fig:errorGlobalInterrumpible1agente} podemos ver las gráficas de predicciones del consumo interrumpible (se eligieron estas para este ejemplo porque son las mas estables y se nota mas la interferencia de los otros agentes) mientras jugaba el agente COLDPower solo contra el default broker, estas predicciones fueron buenas en comparación con las hechas en juegos contra los agentes Maxon y AgentUDE, en donde estos ganan y pierden clientes durante el juego, haciendo que estos clientes se suscriban o cancelen a las tarifas del agente COLDPower, lo cual hace que la predicción justo antes que ocurra uno de estos cambios sea mala.
+Las primeros pruebas que se hicieron con el agente COLDPower corriendo con la API integrada, fueron únicamente contra el default broker, esto daba muy buenos resultados en las predicciones puesto que no había interferencias de los otros agentes, y el default broker no causa  mucho impacto en el juego contra el agente COLDPower, en la figura \ref{fig:errorGlobalInterrumpible1agente} podemos ver las gráficas de predicciones del consumo interrumpible (se eligieron estas para este ejemplo porque son las más estables y se nota más la interferencia de los otros agentes) mientras jugaba el agente COLDPower solo contra el default broker, estas predicciones fueron buenas en comparación con las hechas en juegos contra los agentes Maxon y AgentUDE, en donde estos ganan y pierden clientes durante el juego, haciendo que estos clientes se suscriban o cancelen a las tarifas del agente COLDPower, lo cual hace que la predicción justo antes que ocurra uno de estos cambios sea mala.
 
 \begin{figure}[h]
 	\centering
@@ -1870,9 +1882,9 @@ Las primeros pruebas que se hicieron con el agente COLDPower corriendo con la AP
 
 En la figura \ref{fig:errorGlobalInterrumpible3agentes} vemos como fue la predicción para el timeslot 396 (gráfica en azul, datos reales en rojo) mientras jugaban los tres agentes (AgentUDE, Maxon y COLDPower), la cual dio 0 para los próximos 24 timeslots ya que en ese momento no había clientes, pero a partir del timeslot 397 empezó a tener clientes. 
 La población por cada timeslot para los power type de consumo y consumo interrumpible se guardo en el el archivo \texttt{Poblacion.txt} para después poder hacer análisis con estos datos y las predicciones, la figura \ref{fig:poblaciontxt} muestra el archivo en el cual podemos ver que en el timeslot 396 no había clientes y a partir del 397 empezaron a llegar.
-También podemos ver en este archivo que la predicción para los siguientes 24 timeslots fue 0 en el timeslot 396 y 396, esto lo dice después de las líneas que dicen ``Se lleno buffer'', ya que esta predicción se guarda en un buffer, y se puede ver que a partir del timeslot 397 esta predicción ya no es 0, pues ya tiene clientes que consuman energía y la predicción de esta energia consumida por ellos no es 0, aunque es baja, tal como se ve en la figura \ref{fig:interrumpibleTimeslot398}, en esta gráfica se ve la predicción que se hizo cuando el agente había ganado pocos clientes, y el módulo de predicción supone que se mantendrá con esos mismos clientes por los próximos 24 timeslots, por lo cual los valores predichos son bajos, de la misma magnitud de los valores reales del timeslot 399 al 403, pero como en los timeslots 404 y 410 se ganaron mas clientes, los valores reales aumentaron en estos timeslots, haciendo que la predicción hecha en los timeslots 396 y 398 no se parezcan en nada.
-En las figuras \ref{fig:interrumpibleTimeslot405} y \ref{fig:interrumpibleTimeslot411} se muestran los cambios en la predicción que provoco el ganar mas clientes en los timeslots 404 y 410, en las predicciones hechas en los timeslots 405 y 411 respectivamente. 
-Podemos ver que como en el timeslot 404 gana mas clientes, la predicción hecha en el 405 (figura \ref{fig:interrumpibleTimeslot405}) fue buena hasta el timeslot 409, ya que en el 410 llegaron mas clientes los cuales gastaron mas energía, y la predicción que se hizo fue asumiendo que no llegarían mas. 
+También podemos ver en este archivo que la predicción para los siguientes 24 timeslots fue 0 en el timeslot 396 y 396, esto lo dice después de las líneas que dicen ``Se lleno buffer'', ya que esta predicción se guarda en un buffer, y se puede ver que a partir del timeslot 397 esta predicción ya no es 0, pues ya tiene clientes que consuman energía y la predicción de esta energia consumida por ellos no es 0, aunque es baja, tal como se ve en la figura \ref{fig:interrumpibleTimeslot398}, en esta gráfica se ve la predicción que se hizo cuando el agente había ganado pocos clientes, y el módulo de predicción supone que se mantendrá con esos mismos clientes por los próximos 24 timeslots, por lo cual los valores predichos son bajos, de la misma magnitud de los valores reales del timeslot 399 al 403, pero como en los timeslots 404 y 410 se ganaron más clientes, los valores reales aumentaron en estos timeslots, haciendo que la predicción hecha en los timeslots 396 y 398 no se parezcan en nada.
+En las figuras \ref{fig:interrumpibleTimeslot405} y \ref{fig:interrumpibleTimeslot411} se muestran los cambios en la predicción que provoco el ganar más clientes en los timeslots 404 y 410, en las predicciones hechas en los timeslots 405 y 411 respectivamente. 
+Podemos ver que como en el timeslot 404 gana más clientes, la predicción hecha en el 405 (figura \ref{fig:interrumpibleTimeslot405}) fue buena hasta el timeslot 409, ya que en el 410 llegaron más clientes los cuales gastaron más energía, y la predicción que se hizo fue asumiendo que no llegarían más. 
 A su vez esta predicción mejoro en el timeslot 411 (figura \ref{fig:interrumpibleTimeslot411}) ya que en ese punto contaba con el número de clientes que se mantuvo en los timeslots siguientes.
 
 \begin{figure}[ht]
