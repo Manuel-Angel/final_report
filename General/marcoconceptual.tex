@@ -1,28 +1,43 @@
 \section{Antecedentes.}
+
+La crisis energética que afrontamos demanda que busquemos fuentes de energía renovables y dejar de depender tanto del petroleo, empresas de distintos países están intentando aprovechar al máximo los diferentes tipos de energías renovables como la solar o la eólica, produciendo un porcentaje cada vez mas alto del total de la  energía. 
+
+Con el surgimiento de mas proveedores de energía surge la necesidad de actualizar la infraestructura eléctrica que esta diseñada para un solo proveedor y muchos clientes, y hacer la red mas ``inteligente'' y que el flujo de la energía pueda ser bidireccional para que soporte varios productores e incluso las viviendas con paneles solares o autos eléctricos y pequeñas empresas puedan convertirse también en pequeños productores y no solo consumidores, a este tipo de red se les denomina redes inteligentes o \textit{``Smart Grids''}.
+
+Junto con la adopción de redes energéticas más inteligentes, surge la idea de regular la oferta y demanda de energía en un mercado libre de una manera mas inteligente, donde todo aquel capas de producir energía pueda venderla, esto supone una complejidad mucho mayor al mercado energético clásico donde unos pocos grandes productores venden la energía a todos los consumidores, y hace que sea mas complicado que cada productor le cobre directamente a los que consumen su energía, por lo que surge la idea de que existan intermediarios. A estos intermediarios del mercado energético se les denominan \textit{brokers}.
+
+Uno de los mercados energéticos dominantes es el de tarifas en donde pequeños consumidores o productores pueden comprar o vender energía de los agentes ``broker'' a través de tarifas, este mercado esta regido totalmente por la oferta y la demanda.
+Las tarifas son contratos entre un productor y un broker o un consumidor y un broker, es decir, el broker es un agente intermediario el cual llega a un acuerdo con los productores para vender la energía producida a los consumidores, y este organiza ambas partes para negociar una cierta cantidad de energía bajo ciertas condiciones \cite{MPAlonsoAYRGonzalezDesarrolloDeTec}.
+
+Universidades de países como Grecia, Croacia, Países bajos y Estados unidos vieron la necesidad de empezar a desarrollar estrategias para competir en un mercadeo energético regido por la oferta y la demanda donde cualquiera puede generar energía, asi como probar estrategias para balancear la red (que la energía producida sea igual a la energía consumida) antes de implementar completamente a una infraestructura de red inteligente en su red eléctrica, por lo que decidieron crear un simulador en donde pudieran probar sus ideas implementadas en agentes inteligentes y compararlos con los de otras universidades del mundo, a este simulador y competencia le llamaron Power Trading Agent Competition o Power TAC, que significa competencia de agentes comerciantes de energía.
+
 Power Trading Agent Competition inicio oficialmente en el año del 2012. Hubo tres torneos, la primera comenzó a finales de mayo de 2012 con un ronda de calificación  como parte de la  Decimotercera Competición Anual de Agente de Comercio. Durante la conferencia AAMAS-12 celebrada en Valencia los días 4 y 5 de junio se llevó a cabo una ronda de demostración. Los participantes diseñaron agentes comerciantes autónomos que actúan como intermediarios minoristas, obteniendo beneficios mediante la venta de contratos de tarifas a los clientes y el comercio en un mercado mayorista. Una segunda ronda de Power TAC se celebró del 24 al 27 de septiembre y la tercera ronda se celebró del 30 de noviembre al 7 de diciembre.
 Las tarifas son contratos entre un productor y un broker o un consumidor y un broker, es decir, el broker es un agente intermediario el cual llega a un acuerdo con los productores para vender la energía producida a los consumidores, y este organiza ambas partes para negociar una cierta cantidad de energía bajo ciertas condiciones \cite{MPAlonsoAYRGonzalezDesarrolloDeTec}.\\
 
 Para probar el desempeño del agente COLDPower en un entorno de simulación fue inscrito en el torne de Power Trading Agent Competition 2016 (Power TAC 2016), la competencia se llevó a cabo en la ciudad de Nueva York en el marco de la 25ª Conferencia Internacional Conjunta de Inteligencia Artificial. Se realizaron 4 rondas: una fase de clasificación, dos rondas de eliminatoria y una ronda final. En la ronda final del torneo PowerTAC 2016, 7 instituciones internacionales de investigación participaron con sus agentes autónomos. En los resultados de la ronda final el agente COLDPower obtuvo el segundo lugar superado por el agente Maxon16 desarrollado por la Institución de Westfaelische Hochschule.
 
 \section{Problematica.}
-Uno de los principales objetivos del proyecto “CEMIE-Eólico: Desarrollo de tecnología basada en inteligencia artificial y mecatrónica, para integrar un parque de generación de energía eólica a una red inteligente” es el análisis, diseño e implementación de un sistema capaz de integrar los componentes que conforman un parque eólico a un red de energía. Dicho sistema es sometido a prueba mediante la competencia de Power TAC (Power Trading Agent Competition).
+Uno de los principales objetivos del proyecto “CEMIE-Eólico: Desarrollo de tecnología basada en inteligencia artificial y mecatrónica, para integrar un parque de generación de energía eólica a una red inteligente” es el análisis diseño e implementación de un sistema capaz de integrar los componentes que conforman un parque eólico a un red de energía. Dicho sistema es sometido a prueba mediante la competencia de Power TAC (Power Trading Agent Competition).
 \\
 
-Power TAC modela la alta complejidad de los mercados energéticos contemporáneos y futuros, permitiendo la experimentación a gran escala, teniendo como principales entidades a los cliente que puede representar consumidores,  productores o ambos y un agente que actúa como intermediario buscando obtener beneficios, mediante la oferta de tarifas, el comercio de energía y manteniendo el equilibrio entre de la oferta y de la demanda.
+Power TAC modela la alta complejidad de los mercados energéticos contemporáneos y futuros, permitiendo la experimentación a gran escala, teniendo como principales entidades a los cliente que pueden representar consumidores,  productores o ambos y un agente que actúa como intermediario buscando obtener beneficios, mediante la oferta de tarifas, el comercio de energía y manteniendo el equilibrio entre de la oferta y de la demanda.
 \\
  
-En la competencia de Power TAC 2016 el INAOE obtuvo el segundo lugar, utilizando como estrategia balancear el portafolio del broker utilizando solo dos de los tres mercados, el Mercado al por Mayor o Mercado del Día Siguiente y el Mercado al por Menor o de Tarifas. 
-En el mercado de tarifas el broker publica tarifas especificas provocando dos posibles efectos, la suscripción o el retiro de los clientes, con el objetivo de tener un balance entre la producción y el consumo de energía entre los clientes. 
-En el mercado al por mayor pueden enviar ordenes de compra o venta para cada una de las 24 horas siguientes, y para saber que ordenes enviar, se utiliza una predicción de las próximas 24 horas a partir de los datos del pasado, permitiendo predecir el precio por kWh para comprar energía cuando el precio sea menor y vender energía cuando el precio sea mayor.
+En la competencia de Power TAC 2016 el INAOE obtuvo el segundo lugar con su broker COLDPower, utilizando como estrategia balancear el portafolio del broker utilizando solo dos de los tres mercados, el Mercado al por Mayor o Mercado del Día Siguiente y el Mercado al por Menor o de Tarifas. 
+En el mercado de tarifas el broker publica tarifas específicas provocando dos posibles efectos, la suscripción o el retiro de los clientes, con el objetivo de tener un balance entre la producción y el consumo de energía entre los clientes. 
+En el mercado al por mayor pueden enviar órdenes de compra o venta para cada una de las 24 horas siguientes, y para saber que órdenes enviar, se utiliza una predicción de las próximas 24 horas a partir de los datos del pasado, permitiendo predecir el precio por kWh para comprar energía cuando el precio sea menor y vender energía cuando el precio sea mayor.
 \\
  
 El objetivo del broker es maximizar sus ganancias en el  Mercado al por Mayor, en el Mercado de Tarifas y obtener la menor cantidad de penalización por estar desbalanceado utilizando el Mercado de Balance, el ganador de un juego es el broker con el saldo bancario más alto al finalizar la simulación. 
 El desbalance es una de las principales penalizaciones del sistema hacia los broker, por ese motivo el sistema crea bonos o incentivos para los broker por mantener el balance entre el consumo y la producción de sus clientes utilizando las herramientas disponibles del entorno.
 
+Una de las maneras de balancearse es comprar energía faltante o vender energía sobrante en el mercado al por mayor o también llamado mercado del día siguiente, ya que en el se puede comprar o vender energía para una determinada hora de las siguientes 24 horas y para esto se necesita tener las predicciones de la producción y el consumo que tendrán los clientes de un broker en las próximas 24 horas.
+La version del agente COLDPower que participo en el 2016 calculaba estas predicciones utilizando un promedio ponderado de los kilowatts producidos y consumidos en cada una de las horas 24 horas utilizando los datos de los días anteriores, estos promedios servían como predicciones, aunque no eran muy precisas y costos por desbalance aun afectaban al agente, por ello es necesario mejorar este método de predicción creando un módulo que se dedique exclusivamente a esto y que de mejores resultados para que el agente pueda tomar mejores decisiones que lleven a un mejor balance y las penalizaciones por desbalance disminuyan.
+
 \section{Objetivos.}
 \subsection{General.}
-Desarrollar un modulo de predicción para la nueva versión del agente inteligente de compra venta de energía COLDPower.
-\subsection{Especificos.}
+Desarrollar un módulo de predicción para la nueva versión del agente inteligente de compra venta de energía COLDPower.
+\subsection{Específicos.}
 \renewcommand{\labelenumi}{$\bullet$ }
 \renewcommand{\labelenumii}{\alph{enumii})}
 \begin{enumerate}
@@ -33,24 +48,24 @@ Desarrollar un modulo de predicción para la nueva versión del agente inteligen
     \item Investigar sobre técnicas de predicción.
     \begin{enumerate}
         \item Investigar métodos de regresión, redes bayesianas y series de tiempo
-		\item Hacer pruebas con datos del clima y el mercado energético.
+		\item Implementar los métodos de regresión y compararlos usando datos del clima y el mercado energético.
 		\item Seleccionar técnicas de predicción.
     \end{enumerate}
-    \item Implementar mejorar a al agente COLDPower.
+    \item Implementar el modulo de predicción.
         \begin{enumerate}
-        \item Diseñar un módulo de pronostico.
-		\item Implementar de una API.
-		\item Implementar de una interfaz gráfica.
+        \item Diseñar el módulo de predicción.
+		\item Implementar de una API que contenga todos los métodos de predicción y facilite la implementación del modulo.
+		\item Implementar de una interfaz gráfica que visualice los datos que genera el agente en cada juego.
 		\item Integrar la API con el agente COLDPower
     \end{enumerate}
 \end{enumerate}
 
 \section{Justificación.}
-Uno de los temas de interés común más importante en la actualidad es la crisis energética y el cómo solucionarse, en México se esta llevando a cabo cambios políticos que abren las puertas a un nuevo tipo de mercado, el energético, esto quiere decir que ahora cualquiera pueda comprar o vender energía y para ello se necesitan redes eléctricas más inteligentes que permitan tener con control entre la oferta y la demanda de la red.
+Uno de los temas de interés común más importante en la actualidad es la crisis energética y el cómo solucionarse, en México se esta llevando a cabo cambios políticos que abren las puertas a un nuevo tipo de mercado, el energético, esto quiere decir que ahora cualquiera pueda comprar o vender energía y para ello se necesitan redes eléctricas más inteligentes que permitan tener control entre la oferta y la demanda de la red.
 \\
 
-Los mercados de energía comienzan a funcionar en México a través de subastas: lo que se busca es que la gente que produce energía, que no necesariamente es la ex paraestatal CFE, pueda venderla. Por otro lado estarán compradores  que necesitan energía hablando por ejemplo de un consorcio que consume mucha energía (e.g Grupo WalMart o America Movil) y que puedan buscar a quien comprar al mejor precio, y todo ello en el marco de las regularizaciones \cite{GRiveraProyectoDeIADelInaoe}.\\
+Los mercados de energía comienzan a funcionar en México a través de subastas: lo que se busca es que la gente que produce energía, que no necesariamente es la paraestatal CFE, pueda venderla. Por otro lado estarán compradores  que necesitan energía. Hablando por ejemplo de un consorcio que consume mucha energía (e.g Grupo WalMart o América Movil) y que puedan buscar a quien comprar al mejor precio, y todo ello en el marco de las regularizaciones \cite{GRiveraProyectoDeIADelInaoe}.\\
 
 Junto con la adopción de redes energéticas más inteligentes, surge la idea de regular la oferta y demanda de energía en un mercado libre, donde los productores puedan vender energía a consumidores usando un broker como intermediario \cite{Fixed-priceTariffG2015}. 
 Uno de los mercados energéticos dominantes es el de tarifas en donde pequeños consumidores pueden comprar energía de los agentes ``broker'' a través de tarifas.
-La infraestructura necesaria (redes energéticas inteligentes) no ha llegado aun a México para que esto sea posible, pero la comunidad científica europea esta consciente de que esto sera una necesidad cada vez mas demandante, así que crearon el servidor de simulación Power TAC para poder probar estrategias de mercado en una simulación de una red energética inteligente, organizando también un concurso internacional del mismo nombre en el que el INAOE participa con su agente COLDPower.
+La infraestructura necesaria (redes energéticas inteligentes) no ha llegado aún a México para que esto sea posible, pero la comunidad científica europea esta consciente de que esto sera una necesidad cada vez mas demandante, así que crearon el servidor de simulación Power TAC para poder probar estrategias de mercado en una simulación de una red energética inteligente, organizando también un concurso internacional del mismo nombre en el que el INAOE participa con su agente COLDPower.
