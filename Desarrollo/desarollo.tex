@@ -160,19 +160,19 @@ Esto es porque los modelos que dependen linealmente de sus variables son más f�
 \subsection{Regresión polinomial}\label{subsec:regresionPolinomial}
 Como extensión al algoritmo de regresión lineal, se estudió también el análisis de regresión polinomial y su relación con la regresión lineal, que aunque sirve para describir un modelo donde las variables son no lineales (un polinomio), los parámetros a encontrar son lineales.
 
-Por ejemplo, considere una situación en donde una pequeña pelota se lanza al aire y se miden las alturas $h_i$ mientras haciende, durante varios momentos $t_j$. 
+Por ejemplo, considere una situación en donde una pequeña pelota se deja caer desde una plataforma y se miden las alturas $h_i$ mientras desciende, durante varios momentos $t_j$. 
 Los valores medidos están en la figura \ref{tab:valoresMedidos}. 
-El modelo matemático que describe este fenómeno físico nos dice que, ignorando la resistencia del viento, la relación puede ser modelada como:
+Sabemos que la gravedad es un movimiento uniformemente acelerado, cuyo modelo matemático se puede describir con una ecuación de segundo grado ignorando la resistencia del viento, dicha ecuación se puede escribir como: 
 $$h_i = \beta_1 t_i + \beta_2 t_i^{2} + \varepsilon_i$$
 \begin{table}[!h]
 	\begin{center}
 		\begin{tabular}{|p{2.5cm}|p{2.5cm}|}\hline
 			$t_i$ & $h_1$ \\ \hline
-				1 & 2 	\\ \hline
-				2 & 6	\\\hline
-				3 & 12  \\\hline
-				4 & 20  \\\hline
-				5 & 30  \\\hline
+				1 & 28  	\\ \hline
+				2 & 24	\\\hline
+				3 & 18  \\\hline
+				4 & 10  \\\hline
+				5 & 0  \\\hline
 		\end{tabular}			
 	\end{center}
 	\caption{Valores medidos de la altura respecto al tiempo de un objeto en caída libre.}
@@ -187,11 +187,11 @@ La regresión lineal puede ser usada para estimar los valores de $\beta_1$ y $\b
 	\begin{center}
 		\begin{tabular}{|p{2.5cm}|p{2.5cm}|p{2.5cm}|}\hline
 				$t_i$ & $t_i^{2}$ & $h_1$  \\ \hline
-				1 & 1 & 2 	\\ \hline
-				2 & 4 & 6	\\\hline
-				3 & 9 & 12  \\\hline
-				4 & 16& 20  \\\hline
-				5 & 25& 30   \\\hline
+				1 & 1 & 28 	\\ \hline
+				2 & 4 & 24	\\\hline
+				3 & 9 & 18\\\hline
+				4 & 16& 10  \\\hline
+				5 & 25& 0   \\\hline
 		\end{tabular}			
 	\end{center}
 	\caption{ Transformación del modelo de la tabla de la figura \ref{tab:valoresMedidos}}
@@ -265,9 +265,9 @@ El objetivo de este proyecto fue crear un software de pronóstico de producción
 
 \subsection{Librería weka}
 Weka es una colección de algoritmos del área de machine learning, para tareas de minería de datos. Estos algoritmos pueden ya sea aplicarse directamente a un conjunto de datos, o llamarse desde código java mediante la API de weka.
-Esta diseñada para que se puedan probar métodos existentes en nuevos data sets de manera rápida y flexible. Proporciona un amplio apoyo para todo el proceso de minería de datos experimental, incluyendo preparar los datos de entrada, evaluar estadísticamente los esquemas de aprendizaje y visualizar los datos de entrada y los resultados del aprendizaje, así como también posee una amplia variedad de algoritmos de aprendizaje, incluye un amplio rango de herramientas de preprocesamiento.
+Está diseñada para que se puedan probar métodos existentes en nuevos data sets de manera rápida y flexible. Proporciona un amplio apoyo para todo el proceso de minería de datos experimental, incluyendo preparar los datos de entrada, evaluar estadísticamente los esquemas de aprendizaje y visualizar los datos de entrada y los resultados del aprendizaje, así como también posee una amplia variedad de algoritmos de aprendizaje, incluye un amplio rango de herramientas de preprocesamiento.
 
-Este diverso y integro conjunto de herramientas es accesado a través de una interface común de tal manera que los usuarios puedan comparar diferentes métodos e identificar aquellos que son mas apropiados para el problema al que se enfrentan. WEKA fue desarrollada en la universidad de Waikato en Nueva Zelanda, el nombre viene de las siglas \textit{Waikato  Environment for Knowledge Analysis}, o ``Ambiente Waikato para el análisis de conocimiento'', aunque es pronunciado para que rime con \textit{Mecca}, el nombre de un ave no voladora de naturaleza inquisitiva que vive solamente en la isla de Nueva Zelanda \cite{EibeFMarkAHallIanHTheWekaWorkbench}.
+Este diverso y íntegro conjunto de herramientas es accesado a través de una interface común de tal manera que los usuarios puedan comparar diferentes métodos e identificar aquellos que son mas apropiados para el problema al que se enfrentan. WEKA fue desarrollada en la universidad de Waikato en Nueva Zelanda, el nombre viene de las siglas \textit{Waikato  Environment for Knowledge Analysis}, o ``Ambiente Waikato para el análisis de conocimiento'', aunque es pronunciado para que rime con \textit{Mecca}, el nombre de un ave no voladora de naturaleza inquisitiva que vive solamente en la isla de Nueva Zelanda \cite{EibeFMarkAHallIanHTheWekaWorkbench}.
 Weka es un software de código abierto, bajo la licencia GNU General Public License.
 
 En este periodo se hicieron varias pruebas con la librería weka, empezando por pruebas desde consola, como la de la figura \ref{fig:ejecucionAlgoritmoClasificacion}, con los datos de ejemplo que trae la librería weka, y después se desarrolló un proyecto en java que hace uso de la API de esta librería.
@@ -388,14 +388,14 @@ y el método \texttt{classifyInstance} se muestra en el código \ref{lst:Polynom
 	\caption{Salida del método LinearRegression.exampleFromFile().}
 	\label{fig:salidaMetodoLinearRegression}
 \end{figure}
-
+\clearpage
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=10cm]{img/representacionGraficaDatosLinearR.png}
 	\caption{Salida del método LinearRegression.exampleFromFile().}
 	\label{fig:representacionGraficaDatosLinearR}
 \end{figure}
-\clearpage
+
 
 \lstset{language=Xml, label=lst:PolynomialRegressionBuildClassifier, caption={[Método \texttt{PolynomialRegression.buildClassifier}] Método \texttt{PolynomialRegression.buildClassifier}},
 tabsize=3 ,numbers=left,  stepnumber=1, firstnumber=100}
