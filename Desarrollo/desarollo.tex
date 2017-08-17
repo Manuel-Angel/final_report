@@ -53,7 +53,7 @@ Para correr el modo simulación desde la interfaz web se pusieron los parámetro
 
 \begin{table}[!h]
 	\begin{center}
-		\begin{tabular}{|p{2.5cm}|p{7cm}|p{4cm}|}\hline
+		\begin{tabular}{|p{2.5cm}|p{7cm}|p{4.5cm}|}\hline
 			\textbf{Parámetro} & \textbf{Descripción} & \textbf{Valor} \\ \hline
 				Input Bootstrap data:  &El nombre del archivo xml generado en el modo bootstrap. & \texttt{bootstrap-data} \\ \hline
 				JMS URL: & La url del JMS del broker, este es el valor default. & \texttt{tcp://localhost:61616} \\\hline
@@ -590,13 +590,13 @@ En la línea 109 se crea el objeto \texttt{evaluation} de la clase \texttt{TSEva
 Lo que hace la clase \texttt{TSEvaluation} es hacer varias predicciones un paso adelante, luego predicciones 2 pasos adelante, hasta llegar a predicciones $n$ pasos hacia el futuro, en este caso $n=24$.
 Los resultados se imprimen en las líneas 104 y 106, la primera imprime los valores predichos $n$ pasos hacia adelante por el modelo, su valor real y el error que hubo, la segunda línea imprime un resumen de los resultados, que consta de el valor del error medio absoluto y la raíz del error cuadrático medio de cada conjunto de predicciones a $n$ pasos. En la  \hyperref[fig:resultadosEvaluacion]{figura \ref{fig:resultadosEvaluacion}} se muestra la salida de este código. 
 
-\begin{figure}[!h]
+\begin{figure}[h]
 	\centering
 	\includegraphics[width=15cm]{img/resultadosEvaluacion.png}
 	\caption{Resultados de la evaluación con la clase TSEvaluation. }
 	\label{fig:resultadosEvaluacion}
 \end{figure}
-%\clearpage
+\clearpage
 La clase \texttt{TSEvaluation} resulta útil para medir la exactitud que tienen las predicciones de acuerdo a cuantos pasos en el futuro se esta prediciendo, no obstante necesitamos una medida de la exactitud para una sola predicción de $n$ pasos hacia el futuro, en lugar de mediciones agrupadas por pasos, es decir $n$ predicciones de 1 paso, $n-1$ predicciones de 2 pasos, $n-2$ predicciones de 3 pasos, tal como lo hace esta clase, por lo que se optó por crear métodos propios para evaluar la exactitud de los resultados, y métodos para graficar los resultados.
 El \hyperref[lst:maincustomtest]{código \ref{lst:maincustomtest}} realiza una evaluación de las predicciones a 24 horas generadas por el modelo, y despliega el error medio absoluto junto con otras métricas de evaluación de la exactitud del modelo generado, además de mostrar una ventana con un gráfico representando la serie de tiempo real, y la parte generada por el modelo.
 
@@ -1024,15 +1024,13 @@ try {
 	JPanel gr=Util.graphSeries(best.get(0),datos,targetName,xaxis);
 	JFrame jf = new JFrame("Serie de tiempo " 
 		+timeseries.baseLearners[bestBase].getClass().getName());
-	jf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	jf.setSize(800, 600);
 	jf.getContentPane().setLayout(new BorderLayout());
 	jf.getContentPane().add(gr, BorderLayout.CENTER);
 	jf.setVisible(true);
 } catch (Exception e) {
 	e.printStackTrace();
-}
-}
+}}
 \end{lstlisting}
 
 En el for de la línea 134 se realiza la comparación de los algoritmos, primero reinicia el objeto \texttt{timeseries} en la línea 135 y en la 136 
@@ -1456,10 +1454,7 @@ public class BayesNetFactory {
 			bn.initAsNaive=true;
 			bn.markov=false;
 			bn.setScoreType(1);
-		}
-		return bn;
-	}
-}
+		}return bn;}}
 \end{lstlisting}
 Cuando el power type no es del tipo producción solar, se deja configurada la red para que aprenda la estructura usando un algoritmo que corre en un tiempo suficientemente rápido para correr en un timeslot. Debido a que en las últimas pruebas realizadas el algoritmo Bagging superó en precisión al de red bayesiana, este lo sustituyó en la clase \texttt{RegressionFactory}, estas pruebas se describen en la sección \ref{subsec:comparacionBaggingRedB}.
 
