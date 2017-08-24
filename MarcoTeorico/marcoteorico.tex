@@ -64,8 +64,42 @@ Desde la publicación del Primer Contrato de Interconexión para Fuente de Energ
 	\label{solar}
 \end{figure}
 
+\subsection{Generación distribuida}
+Al empezar a utilizar energías renovables incluyendo en la red eléctrica el uso de muchos pequeños generadores de distintos tipos (placas solares y aerogeneradores principalmente), la red eléctrica necesita tener soporte para que, generadores en diferentes partes de la red suministren energía a ésta, a diferencia del modelo clásico en donde una (o unas pocas) gran central eléctrica suministra la energía a toda la red. Este modelo que permite varios generadores se le denomina generación distribuida o descentralizada, consiste en la generación de energía eléctrica mediante muchas pequeñas fuentes de generación, instaladas cerca del consumo. 
+
+La generación distribuida es una cooperación entre la micro-generación  y la generación de las centrales convencionales. Esta distribución hace que la generación sea más equilibrada, y que la comunidad donde se encuentra la red no dependa tanto de las grandes centrales. Además, la micro-generación implica el uso de las energías renovables, lo que reducirá las emisiones de $CO_2$ \cite{Endesaeduca}.
+
+Una implementación de red eléctrica de generación distribuida son las llamadas \textit{Smart Grids} o redes inteligentes, son básicamente redes de distribución eléctrica combinadas con modernas tecnologías de información, que proporcionan datos tanto a las empresas distribuidoras de electricidad como a los consumidores, lo que es ventajoso para ambas partes. En ellas las viviendas y distintos negocios pueden en un momento dado convertirse también en pequeños productores de electricidad y no solo consumidores.
+
+Las características principales de una generación distribuida son:
+
+\begin{itemize}
+	\item \textbf{Reduce las pérdidas en la red eléctrica.} Estar más cerca del consumidor supone que las redes de transporte sean más cortas. Por lo tanto, la generación distribuida supone menos pérdidas de energía en el transporte de la electricidad desde la generación hasta el consumidor. Esto también influye en el ahorro a la hora de elevar la tensión eléctrica para su transporte.
+	
+	\item \textbf{Mejorar la fiabilidad y la calidad del sistema eléctrico.} Como hay pequeñas fuentes de generación (micro-generación), repartidas por el territorio, el fallo de una de las fuentes no supone un grave problema para el sistema eléctrico.
+	
+	\item \textbf{Potencias reducidas.} Las unidades de microgeneración suelen tener potencias inferiores a 3 kW aunque en general se suele decir que no sobrepasan 10 kW de potencia instalada.
+	
+	\item \textbf{Energías renovables.} En la generación distribuida está muy presente las energías renovables, ya que al estar tan cerca del consumo, son las más adecuadas.
+\end{itemize}
+
 \section{Simulación de mercados de energía}
-\subsection{Power TAC(Trading Agent Competition)}
+
+Con el surgimiento de las redes eléctricas de generación distribuida, el mercado energético se hace mas complejo, pues los clientes no solo consumen energía de un solo productor si no de varios, esto hace que sea tedioso para los clientes tener que pagarle a los distintos proveedores.
+Actualmente se sabe como construir una Smart Grid, existen componentes que pueden grabar el uso de energía en tiempo real y ayudar a los consumidores a administrar su uso de energía, sin embargo esto solo es la parte técnica del sistema, existen otros problemas como el de las transacciones económicas, y el balancear la carga de energía.
+Si los precios de energía verdaderamente reflejan la escasez de ésta, pueden motivar a los clientes a cambiar su patrón de consumo para minimizar los costos, y a los productores para despachar mejor sus capacidades \cite{RetailElectricityCompetition}.
+Hay una reserva significativa de capacidad controlable para administrar y equilibrar una red entre la población de sus clientes, tales como calentadores de agua, vehículos eléctricos, depósitos de almacenamiento en frío. 
+El uso efectivo de los precios y la respuesta de demanda serán críticos para el esfuerzo en desarrollar una infraestructura energética mas sostenible basada en incrementar el uso de fuentes de energía variables, tales como la energía eólica y solar.
+
+El desempeño de los mercados depende de un comportamiento de los participantes motivados económicamente, pero los modelos de mercado de energía al pormenor propuestos son demasiado complejos para el análisis directo usando teoría de juegos.
+Ambientes de simulación basada en agentes han sido usados para estudiar la operación de un mercado energético al por mayor, pero estos estudios no son capaces de explorar el rango completo de comportamientos egoístas y destructivos inesperados de los participantes.
+
+Proyectos pilotos de Smart grids por otro lado, son limitados en su habilidad para probar sistemas dinámicos para situaciones extremas. También les hace falta competitividad en mercados abiertos, debido a que un solo consorcio de proyectos típicamente controla y optimiza la interacción de todas las partes de las regiones piloto.
+
+Por esta razón, se creó la competencia Power TAC, una plataforma de simulación de mercados competitivos abierta que abordará la necesidad de orientación política basada en un robusto resultado de investigación de la estructura y operación de mercados energéticos al por menor. Estos resultados ayudarán a los encargados de formular políticas a crear instituciones que produzcan los incentivos adecuados para los productores y consumidores de energía. 
+Esta competencia también ayudará a desarrollar y validar tecnologías de automatización inteligentes que permitirán la administración efectiva de entidades minoristas en estas instituciones \cite{WKetterJCollinsyMdWeerdtThe2017PowerTAC}.
+
+\subsection{Power TAC (Trading Agent Competition)}
 
 Power TAC es una competencia de simulación de futuros mercados minoristas de energía eléctrica, en los que los competidores \textit{``broker''} o agentes minoristas (en la simulación son agentes inteligentes) que compran y venden energía tanto en los mercados mayoristas como minoristas. 
 El mercado al por mayor es una abstracción de los típicos mercados diurnos en Norteamérica y Europa, y el mercado al por menor es un mercado de tarifas, en el que los clientes pueden elegir entre ofertas de contratos de tarifas ofrecidos por los agentes. Los clientes son modelos de usuarios domésticos, empresariales e institucionales de energía eléctrica, así como pequeños productores de energía que poseen paneles solares o turbinas eólicas.\\
