@@ -31,11 +31,11 @@ El objetivo del broker es maximizar sus ganancias en el  Mercado al por Mayor, e
 El desbalance es una de las principales penalizaciones del sistema hacia los broker, por ese motivo el sistema crea bonos o incentivos para los broker por mantener el balance entre el consumo y la producción de sus clientes utilizando las herramientas disponibles del entorno.
 
 Una de las maneras de balancearse es comprar energía faltante o vender energía sobrante en el mercado al por mayor o también llamado mercado del día siguiente, ya que en el se puede comprar o vender energía para una determinada hora de las siguientes 24 horas y para esto se necesita tener las predicciones de la producción y el consumo que tendrán los clientes de un broker en las próximas 24 horas.
-La version del agente COLDPower que participo en el 2016 calculaba estas predicciones utilizando un promedio ponderado de los kilowatts producidos y consumidos en cada una de las horas 24 horas utilizando los datos de los días anteriores, estos promedios servían como predicciones, aunque no eran muy precisas y costos por desbalance aun afectaban al agente, por ello es necesario mejorar este método de predicción creando un módulo que se dedique exclusivamente a esto y que de mejores resultados para que el agente pueda tomar mejores decisiones que lleven a un mejor balance y las penalizaciones por desbalance disminuyan.
+La versión del agente COLDPower que participo en el 2016 calculaba estas predicciones utilizando un promedio ponderado de los kilowatts producidos y consumidos en cada una de las horas 24 horas utilizando los datos de los días anteriores, estos promedios servían como predicciones, aunque no eran muy precisas y costos por desbalance aun afectaban al agente, por ello es necesario mejorar este método de predicción creando un módulo que se dedique exclusivamente a esto y que de mejores resultados para que el agente pueda tomar mejores decisiones que lleven a un mejor balance y las penalizaciones por desbalance disminuyan.
 
 \section{Objetivos}
 \subsection{General}
-Desarrollar un módulo de predicción para la nueva versión del agente inteligente de compra venta de energía COLDPower, para que este pueda tomar mejores decisiones que le permitan tener una mayor ganancia en la competencia Power TAC.
+Desarrollar un módulo de predicción para la nueva versión del agente inteligente de compraventa de energía COLDPower, para que este pueda tomar mejores decisiones que le permitan tener una mayor ganancia en la competencia Power TAC.
 \subsection{Específicos}
 \renewcommand{\labelenumi}{$\bullet$ }
 \renewcommand{\labelenumii}{\alph{enumii})}
@@ -50,10 +50,10 @@ Desarrollar un módulo de predicción para la nueva versión del agente intelige
 		\item Implementar los métodos de regresión y compararlos usando datos del clima y el mercado energético.
 		\item Seleccionar técnicas de predicción.
     \end{enumerate}
-    \item Implementar el modulo de predicción.
+    \item Implementar el módulo de predicción.
         \begin{enumerate}
         \item Diseñar el módulo de predicción.
-		\item Implementar de una API que contenga todos los métodos de predicción y facilite la implementación del modulo.
+		\item Implementar de una API que contenga todos los métodos de predicción y facilite la implementación del módulo.
 		\item Implementar de una interfaz gráfica que visualice los datos que genera el agente en cada juego.
 		\item Integrar la API con el agente COLDPower
     \end{enumerate}
@@ -68,3 +68,16 @@ Los mercados de energía comienzan a funcionar en México a través de subastas:
 Junto con la adopción de redes energéticas más inteligentes, surge la idea de regular la oferta y demanda de energía en un mercado libre, donde los productores puedan vender energía a consumidores usando un broker como intermediario \cite{Fixed-priceTariffG2015}. 
 Uno de los mercados energéticos dominantes es el de tarifas en donde pequeños consumidores pueden comprar energía de los agentes ``broker'' a través de tarifas.
 La infraestructura necesaria (redes energéticas inteligentes) no ha llegado aún a México para que esto sea posible, pero la comunidad científica europea esta consciente de que esto sera una necesidad cada vez más demandante, así que crearon el servidor de simulación Power TAC para poder probar estrategias de mercado en una simulación de una red energética inteligente, organizando también un concurso internacional del mismo nombre en el que el INAOE participa con su agente COLDPower.
+
+\subsection{Alcances}
+
+El proyecto ``CEMIE - Eólico P12: Desarrollo de tecnología basada en inteligencia artificial y mecatrónica, para integrar un parque de generación de energía eólica a una red inteligente'' tiene una duración aproximada de 4 años, este proyecto de
+residencias ``Agente inteligente de compra venta de energía'' se enfocará en el desarrollo de un nuevo modulo de predicción del clima para mejorar el desempeño del broker que ya dispone el equipo de desarrollo del INAOE, culminando en una nueva versión de este. 
+
+Para ello se estudiaran las reglas de la competencia PowerTAC 2017 y arquitectura del broker COLDPower, identificando los requerimientos para el modulo a desarrollar, se analizaran diferentes métodos de predicción basados en algoritmos de machine learning incluidos en la librería Weka, 
+
+\subsection{Limitaciones}
+Los algoritmos usados serán unicamente de la librería Weka, no se implementaran algoritmos nuevos ni se modificaran los de la librería, solo se usaran buscando ajustarlos lo mas posible a las necesidades del proyecto.
+Todas las pruebas se harán con datos del simulador PowerTAC y de competencias pasadas.
+
+
